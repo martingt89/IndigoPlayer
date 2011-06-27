@@ -11,6 +11,7 @@ RM := rm -rf
 -include subdir.mk
 -include src/subdir.mk
 -include src/Graphic/subdir.mk
+-include src/Communication/subdir.mk
 -include .metadata/.plugins/org.eclipse.cdt.make.core/subdir.mk
 -include objects.mk
 

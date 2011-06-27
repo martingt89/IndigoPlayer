@@ -887,9 +887,11 @@ Capital.d Capital.o: ../Capital.cpp /usr/include/gtkmm-2.4/gtkmm.h \
  /usr/include/gtkmm-2.4/gtkmm/treestore.h \
  /usr/include/gtkmm-2.4/gtkmm/uimanager.h \
  /usr/include/gtkmm-2.4/gtkmm/actiongroup.h \
- /usr/include/gtkmm-2.4/gtkmm/viewport.h ../src/PipeExchange.h \
- ../src/Configuration.h ../src/Graphic/MainWindow.h \
- ../src/Graphic/../Configuration.h ../src/Graphic/../PipeExchange.h
+ /usr/include/gtkmm-2.4/gtkmm/viewport.h ../Settings.h \
+ ../src/Communication/ExclusiveLock.h ../src/Communication/PipeExchange.h \
+ ../src/Communication/../ProgramUtilitys.h ../src/Configuration.h \
+ ../src/Graphic/MainWindow.h ../src/Graphic/../Configuration.h \
+ ../src/Graphic/../Communication/PipeExchange.h
 
 /usr/include/gtkmm-2.4/gtkmm.h:
 
@@ -2801,7 +2803,13 @@ Capital.d Capital.o: ../Capital.cpp /usr/include/gtkmm-2.4/gtkmm.h \
 
 /usr/include/gtkmm-2.4/gtkmm/viewport.h:
 
-../src/PipeExchange.h:
+../Settings.h:
+
+../src/Communication/ExclusiveLock.h:
+
+../src/Communication/PipeExchange.h:
+
+../src/Communication/../ProgramUtilitys.h:
 
 ../src/Configuration.h:
 
@@ -2809,4 +2817,4 @@ Capital.d Capital.o: ../Capital.cpp /usr/include/gtkmm-2.4/gtkmm.h \
 
 ../src/Graphic/../Configuration.h:
 
-../src/Graphic/../PipeExchange.h:
+../src/Graphic/../Communication/PipeExchange.h:

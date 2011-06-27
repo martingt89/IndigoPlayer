@@ -3,24 +3,26 @@
 
 #include <gtkmm.h>
 
-#include "src/PipeExchange.h"
+#include "Settings.h"
+#include "src/Communication/ExclusiveLock.h"
+#include "src/Communication/PipeExchange.h"
 #include "src/Configuration.h"
 #include "src/Graphic/MainWindow.h"
-
-#define NAME "IndigoPlayer"
-#define VERSION 0.1
 
 
 int main(int argc, char *argv[]){
 	Gtk::Main kit(argc, argv);
 
 	Configuration *config = new Configuration(NAME, VERSION);
-	MainWindow *window;
+	MainWindow *window = NULL;
 	if(config->onlyOne()){	//vypliva z konfiguracie
 		PipeExchange *pip = new  PipeExchange(NAME, VERSION);
-		if(pip->tryLock()){
+		ProgramUtilitys util;
+		ExclusiveLock instanceLock(util.getInstanceLockFilePath(), false);
+		if(instanceLock.tryLockFile()){
 			//sme prva instancia
 			if(pip->openRead()){
+			//	pip->readCommand();
 				window = new MainWindow(pip, config, NAME, argc);
 				window->show();
 			}else{
@@ -37,12 +39,14 @@ int main(int argc, char *argv[]){
 				return -1;
 			}
 		}
+		instanceLock.unlockFile();
 	}else{
 		window = new MainWindow(NULL, config, NAME, VERSION);
 		window->show();
 	}
-
-	delete window;
+	//clean
+	if(window)
+		delete window;
 	delete config;
 	return 0;
 }

@@ -11,7 +11,7 @@
 //#include <sstream>
 
 #include "../Configuration.h"
-#include "../PipeExchange.h"
+#include "../Communication/PipeExchange.h"
 
 
 class MainWindow {

@@ -1,6 +1,8 @@
 src/Graphic/MainWindow.d src/Graphic/MainWindow.o: \
  ../src/Graphic/MainWindow.cpp ../src/Graphic/MainWindow.h \
- ../src/Graphic/../Configuration.h ../src/Graphic/../PipeExchange.h \
+ ../src/Graphic/../Configuration.h \
+ ../src/Graphic/../Communication/PipeExchange.h \
+ ../src/Graphic/../Communication/../ProgramUtilitys.h \
  /usr/include/gtkmm-2.4/gtkmm.h /usr/include/glibmm-2.4/glibmm.h \
  /usr/lib/glibmm-2.4/include/glibmmconfig.h \
  /usr/include/glibmm-2.4/glibmm/arrayhandle.h \
@@ -895,7 +897,9 @@ src/Graphic/MainWindow.d src/Graphic/MainWindow.o: \
 
 ../src/Graphic/../Configuration.h:
 
-../src/Graphic/../PipeExchange.h:
+../src/Graphic/../Communication/PipeExchange.h:
+
+../src/Graphic/../Communication/../ProgramUtilitys.h:
 
 /usr/include/gtkmm-2.4/gtkmm.h:
 

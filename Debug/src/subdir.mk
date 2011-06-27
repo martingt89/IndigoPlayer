@@ -5,15 +5,15 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/Configuration.cpp \
-../src/PipeExchange.cpp 
+../src/ProgramUtilitys.cpp 
 
 OBJS += \
 ./src/Configuration.o \
-./src/PipeExchange.o 
+./src/ProgramUtilitys.o 
 
 CPP_DEPS += \
 ./src/Configuration.d \
-./src/PipeExchange.d 
+./src/ProgramUtilitys.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
