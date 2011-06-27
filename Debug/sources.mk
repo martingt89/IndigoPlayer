@@ -26,4 +26,5 @@ SUBDIRS := \
 src \
 src/Graphic \
 . \
+.metadata/.plugins/org.eclipse.cdt.make.core \
 
