@@ -20,14 +20,13 @@ int main(int argc, char *argv[]){
 		ProgramUtilitys util;
 		ExclusiveLock instanceLock(util.getInstanceLockFilePath(), false);
 		if(instanceLock.tryLockFile()){
-			//sme prva instancia
-			if(pip->openRead()){
-			//	pip->readCommand();
+			if(pip->createPipe()){
+				std::cerr<<"INFO: Vytvorili sme pipu"<<std::endl;
 				window = new MainWindow(pip, config, NAME, argc);
 				window->show();
+				pip->removePipe();
 			}else{
-				std::cerr<<"SEVERE: Ziskali sme lock ale nie je mozne otvorit pipu na citanie"<<std::endl;
-				return -1;
+				std::cerr<<"SEVERE: Nie je mozne vytvorit pipa subor"<<std::endl;
 			}
 		}else{
 			//nie sme prva instancia
@@ -44,7 +43,6 @@ int main(int argc, char *argv[]){
 		window = new MainWindow(NULL, config, NAME, VERSION);
 		window->show();
 	}
-	//clean
 	if(window)
 		delete window;
 	delete config;
