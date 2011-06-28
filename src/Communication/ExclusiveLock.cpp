@@ -16,7 +16,7 @@ ExclusiveLock::ExclusiveLock(std::string filePath, bool block=false) {
 }
 
 ExclusiveLock::~ExclusiveLock() {
-	remove(filePath.c_str());
+	//remove(filePath.c_str());
 }
 
 bool ExclusiveLock::tryLockFile(){

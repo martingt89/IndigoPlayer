@@ -4,15 +4,19 @@
 #include <gtkmm.h>
 
 #include "Settings.h"
+#include "src/Configuration.h"
 #include "src/Communication/ExclusiveLock.h"
 #include "src/Communication/PipeExchange.h"
-#include "src/Configuration.h"
 #include "src/Graphic/MainWindow.h"
 
+#include <list>
 
 int main(int argc, char *argv[]){
 	Gtk::Main kit(argc, argv);
-
+	std::list<std::string> zoznam;
+	for(int i = 1; i < argc; i++){
+		zoznam.push_back(std::string(argv[i]));
+	}
 	Configuration *config = new Configuration(NAME, VERSION);
 	MainWindow *window = NULL;
 	if(config->onlyOne()){	//vypliva z konfiguracie
@@ -21,26 +25,22 @@ int main(int argc, char *argv[]){
 		ExclusiveLock instanceLock(util.getInstanceLockFilePath(), false);
 		if(instanceLock.tryLockFile()){
 			if(pip->createPipe()){
+		//		std::cout<<pip->readCommand()<<std::endl;
 				std::cerr<<"INFO: Vytvorili sme pipu"<<std::endl;
-				window = new MainWindow(pip, config, NAME, argc);
+				window = new MainWindow(zoznam, pip, config, NAME, VERSION);
 				window->show();
 				pip->removePipe();
 			}else{
 				std::cerr<<"SEVERE: Nie je mozne vytvorit pipa subor"<<std::endl;
 			}
 		}else{
-			//nie sme prva instancia
-			if(pip->openWrite()){
-				std::cerr<<"INFO: Otvorili sme pipu na zapis"<<std::endl;
-				pip->writeFiles(argc, argv);
-			}else{
-				std::cerr<<"SEVERE: Nemame lock a ani sme neziskali pipu na zapis"<<std::endl;
-				return -1;
+			if(!pip->writeFiles(argc, argv)){
+				std::cerr<<"SEVERE: Nepodarilo sa subor poslat"<<std::endl;
 			}
 		}
 		instanceLock.unlockFile();
 	}else{
-		window = new MainWindow(NULL, config, NAME, VERSION);
+		window = new MainWindow(zoznam, NULL, config, NAME, VERSION);
 		window->show();
 	}
 	if(window)

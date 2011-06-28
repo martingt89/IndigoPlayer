@@ -17,29 +17,23 @@ PipeExchange::~PipeExchange() {
 }
 
 std::string PipeExchange::readCommand(){
-	int i;
-	char buffer[128];
-
-	i = read(readPipe, buffer, 128);
-	cout<<"pocet nacitanych: "<<i<<std::endl;
-	return "nic";
-}
-
-bool PipeExchange::openWrite(){
-	writePipe = open(util.getPipeFilePath().c_str(), O_WRONLY | O_APPEND);
-	if(writePipe < 0)
-			return false;
-	return true;
-}
-
-bool PipeExchange::openRead(){
 	readPipe = open(util.getPipeFilePath().c_str(), O_RDONLY);
 	if(readPipe < 0){
 		cerr<<"SEVERE: Nepodarilo sa otvorit pipu na citanie"<<endl;
-		return false;
+		return NULL;
 	}
 	cerr<<"INFO: otvorili sme pipa subor na citanie"<<endl;
-	return true;
+	char buffer[128];
+	stringstream text;
+	int len = 0;
+	text << "";
+
+	while((len = read(readPipe, buffer, 128)) > 0){
+		buffer[len] = '\0';
+		text << buffer;
+	}
+	close(readPipe);
+	return text.str();
 }
 
 bool PipeExchange::createPipe(){
@@ -58,7 +52,25 @@ void PipeExchange::removePipe(){
 	remove(util.getPipeFilePath().c_str());
 }
 
-void PipeExchange::writeFiles(int argc, char *argv[]){
+bool PipeExchange::writeFiles(int argc, char *argv[]){
+	ExclusiveLock writeLock(util.getPipeLockFilePath(), true);
+	if(writeLock.tryLockFile()){
 
-	//lock file, write to pipe, send semaphore, unlock file
+		writePipe = open(util.getPipeFilePath().c_str(), O_WRONLY | O_APPEND);
+		if(writePipe < 0) return false;
+
+		if(argc == 1){
+			write(writePipe, "empty", strlen("empty"));
+		}else
+		for(int i = 1; i < argc; i++){
+			write(writePipe, argv[i], strlen(argv[i]));
+			write(writePipe, "\n", strlen("\n"));
+		}
+		writeLock.unlockFile();
+		close(writePipe);
+		return true;
+	}else{
+		cerr<<"SEVERE: cannot lock pipe"<<endl;
+	}
+	return false;
 }

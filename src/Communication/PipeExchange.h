@@ -8,27 +8,22 @@
 #include <string>
 #include <sstream>
 #include <iostream>
-#include <cstdlib>
-#include <cstdio>
-#include <sys/types.h>
-#include <sys/stat.h>
+#include <cstring>
+
 #include <fcntl.h>
 #include <errno.h>
-#include <semaphore.h>
-#include <unistd.h>
 
+#include "ExclusiveLock.h"
 #include "../ProgramUtilitys.h"
 
 class PipeExchange {
 public:
 	PipeExchange(std::string name, double version);
 	virtual ~PipeExchange();
-	bool openWrite();
-	bool openRead();
 	bool createPipe();
 	void removePipe();
 	std::string readCommand();
-	void writeFiles(int argc, char *argv[]);
+	bool writeFiles(int argc, char *argv[]);
 private:
 	int readPipe;
 	int writePipe;
