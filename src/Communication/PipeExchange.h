@@ -22,7 +22,7 @@ public:
 	virtual ~PipeExchange();
 	bool createPipe();
 	void removePipe();
-	std::string readCommand();
+	std::string readMessage();
 	bool writeFiles(int argc, char *argv[]);
 private:
 	int readPipe;

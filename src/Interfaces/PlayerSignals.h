@@ -1,0 +1,32 @@
+/*
+ * PlayerSignals.h
+ *
+ *  Created on: 25.7.2011
+ *      Author: xgeier
+ */
+
+#ifndef PLAYERSIGNALS_H_
+#define PLAYERSIGNALS_H_
+
+class PlayerSignals {
+public:
+	PlayerSignals();
+	virtual ~PlayerSignals();
+	virtual void clickPlay() = 0;
+	virtual void clickStop() = 0;
+	virtual void clickForward() = 0;
+	virtual void clickBackward() = 0;
+	virtual void clickCancel() = 0;
+	virtual void clickFullscreen() = 0;
+	virtual void clickThisOptions() = 0;
+	virtual void clickPlaylist() = 0;
+	virtual void clickKill() = 0;
+	virtual void clickOpen() = 0;
+	virtual void clickRewind() = 0;
+	virtual void clickMute() = 0;
+	virtual void clickSound() = 0;
+	virtual void changeTimeLine() = 0;
+	virtual void changeSoundLevel() = 0;
+};
+
+#endif /* PLAYERSIGNALS_H_ */

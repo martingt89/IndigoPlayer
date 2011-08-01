@@ -16,7 +16,7 @@ PipeExchange::~PipeExchange() {
 	close(writePipe);
 }
 
-std::string PipeExchange::readCommand(){
+std::string PipeExchange::readMessage(){
 	readPipe = open(util.getPipeFilePath().c_str(), O_RDONLY);
 	if(readPipe < 0){
 		cerr<<"SEVERE: Nepodarilo sa otvorit pipu na citanie"<<endl;
@@ -59,9 +59,10 @@ bool PipeExchange::writeFiles(int argc, char *argv[]){
 		writePipe = open(util.getPipeFilePath().c_str(), O_WRONLY | O_APPEND);
 		if(writePipe < 0) return false;
 
-		if(argc == 1){
-			write(writePipe, "empty", strlen("empty"));
-		}else
+		std::stringstream ss;
+		ss<<(argc-1)<<endl;
+
+		write(writePipe, ss.str().c_str(), strlen(ss.str().c_str()));
 		for(int i = 1; i < argc; i++){
 			write(writePipe, argv[i], strlen(argv[i]));
 			write(writePipe, "\n", strlen("\n"));
