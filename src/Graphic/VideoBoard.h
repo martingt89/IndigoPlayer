@@ -11,9 +11,10 @@
 #include <gtkmm/builder.h>
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/image.h>
-#include <gtkmm.h>
+#include <glibmm/ustring.h>
 #include <gdk/gdkx.h>
-#include <iostream>
+#include <giomm/file.h>
+#include "../Interfaces/PlayerSignals.h"
 
 class VideoBoard {
 public:
@@ -23,9 +24,15 @@ public:
 	int getXID();
 private:
 	Gtk::DrawingArea* videoBoard;
-	Gtk::Image* imageBoard;
 	Glib::RefPtr<Gdk::Pixbuf> image;
+	Glib::RefPtr< Gdk::Window > mojko;
 	bool on_expose_event(GdkEventExpose* ev);
+	bool on_timeout();
+	int imgX;
+	int imgY;
+	int boardSizeX;
+	int boardSizeY;
+	bool showText;
 };
 
 #endif /* VIDEOBOARD_H_ */

@@ -8,18 +8,21 @@
 #ifndef PLAYERSIGNALS_H_
 #define PLAYERSIGNALS_H_
 
+#include <list>
+#include "../Files/IndigoFile.h"
+
 class PlayerSignals {
 public:
 	PlayerSignals();
 	virtual ~PlayerSignals();
 	virtual void clickPlay() = 0;
-	virtual void clickStop() = 0;
+	virtual void clickPause() = 0;
 	virtual void clickForward() = 0;
 	virtual void clickBackward() = 0;
+	virtual void clickPlaylistBoard() = 0;
 	virtual void clickCancel() = 0;
 	virtual void clickFullscreen() = 0;
 	virtual void clickThisOptions() = 0;
-	virtual void clickPlaylist() = 0;
 	virtual void clickKill() = 0;
 	virtual void clickOpen() = 0;
 	virtual void clickRewind() = 0;
@@ -27,6 +30,8 @@ public:
 	virtual void clickSound() = 0;
 	virtual void changeTimeLine() = 0;
 	virtual void changeSoundLevel() = 0;
+	//
+	virtual void addFiles(std::list<IndigoFile*> files,  bool play) = 0;
 };
 
 #endif /* PLAYERSIGNALS_H_ */

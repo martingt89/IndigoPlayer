@@ -19,7 +19,9 @@ GraphicLoader::GraphicLoader() {
 	}
 
 	refBuilder->get_widget_derived("BaseWindow", basePlayer);
+	refBuilder->get_widget_derived("OpenWindow", openWindow);
 	videoBoard = new VideoBoard(refBuilder);
+	playlist = new PlaylistGraphic(refBuilder);
 //	refBuilder->get_widget_derived("Playlist", basePlayer);
 }
 
@@ -30,7 +32,12 @@ GraphicLoader::~GraphicLoader() {
 BasePlayerWindow* GraphicLoader::getBasePlayerWindow(){
 	return basePlayer;
 }
-
 VideoBoard* GraphicLoader::getVideoBoard(){
 	return videoBoard;
+}
+OpenFileDialog* GraphicLoader::getOpenDialog(){
+	return openWindow;
+}
+PlaylistGraphic* GraphicLoader::getPlaylistGraphic(){
+	return playlist;
 }

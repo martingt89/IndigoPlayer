@@ -19,11 +19,16 @@
 #include <gtkmm/separator.h>
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/notebook.h>
+#include <gtkmm/frame.h>
+
+#include <gdk/gdkx.h>
 
 #include "../Interfaces/PlayerSignals.h"
 #include "../../Settings.h"
+#include "../Files/IndigoFile.h"
+#include "../Files/FileUtilities.h"
 
-class BasePlayerWindow  : public Gtk::Window{
+class BasePlayerWindow: public Gtk::Window {
 public:
 	BasePlayerWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 	virtual ~BasePlayerWindow();
@@ -36,55 +41,64 @@ public:
 	double getAudioLevel();
 	void openFullscreen();
 	void closeFullscreen();
+	void popPlayButton();
+	bool isFullscreen();
 private:
-	 Glib::RefPtr<Gtk::Builder> m_refGlade;
-	 Gtk::Button* forward;
-	 Gtk::Button* backward;
-	 Gtk::Button* cancel;
-	 Gtk::Button* fullScreen;
-	 Gtk::Button* kill;
-	 Gtk::Button* backInFile;
-	 Gtk::Button* thisOptions;
-	 Gtk::ToggleButton* playStop;
-	 Gtk::ToggleButton* soundMute;
-	 Gtk::HScale* timeline;
-	 Gtk::HScale* sound;
-	 Gtk::Label* time;
-	 Gtk::VBox* panel;
-	 Gtk::HSeparator* separator;
-	 Gtk::Adjustment timelineAdj;
-	 Gtk::Adjustment soundAdj;
+	Glib::RefPtr<Gtk::Builder> m_refGlade;
+	Gtk::Button* forward;
+	Gtk::Button* backward;
+	Gtk::Button* cancel;
+	Gtk::Button* fullScreen;
+	Gtk::Button* kill;
+	Gtk::Button* backInFile;
+	Gtk::Button* thisOptions;
+	Gtk::Button* open;
+	Gtk::ToggleButton* playStop;
+	Gtk::ToggleButton* soundMute;
+	Gtk::HScale* timeline;
+	Gtk::HScale* sound;
+	Gtk::Label* time;
+	Gtk::VBox* panel;
+	Gtk::VBox* capitalPanel;
+	Gtk::HSeparator* separator;
+	Gtk::Adjustment timelineAdj;
+	Gtk::Adjustment soundAdj;
 
-	 Gtk::ToggleButton* video;
-	 Gtk::ToggleButton* playlist;
-	 Gtk::ToggleButton* open;
-	 Gtk::Notebook* notebook;
+	Gtk::ToggleButton* video;
+	Gtk::ToggleButton* playlist;
+	Gtk::Notebook* notebook;
 
-	 PlayerSignals *playerSignals;
-	 //
-	 int duration;
-	 int position;
+	Gtk::Window* popupWindow;
+	Gtk::VBox* capitalPopupVBox;
 
-	 int active;
-	 bool stopVPO;
-	 Glib::ustring getTimeText(int position, int duration);
+	PlayerSignals *playerSignals;
+	//
+	int duration;
+	int position;
 
-	 void on_toggledPlay_clicked();
-	 void on_toggledSound_clicked();
-	 void forward_clicked();
-	 void backward_clicked();
-	 void cancel_clicked();
-	 void fullScreen_clicked();
-	 void thisOptions_clicked();
-	 void playlist_clicked();
-	 void open_clicked();
-	 void backInFile_clicked();
-	 void sound_changed();
-	 void timeline_changed();
-	 void videoPlaylistOpen();
+	int active;
+	bool stopVPO;
 
-	 bool timeline_changed_signal;
-	 bool sound_changed_signal;
+	bool timeline_changed_signal;
+	bool sound_changed_signal;
+	bool playStopSignal;
+	bool isFull;
+	Glib::ustring getTimeText(int position, int duration);
+
+	void on_toggledPlay_clicked();
+	void on_toggledSound_clicked();
+	void forward_clicked();
+	void backward_clicked();
+	void cancel_clicked();
+	void fullScreen_clicked();
+	void thisOptions_clicked();
+	void open_clicked();
+	void backInFile_clicked();
+	void sound_changed();
+	void timeline_changed();
+	void videoPlaylistOpen();
+	void on_drop_files(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y,
+			const Gtk::SelectionData& selection_data, guint info, guint time);
+	bool on_button_clicked(GdkEventKey* evt);
 };
-
 #endif /* BASEPLAYERWINDOW_H_ */

@@ -7,19 +7,62 @@
 
 #include "Playlist.h"
 
-Playlist::Playlist() {
-	// TODO Auto-generated constructor stub
+#include <iostream>
 
+Playlist::Playlist(PlaylistGraphic* graphic) {
+	file = NULL;
+	this->graphic = graphic;
 }
 
 Playlist::~Playlist() {
-	// TODO Auto-generated destructor stub
-}
-
-void Playlist::setPlaylistWindow(){
 
 }
 
-void show(bool visible){
+void Playlist::setListener(PlayerSignals* sig){
+	graphic->setListener(sig);
+}
 
+void Playlist::addFiles(std::list<IndigoFile*> files){
+	std::list<IndigoFile*>::iterator it;
+	it = files.begin();
+	if(it != files.end()){
+		graphic->addLine(*it, true);
+	}
+	for(it++; it != files.end(); it++){
+		graphic->addLine(*it, false);
+	}
+}
+
+IndigoFile* Playlist::getFile(){
+	std::cout<<"getFile()"<<std::endl;
+	if(file)
+		return file;
+	this->goNextFile();
+		return file;
+}
+
+void Playlist::goNextFile(){
+	if(graphic->isRandom()){
+		graphic->getRandom();
+	}else{
+		graphic->getNext();
+	}
+	file = graphic->getFile();
+}
+
+void Playlist::goPrevioseFile(){
+	graphic->getBack();
+	file = graphic->getFile();
+}
+
+void Playlist::jumpToLastAdd(){
+	graphic->jumpToLastSave();
+	file = graphic->getFile();
+}
+
+bool Playlist::isEmpty(){
+	return graphic->isEmpty();
+}
+void Playlist::aktualizeFile(){
+	file = graphic->getFile();
 }

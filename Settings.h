@@ -10,7 +10,7 @@
 
 #define NAME "IndigoPlayer"
 #define VERSION 0.1
-#define VISIBLE "up"
+//#define VISIBLE "up"
 
 #define MPLAYER "/home/xgeier/Programy/mplayer"
 

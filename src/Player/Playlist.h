@@ -8,30 +8,30 @@
 #ifndef PLAYLIST_H_
 #define PLAYLIST_H_
 
-#include <glibmm.h>
-#include <gtkmm.h>
+#include <list>
+#include <iterator>
+#include <glibmm/ustring.h>
+#include "../Interfaces/PlayerSignals.h"
+#include "../Graphic/PlaylistGraphic.h"
 
 class Playlist {
 public:
-	Playlist();
+	Playlist(PlaylistGraphic* graphic);
 	virtual ~Playlist();
-	void addFile(Glib::ustring path);
-	void removAll();
 	//---------------------
-	Glib::ustring getNext();
-	Glib::ustring getPrev();
+	void setListener(PlayerSignals*);
 	//---------------------
-	void setRandom(bool random);
-	void setAround(bool around);
-	void setClose(bool close);
+	void addFiles(std::list<IndigoFile*> files);
 	//---------------------
-	void show(bool visible);
-	void setPlaylistWindow();
+	IndigoFile* getFile();
+	void aktualizeFile();
+	void goNextFile();
+	void goPrevioseFile();
+	void jumpToLastAdd();
+	bool isEmpty();
 private:
-	Gtk::Window playlist;
-	Gtk::ToggleButton random;
-	Gtk::ToggleButton repeat;
-	Gtk::ToggleButton close;
+	PlaylistGraphic* graphic;
+	IndigoFile* file;
 };
 
 #endif /* PLAYLIST_H_ */
