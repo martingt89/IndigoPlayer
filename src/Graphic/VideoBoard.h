@@ -15,24 +15,28 @@
 #include <gdk/gdkx.h>
 #include <giomm/file.h>
 #include "../Interfaces/PlayerSignals.h"
+#include "PlayerWindow.h"
 
 class VideoBoard {
 public:
-	VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder);
+	VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder, PlayerWindow* win);
 	virtual ~VideoBoard();
 	void showPlay(bool);
 	int getXID();
+	void resize(int x, int y);
 private:
 	Gtk::DrawingArea* videoBoard;
 	Glib::RefPtr<Gdk::Pixbuf> image;
 	Glib::RefPtr< Gdk::Window > mojko;
 	bool on_expose_event(GdkEventExpose* ev);
 	bool on_timeout();
+	bool doubleClick(GdkEventButton *ev);
 	int imgX;
 	int imgY;
 	int boardSizeX;
 	int boardSizeY;
 	bool showText;
+	PlayerWindow* playerWindow;
 };
 
 #endif /* VIDEOBOARD_H_ */

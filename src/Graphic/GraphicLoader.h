@@ -11,21 +11,24 @@
 #include <iostream>
 #include <gtkmm/builder.h>
 #include "../../Settings.h"
-#include "BasePlayerWindow.h"
+#include "ControlPanel.h"
 #include "VideoBoard.h"
 #include "OpenFileDialog.h"
 #include "PlaylistGraphic.h"
+#include "PlayerWindow.h"
 
 class GraphicLoader {
 public:
 	GraphicLoader();
 	virtual ~GraphicLoader();
-	BasePlayerWindow* getBasePlayerWindow();
+	PlayerWindow *getPlayerWindow();
+	ControlPanel* getBasePlayerWindow();
 	VideoBoard* getVideoBoard();
 	OpenFileDialog* getOpenDialog();
 	PlaylistGraphic* getPlaylistGraphic();
 private:
-	BasePlayerWindow *basePlayer;
+	PlayerWindow *playerWindow;
+	ControlPanel *controlPanel;
 	OpenFileDialog* openWindow;
 	VideoBoard *videoBoard;
 	PlaylistGraphic* playlist;

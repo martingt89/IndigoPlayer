@@ -9,9 +9,9 @@
 #include <iostream>
 #include <giomm/file.h>
 
-IndigoPlayer::IndigoPlayer(BasePlayerWindow *bsw) {
-	this->basePlayerWindow = bsw;
-	this->basePlayerWindow->setSignalListener(this);
+IndigoPlayer::IndigoPlayer(PlayerWindow *playerWin) {
+	playerWindow = playerWin;
+	playerWindow->setListener(this);
 }
 void IndigoPlayer::setPlaylist(Playlist *playlist) {
 	this->playlist = playlist;
@@ -19,6 +19,10 @@ void IndigoPlayer::setPlaylist(Playlist *playlist) {
 }
 void IndigoPlayer::setVideoBoard(VideoBoard* board) {
 	this->videoBoard = board;
+}
+void IndigoPlayer::setControlPanel(ControlPanel* control){
+	controlPanel = control;
+	controlPanel->setListener(this);
 }
 void IndigoPlayer::setOpenDialog(OpenFileDialog* dialog) {
 	openDialog = dialog;
@@ -47,7 +51,7 @@ void IndigoPlayer::playFile(IndigoFile* file) {
 void IndigoPlayer::clickPlay() {
 	if (playlist->isEmpty()) {
 		openDialog->show();
-		basePlayerWindow->popPlayButton();
+		controlPanel->popPlayButton();
 		return;
 	}
 	this->stopPlayer();
@@ -72,12 +76,6 @@ void IndigoPlayer::clickBackward() {
 }
 void IndigoPlayer::clickCancel() {
 	this->stopPlayer();
-}
-void IndigoPlayer::clickFullscreen() {
-	if(basePlayerWindow->isFullscreen())
-		basePlayerWindow->closeFullscreen();
-	else
-		basePlayerWindow->openFullscreen();
 }
 void IndigoPlayer::clickThisOptions() {
 	//teraz neriesit

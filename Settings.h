@@ -10,12 +10,10 @@
 
 #define NAME "IndigoPlayer"
 #define VERSION 0.1
-//#define VISIBLE "up"
 
 #define MPLAYER "/home/xgeier/Programy/mplayer"
 
 #define GLADEFILE "/home/xgeier/IndigoPlayer/basePlayerWin.glade"
-#define PLAYLIST "/home/xgeier/IndigoPlayer/playerPlaylist.glade"
 
 #define CONFIG "/home/xgeier/IndigoPlayer/confFile"
 

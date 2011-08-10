@@ -9,9 +9,10 @@
 #define PLAYER_H_
 
 #include "../Interfaces/PlayerSignals.h"
-#include "../Graphic/BasePlayerWindow.h"
+#include "../Graphic/ControlPanel.h"
 #include "../Graphic/VideoBoard.h"
 #include "../Graphic/OpenFileDialog.h"
+#include "../Graphic/PlayerWindow.h"
 #include "Playlist.h"
 
 #include <list>
@@ -19,17 +20,17 @@
 
 class IndigoPlayer: public PlayerSignals {
 public:
-	IndigoPlayer(BasePlayerWindow *bsw);
+	IndigoPlayer(PlayerWindow *playerWin);
 	virtual ~IndigoPlayer();
 	void setPlaylist(Playlist *playlist);
 	void setVideoBoard(VideoBoard* board);
 	void setOpenDialog(OpenFileDialog* dialog);
+	void setControlPanel(ControlPanel* control);
 	void clickPlay();
 	void clickPause();
 	void clickForward();
 	void clickBackward();
 	void clickCancel();
-	void clickFullscreen();
 	void clickThisOptions();
 	void clickPlaylistBoard();
 	void clickKill();
@@ -43,10 +44,11 @@ public:
 	void playFile(IndigoFile* file);
 	void stopPlayer();
 private:
-	BasePlayerWindow *basePlayerWindow;
+	PlayerWindow *playerWindow;
 	Playlist* playlist;
 	VideoBoard* videoBoard;
 	OpenFileDialog* openDialog;
+	ControlPanel* controlPanel;
 };
 
 #endif /* PLAYER_H_ */

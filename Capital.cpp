@@ -27,14 +27,15 @@ int main(int argc, char *argv[]){
 //	ConfigFile file;
 
 	GraphicLoader *gLoader = new GraphicLoader();
-	IndigoPlayer *player = new IndigoPlayer(gLoader->getBasePlayerWindow());
+	IndigoPlayer *player = new IndigoPlayer(gLoader->getPlayerWindow());
+	player->setControlPanel(gLoader->getBasePlayerWindow());
 	player->setVideoBoard(gLoader->getVideoBoard());
 	player->setPlaylist(new Playlist(gLoader->getPlaylistGraphic()));
 	player->setOpenDialog(gLoader->getOpenDialog());
 	if(uris.size()> 0)
 		player->addFiles(uris, true);
 
-	Gtk::Main::run(*(gLoader->getBasePlayerWindow()));
+	Gtk::Main::run(*(gLoader->getPlayerWindow()));
 
 	delete gLoader;
 	delete player;

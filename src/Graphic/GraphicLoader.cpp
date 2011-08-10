@@ -18,19 +18,19 @@ GraphicLoader::GraphicLoader() {
 		std::cerr << "BuilderError: " << ex.what() << std::endl;
 	}
 
-	refBuilder->get_widget_derived("BaseWindow", basePlayer);
+	refBuilder->get_widget_derived("BaseWindow", playerWindow);
 	refBuilder->get_widget_derived("OpenWindow", openWindow);
-	videoBoard = new VideoBoard(refBuilder);
+	controlPanel = new ControlPanel(refBuilder);
+	videoBoard = new VideoBoard(refBuilder, playerWindow);
 	playlist = new PlaylistGraphic(refBuilder);
-//	refBuilder->get_widget_derived("Playlist", basePlayer);
 }
 
 GraphicLoader::~GraphicLoader() {
 	// TODO Auto-generated destructor stub
 }
 
-BasePlayerWindow* GraphicLoader::getBasePlayerWindow(){
-	return basePlayer;
+ControlPanel* GraphicLoader::getBasePlayerWindow(){
+	return controlPanel;
 }
 VideoBoard* GraphicLoader::getVideoBoard(){
 	return videoBoard;
@@ -40,4 +40,7 @@ OpenFileDialog* GraphicLoader::getOpenDialog(){
 }
 PlaylistGraphic* GraphicLoader::getPlaylistGraphic(){
 	return playlist;
+}
+PlayerWindow *GraphicLoader::getPlayerWindow(){
+	return playerWindow;
 }

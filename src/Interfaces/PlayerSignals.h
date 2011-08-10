@@ -21,7 +21,6 @@ public:
 	virtual void clickBackward() = 0;
 	virtual void clickPlaylistBoard() = 0;
 	virtual void clickCancel() = 0;
-	virtual void clickFullscreen() = 0;
 	virtual void clickThisOptions() = 0;
 	virtual void clickKill() = 0;
 	virtual void clickOpen() = 0;

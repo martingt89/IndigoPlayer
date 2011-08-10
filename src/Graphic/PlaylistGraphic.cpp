@@ -83,6 +83,7 @@ void PlaylistGraphic::doubleClickOnBoard(const Gtk::TreeModel::Path& path, Gtk::
 			crRow[m_Columns.image] = clearImage;
 		crRow = row;
 		crRow[m_Columns.image] = arrowImage;
+		isSetCurrentRow = true;
 	}
 	signal->clickPlaylistBoard();
 }

@@ -6,8 +6,9 @@
  */
 
 #include "VideoBoard.h"
-
-VideoBoard::VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder) {
+#include <iostream>
+VideoBoard::VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder, PlayerWindow* wina) {
+	playerWindow = wina;
 	boardSizeX = 0;
 	boardSizeY = 0;
 	showText = true;
@@ -21,50 +22,25 @@ VideoBoard::VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder) {
 	image = Gdk::Pixbuf::create_from_file("myimage.svg");
 	imgX = image->get_width();
 	imgY = image->get_height();
+	videoBoard->add_events(Gdk::BUTTON_PRESS_MASK);
+	videoBoard->signal_button_press_event().connect(sigc::mem_fun(this, &VideoBoard::doubleClick));
+	std::cout<<getXID()<<std::endl;
 }
 
 VideoBoard::~VideoBoard() {
 	delete videoBoard;
 }
-
-//void VideoBoard::on_drop_files(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y,
-//		const Gtk::SelectionData& selection_data, guint info, guint time) {
-//
-//	const int length = selection_data.get_length();
-//	if ((length >= 0) && (selection_data.get_format() == 8)) {
-//
-//	//	std::cout << "Received \"" << selection_data.get_data_as_string()
-//	//			<< "\" in label " << std::endl;
-//		std::vector<Glib::ustring> file_list;
-//
-//		file_list = selection_data.get_uris();
-//		std::list<Glib::ustring> uris;
-//		for(unsigned int i = 0; i < file_list.size(); i++){
-//			uris.push_back(file_list[i]);
-//		}
-//		if(file_list.size() > 0 && signals != 0)
-//			signals->addFiles(uris, true, true);
-//		 //if (file_list.size() > 0)
-//	//	 {
-//		// Glib::ustring path = Glib::filename_from_uri(file_list[0]);
-//	//	 Glib::filename_from_utf8(file_list[0]);
-//		 //std::cout<<Glib::file_test (path, Glib::FILE_TEST_EXISTS)<<std::endl;
-//			// static Glib::RefPtr< Gio::File > file = Gio::File::create_for_uri (file_list[0]);
-//	//		 static Glib::RefPtr< Gio::File > file = Gio::File::create_for_uri ("/home/xgeier/.gvfs/hd filmy na 127.0.0.1/9 2009 (1080p)/9 2009 (1080p).mkv");
-//	//		 std::cout<<file->get_path()<<std::endl;
-//	//	 }
-//
-//		//std::cout<<Glib::filename_from_uri(selection_data.get_data_as_string())<<std::endl;
-//		//std::cout<<"targer: "<<selection_data.<<std::endl;
-//	}
-//
-//	context->drag_finish(false, false, time);
-//}
+bool VideoBoard::doubleClick(GdkEventButton *ev){
+	if(ev->type == GDK_2BUTTON_PRESS )
+		playerWindow->changeFullscreen();
+	return true;
+}
 void VideoBoard::showPlay(bool show) {
 	showText = show;
 }
 
 bool VideoBoard::on_timeout() {
+//	std::cout<<"on_timeout"<<std::endl;
 	videoBoard->get_window()->clear();
 	int x = videoBoard->get_window()->get_width();
 	int y = videoBoard->get_window()->get_height();
@@ -84,7 +60,10 @@ int VideoBoard::getXID() {
 bool VideoBoard::on_expose_event(GdkEventExpose* ev) {
 	int x = videoBoard->get_window()->get_width();
 	int y = videoBoard->get_window()->get_height();
-	if (boardSizeX != x || boardSizeY != y) {
+//	if (boardSizeX != x || boardSizeY != y) {
+//		std::cout<<"on_expose_event"<<std::endl;
+//		boardSizeX = x;
+//		boardSizeY = y;
 		videoBoard->get_window()->clear();
 		x = (x - imgX) / 2;
 		y = (y - imgY) / 2;
@@ -94,6 +73,10 @@ bool VideoBoard::on_expose_event(GdkEventExpose* ev) {
 					imgY, Gdk::RGB_DITHER_NONE, 0, 0);
 		Glib::signal_timeout().connect(
 				sigc::mem_fun(*this, &VideoBoard::on_timeout), 100);
-	}
+//	}
 	return true;
+}
+void VideoBoard::resize(int x, int y){
+	//videoBoard->get_window()->resize(x,y);
+	playerWindow->setVideoBoardSize(x,y);
 }
