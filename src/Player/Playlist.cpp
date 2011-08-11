@@ -35,7 +35,7 @@ void Playlist::addFiles(std::list<IndigoFile*> files){
 
 IndigoFile* Playlist::getFile(){
 	std::cout<<"getFile()"<<std::endl;
-	if(file)
+	if(!graphic->deleteAktual() && file)
 		return file;
 	this->goNextFile();
 		return file;

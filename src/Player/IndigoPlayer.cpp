@@ -12,6 +12,10 @@
 IndigoPlayer::IndigoPlayer(PlayerWindow *playerWin) {
 	playerWindow = playerWin;
 	playerWindow->setListener(this);
+	mediaPackage = new StringAnalyze();
+	kernel = new PlayerKernel(mediaPackage);
+	generator = new ScriptGenerator();
+	mediaPackage->message.connect(sigc::mem_fun(this, &IndigoPlayer::messageIncomming));
 }
 void IndigoPlayer::setPlaylist(Playlist *playlist) {
 	this->playlist = playlist;
@@ -19,14 +23,34 @@ void IndigoPlayer::setPlaylist(Playlist *playlist) {
 }
 void IndigoPlayer::setVideoBoard(VideoBoard* board) {
 	this->videoBoard = board;
+	generator->setVideoBoard(videoBoard);
+	//videoBoard->getXID()
 }
 void IndigoPlayer::setControlPanel(ControlPanel* control){
 	controlPanel = control;
 	controlPanel->setListener(this);
+	generator->setControlPanel(controlPanel);
 }
 void IndigoPlayer::setOpenDialog(OpenFileDialog* dialog) {
 	openDialog = dialog;
 	openDialog->setListener(this);
+}
+
+void IndigoPlayer::messageIncomming(){
+	if(mediaPackage->getVariable("ID_LENGTH").size() != 0){
+		std::stringstream ss;
+		ss << mediaPackage->getVariable("ID_LENGTH");
+		int duration = 0;
+		ss >> duration;
+		controlPanel->setDuration(duration);
+	}
+	if(mediaPackage->getVariable("ANS_TIME_POSITION").size() != 0){
+		std::stringstream ss;
+		ss << mediaPackage->getVariable("ANS_TIME_POSITION");
+		double position = 0;
+		ss >> position;
+		controlPanel->setPosition((int)position);
+	}
 }
 
 void IndigoPlayer::addFiles(std::list<IndigoFile*> files, bool play) {
@@ -43,22 +67,30 @@ void IndigoPlayer::clickPlaylistBoard(){
 	this->playFile(playlist->getFile());
 }
 void IndigoPlayer::stopPlayer() {
-
+	kernel->stop();
 }
 void IndigoPlayer::playFile(IndigoFile* file) {
-
+	kernel->setGenerator(generator);
+	videoBoard->showLogo(false);
+	kernel->play(file);
+	controlPanel->pushPlayButton();
+	playerWindow->setWindowTitle(file->getName());
 }
 void IndigoPlayer::clickPlay() {
-	if (playlist->isEmpty()) {
-		openDialog->show();
-		controlPanel->popPlayButton();
-		return;
+	if(!kernel->isPlaying()){
+		if (playlist->isEmpty()) {
+			openDialog->show();
+			controlPanel->popPlayButton();
+			return;
+		}
+		this->stopPlayer();
+		this->playFile(playlist->getFile());
+	}else{
+		kernel->resume();
 	}
-	this->stopPlayer();
-	this->playFile(playlist->getFile());
 }
 void IndigoPlayer::clickPause() {
-
+	kernel->pause();
 }
 void IndigoPlayer::clickForward() {
 	if(true){
@@ -76,6 +108,8 @@ void IndigoPlayer::clickBackward() {
 }
 void IndigoPlayer::clickCancel() {
 	this->stopPlayer();
+	controlPanel->popPlayButton();
+	videoBoard->showLogo(true);
 }
 void IndigoPlayer::clickThisOptions() {
 	//teraz neriesit
@@ -91,16 +125,21 @@ void IndigoPlayer::clickRewind() {
 	this->playFile(playlist->getFile());
 }
 void IndigoPlayer::clickMute() {
-
+	kernel->mute(true);
 }
 void IndigoPlayer::clickSound() {
-
+	kernel->soundLevel(controlPanel->getAudioLevel());
+	kernel->mute(false);
 }
 void IndigoPlayer::changeTimeLine() {
-
+	kernel->changeTime(controlPanel->getTime());
 }
 void IndigoPlayer::changeSoundLevel() {
-
+	kernel->soundLevel(controlPanel->getAudioLevel());
+}
+void IndigoPlayer::quit(){
+	kernel->stop();
+	Gtk::Main::quit();
 }
 IndigoPlayer::~IndigoPlayer() {
 	//tu asi nic nebude, nic nevytvaram na hromade

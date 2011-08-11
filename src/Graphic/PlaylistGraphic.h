@@ -49,6 +49,7 @@ public:
 	void jumpToLastSave();
 	IndigoFile* getFile();
 	bool isEmpty();
+	bool deleteAktual();
 private:
 	void removeAllClicked();
 	void removeSelectedClicked();
@@ -77,6 +78,7 @@ private:
 	PixbufPtr arrowImage;
 	PixbufPtr clearImage;
 	int numberOfRows;
+	bool deleteAktualB;
 };
 
 #endif /* PLAYLISTGRAPHIC_H_ */

@@ -15,7 +15,7 @@
 class IndigoFile {
 public:
 	IndigoFile(Glib::ustring path, bool);
-	IndigoFile(IndigoFile* file);
+	IndigoFile();
 	virtual ~IndigoFile();
 	Glib::ustring getName();
 	Glib::ustring getFilePath();

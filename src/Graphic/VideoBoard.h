@@ -16,16 +16,18 @@
 #include <giomm/file.h>
 #include "../Interfaces/PlayerSignals.h"
 #include "PlayerWindow.h"
+#include "Display.h"
 
 class VideoBoard {
 public:
 	VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder, PlayerWindow* win);
 	virtual ~VideoBoard();
-	void showPlay(bool);
+	void showLogo(bool);
 	int getXID();
 	void resize(int x, int y);
 private:
 	Gtk::DrawingArea* videoBoard;
+	//IDisplay* videoBoard;
 	Glib::RefPtr<Gdk::Pixbuf> image;
 	Glib::RefPtr< Gdk::Window > mojko;
 	bool on_expose_event(GdkEventExpose* ev);

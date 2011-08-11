@@ -12,6 +12,7 @@
 PlaylistGraphic::PlaylistGraphic(const Glib::RefPtr<Gtk::Builder>& refGlade) {
 	numberOfRows = 0;
 	isSetCurrentRow = false;
+	deleteAktualB = false;
 	crFile = NULL;
 	refGlade->get_widget("RandomToButtonPlaylist", random);
 	refGlade->get_widget("RepeatToButtonPlaylist", repeat);
@@ -70,6 +71,8 @@ void PlaylistGraphic::removeSelectedClicked() {
 			if(*it == crRow){
 				isSetCurrentRow = false;
 			}
+			if(*it == crRow)
+				deleteAktualB = true;
 			delete (*it)[m_Columns.file];
 			playlistBoardModel->erase(it);
 			numberOfRows--;
@@ -123,7 +126,6 @@ void PlaylistGraphic::getNext() {
 			}
 		}
 	}
-//	copyFile(crRow);
 }
 void PlaylistGraphic::getBack() {
 	if(!isSetCurrentRow && numberOfRows > 0){
@@ -142,7 +144,6 @@ void PlaylistGraphic::getBack() {
 			}
 		}
 	}
-//	copyFile(crRow);
 }
 void PlaylistGraphic::getRandom() {
 	if(numberOfRows > 0){
@@ -153,7 +154,6 @@ void PlaylistGraphic::getRandom() {
 		crRow = *playlistBoardModel->children()[cislo];
 		crRow[m_Columns.image] = arrowImage;
 	}
-//	copyFile(crRow);
 }
 void PlaylistGraphic::jumpToLastSave(){
 	if(*lastAddSave){
@@ -163,11 +163,12 @@ void PlaylistGraphic::jumpToLastSave(){
 		crRow[m_Columns.image] = arrowImage;
 		isSetCurrentRow = true;
 	}
-//	copyFile(crRow);
 }
 IndigoFile* PlaylistGraphic::copyFile(Gtk::TreeModel::Row &row){
 	if(*row){
-		return new IndigoFile(row[m_Columns.file]);
+		IndigoFile *f = new IndigoFile();
+		*f = *row[m_Columns.file];
+		return f;
 	}
 	return NULL;
 }
@@ -177,8 +178,12 @@ IndigoFile* PlaylistGraphic::getFile(){
 			delete crFile;
 		crFile = copyFile(crRow);
 	}
+	deleteAktualB = false;
 	return crFile;
 }
 bool PlaylistGraphic::isEmpty(){
 	return numberOfRows == 0;
+}
+bool PlaylistGraphic::deleteAktual(){
+	return deleteAktualB;
 }

@@ -46,6 +46,7 @@ PlayerWindow::PlayerWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Buil
 	popupWindow->signal_leave_notify_event().connect(sigc::mem_fun(this, &PlayerWindow::leavePopup));
 	popupWindow->signal_enter_notify_event().connect(sigc::mem_fun(this, &PlayerWindow::enterPopup));
 	vidListNotebook->signal_switch_page().connect(sigc::mem_fun(this, &PlayerWindow::switchPage));
+	this->signal_hide().connect(sigc::mem_fun(this, &PlayerWindow::quitWindow));
 }
 PlayerWindow::~PlayerWindow() {
 	delete fullScreen;
@@ -56,6 +57,11 @@ PlayerWindow::~PlayerWindow() {
 	delete vidListNotebook;
 	delete popupWindow;
 	delete capitalPopupVBox;
+}
+void PlayerWindow::quitWindow(){
+	if(playerSignals){
+		playerSignals->quit();
+	}
 }
 void PlayerWindow::switchPage(GtkNotebookPage* page, guint page_num) {
 	if (fullScreen->get_active()) {

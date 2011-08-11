@@ -25,16 +25,8 @@ IndigoFile::IndigoFile(Glib::ustring path, bool trust) {
 //		}
 //	}
 }
-IndigoFile::IndigoFile(IndigoFile* file){
-	//name =  file->getName();
-	filePath = file->getFilePath();
-	menu =  file->getMenu();
-	soundFile = file->getSoundFile();
-	subtitleFile = file->getSubtitleFile();
-//	bool getPlay;
-	subtitleFPS = file->getSubtitleFPS();
-	subtitleDelayms = file->getSubtitleDelayms();
-	soundDelayms = file->getSoundDelayms();
+IndigoFile::IndigoFile() {
+
 }
 IndigoFile::~IndigoFile() {
 	// TODO Auto-generated destructor stub

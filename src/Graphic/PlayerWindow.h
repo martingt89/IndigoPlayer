@@ -61,6 +61,7 @@ private:
 	bool leavePopup(GdkEventCrossing* event);
 	bool enterPopup(GdkEventCrossing* event);
 	void switchPage(GtkNotebookPage* page, guint page_num);
+	void quitWindow();
 
 	void removePanel();
 	void addPanel();

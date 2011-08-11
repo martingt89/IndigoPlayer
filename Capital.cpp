@@ -35,8 +35,8 @@ int main(int argc, char *argv[]){
 	if(uris.size()> 0)
 		player->addFiles(uris, true);
 
-	Gtk::Main::run(*(gLoader->getPlayerWindow()));
-
+	//Gtk::Main::run(*(gLoader->getPlayerWindow()));
+	Gtk::Main::run();
 	delete gLoader;
 	delete player;
 	return 0;

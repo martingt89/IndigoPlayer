@@ -63,6 +63,7 @@ void ControlPanel::setDuration(int seconds) {
 	timeline_changed_signal = true;
 }
 void ControlPanel::setPosition(int seconds) {
+//	std::cout<<"Position: "<<seconds<<std::endl;
 	position = seconds;
 	if (duration >= 0) {
 		time->set_text(getTimeText(position, duration)); //TODO //prepisat na multi threading
@@ -79,6 +80,12 @@ void ControlPanel::setAudioLevel(double level) {
 }
 double ControlPanel::getAudioLevel() {
 	return soundAdj->get_value(); //TODO //prepisat na multi threading
+}
+int ControlPanel::getTime(){
+	return (int)timelineAdj->get_value();
+}
+bool ControlPanel::isMute() {
+	return soundMute->get_active();
 }
 void ControlPanel::popPlayButton() {
 	playStopSignal = false;
@@ -124,9 +131,11 @@ void ControlPanel::sound_changed() {
 		playerSignals->changeSoundLevel();
 }
 void ControlPanel::timeline_changed() {
-	setPosition(timelineAdj->get_value());
-	if (playerSignals != 0 && timeline_changed_signal)
-		playerSignals->changeTimeLine();
+	if(timeline_changed_signal){
+		setPosition(timelineAdj->get_value());
+		if (playerSignals != 0)
+			playerSignals->changeTimeLine();
+	}
 }
 void ControlPanel::open_clicked() {
 	if (playerSignals != 0)

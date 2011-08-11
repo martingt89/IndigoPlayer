@@ -29,8 +29,10 @@ public:
 	virtual void clickSound() = 0;
 	virtual void changeTimeLine() = 0;
 	virtual void changeSoundLevel() = 0;
+	virtual void quit() = 0;
 	//
 	virtual void addFiles(std::list<IndigoFile*> files,  bool play) = 0;
+
 };
 
 #endif /* PLAYERSIGNALS_H_ */

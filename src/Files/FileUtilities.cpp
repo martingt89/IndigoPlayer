@@ -23,7 +23,6 @@ std::list<Glib::ustring> FileUtilities::fileToPlaylist(Glib::ustring filePath) {
 	//if(file.isPlaylist){
 	//	prekonvertuj playlist na subory
 	//}
-	std::cout<<"FileUtilities"<<filePath<<std::endl;
 	std::list<Glib::ustring> files;
 	if (!Glib::file_test(filePath, Glib::FILE_TEST_EXISTS)) {
 		Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(filePath);
@@ -33,7 +32,6 @@ std::list<Glib::ustring> FileUtilities::fileToPlaylist(Glib::ustring filePath) {
 			filePath = file->get_uri();
 		}
 	}
-	std::cout<<"FileUtilities push back"<<filePath<<std::endl;
 	files.push_back(filePath);
 
 	return files;

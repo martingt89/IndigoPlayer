@@ -36,8 +36,10 @@ public:
 	void clearTime();
 	void setAudioLevel(double level);
 	double getAudioLevel();
+	int getTime();
 	void popPlayButton();
 	void pushPlayButton();
+	bool isMute();
 private:
 	Glib::RefPtr<Gtk::Builder> m_refGlade;
 	Gtk::Button* forward;
