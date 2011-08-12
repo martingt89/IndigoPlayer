@@ -106,7 +106,7 @@ void PlaylistGraphic::addLine(IndigoFile *file, bool save) {
 	if(save)
 		lastAddSave = boardRow;
 }
-void PlaylistGraphic::getNext() {
+bool PlaylistGraphic::getNext() {
 	std::cout<<"getNext()"<<std::endl;
 	if (!isSetCurrentRow && numberOfRows > 0) {
 		if (playlistBoardModel->children().begin()) {
@@ -123,9 +123,11 @@ void PlaylistGraphic::getNext() {
 				crRow[m_Columns.image] = arrowImage;
 			} else {
 				crRow--;
+				return false;
 			}
 		}
 	}
+	return true;
 }
 void PlaylistGraphic::getBack() {
 	if(!isSetCurrentRow && numberOfRows > 0){

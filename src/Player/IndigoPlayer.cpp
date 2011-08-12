@@ -24,7 +24,6 @@ void IndigoPlayer::setPlaylist(Playlist *playlist) {
 void IndigoPlayer::setVideoBoard(VideoBoard* board) {
 	this->videoBoard = board;
 	generator->setVideoBoard(videoBoard);
-	//videoBoard->getXID()
 }
 void IndigoPlayer::setControlPanel(ControlPanel* control){
 	controlPanel = control;
@@ -51,6 +50,10 @@ void IndigoPlayer::messageIncomming(){
 		ss >> position;
 		controlPanel->setPosition((int)position);
 	}
+	if(mediaPackage->getVariable("ID_EXIT").size() != 0){
+		clearPlaying();
+		clickForward();
+	}
 }
 
 void IndigoPlayer::addFiles(std::list<IndigoFile*> files, bool play) {
@@ -68,6 +71,7 @@ void IndigoPlayer::clickPlaylistBoard(){
 }
 void IndigoPlayer::stopPlayer() {
 	kernel->stop();
+	this->clearPlaying();
 }
 void IndigoPlayer::playFile(IndigoFile* file) {
 	kernel->setGenerator(generator);
@@ -95,8 +99,8 @@ void IndigoPlayer::clickPause() {
 void IndigoPlayer::clickForward() {
 	if(true){
 		this->stopPlayer();
-		playlist->goNextFile();
-		this->playFile(playlist->getFile());
+		if(playlist->goNextFile())
+			this->playFile(playlist->getFile());
 	}
 }
 void IndigoPlayer::clickBackward() {
@@ -108,8 +112,12 @@ void IndigoPlayer::clickBackward() {
 }
 void IndigoPlayer::clickCancel() {
 	this->stopPlayer();
-	controlPanel->popPlayButton();
+}
+void IndigoPlayer::clearPlaying(){
 	videoBoard->showLogo(true);
+	controlPanel->popPlayButton();
+	controlPanel->clearTime();
+	playerWindow->setWindowTitle("");
 }
 void IndigoPlayer::clickThisOptions() {
 	//teraz neriesit
@@ -142,5 +150,7 @@ void IndigoPlayer::quit(){
 	Gtk::Main::quit();
 }
 IndigoPlayer::~IndigoPlayer() {
-	//tu asi nic nebude, nic nevytvaram na hromade
+	delete mediaPackage;
+	delete kernel;
+	delete generator;
 }

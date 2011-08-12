@@ -63,6 +63,7 @@ private:
 	bool timeline_changed_signal;
 	bool sound_changed_signal;
 	bool playStopSignal;
+	bool aktualizeTextSignal;
 	Glib::ustring getTimeText(int position, int duration);
 
 	void on_toggledPlay_clicked();

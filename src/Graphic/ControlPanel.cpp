@@ -18,6 +18,7 @@ ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade){
 	timeline_changed_signal = true;
 	sound_changed_signal = true;
 	playStopSignal = true;
+	aktualizeTextSignal = true;
 
 	m_refGlade->get_widget("ForwardButtonBase", forward);
 	m_refGlade->get_widget("BackwardButtonBase", backward);
@@ -32,6 +33,7 @@ ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade){
 
 	soundAdj = new Gtk::Adjustment(100,0,100);
 	timelineAdj = new Gtk::Adjustment(0,0,0);
+	//timeline->set_flippable(true);
 	this->clearTime();
 	sound->set_adjustment(*soundAdj);
 	timeline->set_adjustment(*timelineAdj);
@@ -45,7 +47,6 @@ ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade){
 	timelineAdj->signal_value_changed().connect(sigc::mem_fun(this, &ControlPanel::timeline_changed));
 	soundAdj->signal_value_changed().connect(sigc::mem_fun(this, &ControlPanel::sound_changed));
 }
-
 void ControlPanel::clearTime() {
 	duration = -1;
 	position = -1;
@@ -64,13 +65,16 @@ void ControlPanel::setDuration(int seconds) {
 }
 void ControlPanel::setPosition(int seconds) {
 //	std::cout<<"Position: "<<seconds<<std::endl;
+//	std::cout<<timeline->get_state()<<std::endl;
 	position = seconds;
 	if (duration >= 0) {
 		time->set_text(getTimeText(position, duration)); //TODO //prepisat na multi threading
-		timeline_changed_signal = false;
-		timelineAdj->set_upper(duration);
-		timelineAdj->set_value(position);
-		timeline_changed_signal = true;
+		if(aktualizeTextSignal){
+			timeline_changed_signal = false;
+			timelineAdj->set_upper(duration);
+			timelineAdj->set_value(position);
+			timeline_changed_signal = true;
+		}
 	}
 }
 void ControlPanel::setAudioLevel(double level) {
@@ -132,7 +136,10 @@ void ControlPanel::sound_changed() {
 }
 void ControlPanel::timeline_changed() {
 	if(timeline_changed_signal){
+		aktualizeTextSignal = false;
 		setPosition(timelineAdj->get_value());
+		aktualizeTextSignal = true;
+		std::cout<<"Toto sa vykona raz"<<std::endl;
 		if (playerSignals != 0)
 			playerSignals->changeTimeLine();
 	}

@@ -31,7 +31,6 @@ private:
 	Glib::RefPtr<Gdk::Pixbuf> image;
 	Glib::RefPtr< Gdk::Window > mojko;
 	bool on_expose_event(GdkEventExpose* ev);
-	bool on_timeout();
 	bool doubleClick(GdkEventButton *ev);
 	int imgX;
 	int imgY;

@@ -40,7 +40,7 @@ public:
 	virtual ~PlaylistGraphic();
 	void setListener(PlayerSignals* sig);
 	void addLine(IndigoFile *file, bool save);
-	void getNext();
+	bool getNext();
 	void getBack();
 	void getRandom();
 	bool isRandom();

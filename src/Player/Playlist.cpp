@@ -41,13 +41,15 @@ IndigoFile* Playlist::getFile(){
 		return file;
 }
 
-void Playlist::goNextFile(){
+bool Playlist::goNextFile(){
+	bool ok;
 	if(graphic->isRandom()){
 		graphic->getRandom();
 	}else{
-		graphic->getNext();
+		ok = graphic->getNext();
 	}
 	file = graphic->getFile();
+	return ok;
 }
 
 void Playlist::goPrevioseFile(){

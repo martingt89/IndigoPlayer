@@ -35,6 +35,7 @@ PlayerWindow::PlayerWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Buil
 	vidListNotebook->set_current_page(0);
 	video->set_active(true);
 	gdkCapitalWindow = this->get_window();
+	playlistPanel->set_visible(false);
 
 	this->add_events(Gdk::POINTER_MOTION_MASK);
 	fullScreen->signal_toggled().connect(sigc::mem_fun(this, &PlayerWindow::fullScreenClicked));

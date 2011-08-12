@@ -1006,6 +1006,7 @@
           <object class="GtkHScale" id="TimeLineHScaleBase">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="update_policy">discontinuous</property>
             <property name="restrict_to_fill_level">False</property>
             <property name="draw_value">False</property>
           </object>

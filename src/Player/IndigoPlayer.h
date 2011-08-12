@@ -49,6 +49,7 @@ public:
 	void stopPlayer();
 	void quit();
 private:
+	void clearPlaying();
 	PlayerWindow *playerWindow;
 	Playlist* playlist;
 	VideoBoard* videoBoard;

@@ -39,20 +39,8 @@ bool VideoBoard::doubleClick(GdkEventButton *ev){
 }
 void VideoBoard::showLogo(bool show) {
 	showText = show;
-}
-
-bool VideoBoard::on_timeout() {
-	std::cout<<"on_timeout"<<std::endl;
-	videoBoard->get_window()->clear();
-	int x = videoBoard->get_window()->get_width();
-	int y = videoBoard->get_window()->get_height();
-	x = (x - imgX) / 2;
-	y = (y - imgY) / 2;
 	if (showText)
-		image->render_to_drawable(videoBoard->get_window(),
-				videoBoard->get_style()->get_black_gc(), 0, 0, x, y, imgX, imgY,
-				Gdk::RGB_DITHER_NONE, 0, 0);
-	return false;
+		on_expose_event(NULL);
 }
 
 int VideoBoard::getXID() {
@@ -74,8 +62,6 @@ bool VideoBoard::on_expose_event(GdkEventExpose* ev) {
 			image->render_to_drawable(videoBoard->get_window(),
 					videoBoard->get_style()->get_black_gc(), 0, 0, x, y, imgX,
 					imgY, Gdk::RGB_DITHER_NONE, 0, 0);
-//		Glib::signal_timeout().connect(
-//				sigc::mem_fun(*this, &VideoBoard::on_timeout), 100);
 	}
 	return true;
 }

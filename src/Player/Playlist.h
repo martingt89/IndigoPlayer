@@ -25,7 +25,7 @@ public:
 	//---------------------
 	IndigoFile* getFile();
 	void aktualizeFile();
-	void goNextFile();
+	bool goNextFile();
 	void goPrevioseFile();
 	void jumpToLastAdd();
 	bool isEmpty();

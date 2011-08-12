@@ -16,6 +16,7 @@ StringAnalyze::StringAnalyze() {
 	hashTable["ID_VIDEO_ASPECT"] = 2;
 	hashTable["ID_SEEKABLE"] = 1;
 	hashTable["ANS_TIME_POSITION"] = 2;
+	hashTable["ID_EXIT"] = 2;
 }
 
 StringAnalyze::~StringAnalyze() {
@@ -35,6 +36,9 @@ void StringAnalyze::analyze(std::string text){
 				message();
 		}
 	}
+}
+void StringAnalyze::clear(){
+	valueTable.clear();
 }
 std::string StringAnalyze::getVariable(std::string variable){
 	return valueTable[variable];

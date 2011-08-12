@@ -22,6 +22,7 @@ void PlayerKernel::setGenerator(ScriptGenerator* gener){
 }
 void PlayerKernel::play(IndigoFile* file){
 //	std::cout<<"play"<<std::endl;
+	stringAnalyze->clear();
 	isPause = false;
 	childPid = -1;
 	std::list<Glib::ustring> script = generator->generate(file);

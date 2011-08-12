@@ -19,6 +19,7 @@ public:
 	void analyze(std::string);
 	std::string getVariable(std::string variable);
 	Glib::Dispatcher message;
+	void clear();
 private:
 	std::map<std::string, int> hashTable;
 	std::map<std::string, std::string> valueTable;
