@@ -21,6 +21,7 @@ void PlayerKernel::setGenerator(ScriptGenerator* gener){
 	generator = gener;
 }
 void PlayerKernel::play(IndigoFile* file){
+	stopAnalyze = false;
 //	std::cout<<"play"<<std::endl;
 	stringAnalyze->clear();
 	isPause = false;
@@ -77,13 +78,15 @@ void PlayerKernel::listener(){
 			if(buf[i] == '\n'){
 				buf[i] = '\0';
 				ss += std::string((buf+odsad));
-				stringAnalyze->analyze(ss);
+				if(!stopAnalyze)
+					stringAnalyze->analyze(ss);
 				ss = "";
 				odsad = i+1;
 			}
 		}
 		ss += buf+odsad;
 	}
+	playing = false;
 }
 void PlayerKernel::pause(){
 	if(playing && !isPause){
@@ -101,6 +104,7 @@ void PlayerKernel::resume(){
 }
 void PlayerKernel::stop(){
 	if(playing){
+		stopAnalyze = true;
 		dprintf(toPlayer[1], "quit\n");
 		playing = false;
 		int status;

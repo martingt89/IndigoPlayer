@@ -128,6 +128,7 @@
                           <object class="GtkToggleButton" id="RepeatToButtonPlaylist">
                             <property name="label" translatable="yes">Re</property>
                             <property name="width_request">25</property>
+                            <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="use_action_appearance">False</property>

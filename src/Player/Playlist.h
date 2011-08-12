@@ -24,11 +24,12 @@ public:
 	void addFiles(std::list<IndigoFile*> files);
 	//---------------------
 	IndigoFile* getFile();
-	void aktualizeFile();
+	bool aktualizeFile();
 	bool goNextFile();
-	void goPrevioseFile();
+	bool goPrevioseFile();
 	void jumpToLastAdd();
 	bool isEmpty();
+	bool isLastFile();
 private:
 	PlaylistGraphic* graphic;
 	IndigoFile* file;

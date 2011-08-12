@@ -34,27 +34,34 @@ void Playlist::addFiles(std::list<IndigoFile*> files){
 }
 
 IndigoFile* Playlist::getFile(){
-	std::cout<<"getFile()"<<std::endl;
-	if(!graphic->deleteAktual() && file)
+//	std::cout<<"getFile()"<<std::endl;
+	if(graphic->fileExistInPlaylist())
 		return file;
 	this->goNextFile();
-		return file;
+	return file;
 }
 
 bool Playlist::goNextFile(){
 	bool ok;
-	if(graphic->isRandom()){
-		graphic->getRandom();
-	}else{
+	if(graphic->isRandom())
+		ok = graphic->getRandom();
+	else
 		ok = graphic->getNext();
-	}
-	file = graphic->getFile();
+	if(ok)
+		file = graphic->getFile();
+	else
+		file = NULL;
 	return ok;
 }
 
-void Playlist::goPrevioseFile(){
-	graphic->getBack();
-	file = graphic->getFile();
+bool Playlist::goPrevioseFile(){
+	bool ok;
+	ok = graphic->getBack();
+	if(ok)
+		file = graphic->getFile();
+	else
+		file = NULL;
+	return ok;
 }
 
 void Playlist::jumpToLastAdd(){
@@ -65,6 +72,12 @@ void Playlist::jumpToLastAdd(){
 bool Playlist::isEmpty(){
 	return graphic->isEmpty();
 }
-void Playlist::aktualizeFile(){
+bool Playlist::isLastFile(){
+	return graphic->isLastFile();
+}
+bool Playlist::aktualizeFile(){
 	file = graphic->getFile();
+	if(file == NULL)
+		return false;
+	return true;
 }

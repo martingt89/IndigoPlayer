@@ -52,7 +52,8 @@ void IndigoPlayer::messageIncomming(){
 	}
 	if(mediaPackage->getVariable("ID_EXIT").size() != 0){
 		clearPlaying();
-		clickForward();
+		if(!playlist->isLastFile())
+			clickForward();
 	}
 }
 
@@ -66,19 +67,21 @@ void IndigoPlayer::addFiles(std::list<IndigoFile*> files, bool play) {
 }
 void IndigoPlayer::clickPlaylistBoard(){
 	this->stopPlayer();
-	playlist->aktualizeFile();
-	this->playFile(playlist->getFile());
+	if(playlist->aktualizeFile())
+		this->playFile(playlist->getFile());
 }
 void IndigoPlayer::stopPlayer() {
 	kernel->stop();
 	this->clearPlaying();
 }
 void IndigoPlayer::playFile(IndigoFile* file) {
-	kernel->setGenerator(generator);
-	videoBoard->showLogo(false);
-	kernel->play(file);
-	controlPanel->pushPlayButton();
-	playerWindow->setWindowTitle(file->getName());
+	if(file != NULL){
+		kernel->setGenerator(generator);
+		videoBoard->showLogo(false);
+		kernel->play(file);
+		controlPanel->pushPlayButton();
+		playerWindow->setWindowTitle(file->getName());
+	}
 }
 void IndigoPlayer::clickPlay() {
 	if(!kernel->isPlaying()){
@@ -88,7 +91,13 @@ void IndigoPlayer::clickPlay() {
 			return;
 		}
 		this->stopPlayer();
-		this->playFile(playlist->getFile());
+		IndigoFile* file = playlist->getFile();
+		if(file == NULL){
+			openDialog->show();
+			controlPanel->popPlayButton();
+		}else{
+			this->playFile(file);
+		}
 	}else{
 		kernel->resume();
 	}
@@ -99,15 +108,16 @@ void IndigoPlayer::clickPause() {
 void IndigoPlayer::clickForward() {
 	if(true){
 		this->stopPlayer();
-		if(playlist->goNextFile())
+		std::cout<<playlist->isLastFile()<<std::endl;
+		if(!playlist->isLastFile() && playlist->goNextFile())
 			this->playFile(playlist->getFile());
 	}
 }
 void IndigoPlayer::clickBackward() {
 	if(true){
 		this->stopPlayer();
-		playlist->goPrevioseFile();
-		this->playFile(playlist->getFile());
+		if(playlist->goPrevioseFile())
+			this->playFile(playlist->getFile());
 	}
 }
 void IndigoPlayer::clickCancel() {

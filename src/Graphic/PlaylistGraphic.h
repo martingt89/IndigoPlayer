@@ -20,6 +20,7 @@
 #include <glibmm/ustring.h>
 #include <glibmm/random.h>
 #include "../Interfaces/PlayerSignals.h"
+#include "../../Settings.h"
 
 class PlaylistGraphic {
 private:
@@ -41,15 +42,16 @@ public:
 	void setListener(PlayerSignals* sig);
 	void addLine(IndigoFile *file, bool save);
 	bool getNext();
-	void getBack();
-	void getRandom();
+	bool getBack();
+	bool getRandom();
 	bool isRandom();
 	bool isRepeat();
 	bool isClose();
 	void jumpToLastSave();
 	IndigoFile* getFile();
 	bool isEmpty();
-	bool deleteAktual();
+	bool fileExistInPlaylist();
+	bool isLastFile();
 private:
 	void removeAllClicked();
 	void removeSelectedClicked();

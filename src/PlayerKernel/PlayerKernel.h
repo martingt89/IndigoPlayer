@@ -45,6 +45,7 @@ private:
 	int fromPlayer[2];
 	int toPlayer[2];
 	int childPid;
+	bool stopAnalyze;
 };
 
 #endif /* PLAYERKERNEL_H_ */

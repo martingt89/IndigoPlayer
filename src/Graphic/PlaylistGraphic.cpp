@@ -12,7 +12,7 @@
 PlaylistGraphic::PlaylistGraphic(const Glib::RefPtr<Gtk::Builder>& refGlade) {
 	numberOfRows = 0;
 	isSetCurrentRow = false;
-	deleteAktualB = false;
+	deleteAktualB = true;
 	crFile = NULL;
 	refGlade->get_widget("RandomToButtonPlaylist", random);
 	refGlade->get_widget("RepeatToButtonPlaylist", repeat);
@@ -36,22 +36,21 @@ PlaylistGraphic::PlaylistGraphic(const Glib::RefPtr<Gtk::Builder>& refGlade) {
 	playlistBoard->signal_key_press_event().connect(sigc::mem_fun(this, &PlaylistGraphic::on_button_clicked));
 	playlistBoard->set_search_entry(*searchEntry);
 
-	arrowImage = Gdk::Pixbuf::create_from_file("arrow2.png");
-	clearImage = Gdk::Pixbuf::create_from_file("arrowc.png");
+	arrowImage = Gdk::Pixbuf::create_from_file(BLACKARROW);
+	clearImage = Gdk::Pixbuf::create_from_file(BLANKARROW);
 
-//	crRow = *playlistBoardModel->children().begin();
 }
 
 PlaylistGraphic::~PlaylistGraphic() {
 
 }
-bool PlaylistGraphic::isRandom(){
+bool PlaylistGraphic::isRandom() {
 	return random->get_active();
 }
-bool PlaylistGraphic::isRepeat(){
+bool PlaylistGraphic::isRepeat() {
 	return repeat->get_active();
 }
-bool PlaylistGraphic::isClose(){
+bool PlaylistGraphic::isClose() {
 	return close->get_active();
 }
 void PlaylistGraphic::setListener(PlayerSignals* sig) {
@@ -62,27 +61,29 @@ void PlaylistGraphic::removeAllClicked() {
 	numberOfRows = 0;
 	playlistBoardModel->clear();
 }
+
 void PlaylistGraphic::removeSelectedClicked() {
 	std::vector<Gtk::TreeModel::Path> paths = refTreeSelection->get_selected_rows();
 	Gtk::TreeModel::iterator it;
 	for (unsigned int i = 0; i < paths.size(); i++) {
 		it = playlistBoardModel->get_iter(paths[i]);
 		if (it) {
-			if(*it == crRow){
-				isSetCurrentRow = false;
-			}
-			if(*it == crRow)
-				deleteAktualB = true;
+			if (isSetCurrentRow)
+				if (*it == crRow) {
+					isSetCurrentRow = false;
+					deleteAktualB = true;
+				}
 			delete (*it)[m_Columns.file];
 			playlistBoardModel->erase(it);
 			numberOfRows--;
 		}
 	}
 }
+
 void PlaylistGraphic::doubleClickOnBoard(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn*) {
 	Gtk::TreeModel::Row row = *playlistBoardModel->get_iter(path);
 	if (row) {
-		if(isSetCurrentRow)
+		if (isSetCurrentRow)
 			crRow[m_Columns.image] = clearImage;
 		crRow = row;
 		crRow[m_Columns.image] = arrowImage;
@@ -103,89 +104,120 @@ void PlaylistGraphic::addLine(IndigoFile *file, bool save) {
 	boardRow[m_Columns.fileName] = file->getName();
 	boardRow[m_Columns.image] = clearImage;
 	boardRow[m_Columns.file] = file;
-	if(save)
+	if (save)
 		lastAddSave = boardRow;
 }
+
 bool PlaylistGraphic::getNext() {
-	std::cout<<"getNext()"<<std::endl;
 	if (!isSetCurrentRow && numberOfRows > 0) {
 		if (playlistBoardModel->children().begin()) {
 			crRow = *playlistBoardModel->children().begin();
 			crRow[m_Columns.image] = arrowImage;
-			isSetCurrentRow= true;
+			isSetCurrentRow = true;
 		}
-	} else {
-		if (numberOfRows > 0) {
-			if (++crRow != *playlistBoardModel->children().end()) {
-				crRow--;
-				crRow[m_Columns.image] = clearImage;
-				crRow++;
-				crRow[m_Columns.image] = arrowImage;
-			} else {
-				crRow--;
+		return true;
+	}
+	if (isSetCurrentRow && numberOfRows > 0) {
+		crRow[m_Columns.image] = clearImage;
+		Gtk::TreeModel::Row tmp = (*playlistBoardModel->children().end());
+		if (crRow != --tmp) {
+			crRow++;
+			crRow[m_Columns.image] = arrowImage;
+			isSetCurrentRow = true;
+		} else {
+			if (!repeat->get_active()) {
+				isSetCurrentRow = true;
 				return false;
+			} else {
+				crRow = *playlistBoardModel->children().begin();
+				crRow[m_Columns.image] = arrowImage;
+				isSetCurrentRow = true;
 			}
 		}
 	}
+	if (numberOfRows == 0)
+		return false;
 	return true;
 }
-void PlaylistGraphic::getBack() {
-	if(!isSetCurrentRow && numberOfRows > 0){
-		if (playlistBoardModel->children().begin()){
-			crRow = *playlistBoardModel->children().end();
-			--crRow;
+bool PlaylistGraphic::getBack() {
+	if (!isSetCurrentRow && numberOfRows > 0) {
+		crRow = *playlistBoardModel->children().end();
+		crRow--;
+		crRow[m_Columns.image] = arrowImage;
+		isSetCurrentRow = true;
+		return true;
+	}
+	if (isSetCurrentRow && numberOfRows > 0) {
+		crRow[m_Columns.image] = clearImage;
+		if (crRow != *playlistBoardModel->children().begin()) {
+			crRow--;
 			crRow[m_Columns.image] = arrowImage;
-			isSetCurrentRow= true;
-		}
-	}else{
-		if(numberOfRows > 0){
-			if (crRow != *playlistBoardModel->children().begin()) {
-				crRow[m_Columns.image] = clearImage;
-				crRow--;
-				crRow[m_Columns.image] = arrowImage;
-			}
+			isSetCurrentRow = true;
+			return true;
+		}else{
+			isSetCurrentRow = false;
+			return false;
 		}
 	}
+	if(numberOfRows == 0)
+		return false;
+	return true;
 }
-void PlaylistGraphic::getRandom() {
-	if(numberOfRows > 0){
+bool PlaylistGraphic::getRandom() {
+	if (numberOfRows > 0) {
 		Glib::Rand moj;
 		int cislo = moj.get_int_range(0, numberOfRows);
-		if(isSetCurrentRow)
+		if (isSetCurrentRow)
 			crRow[m_Columns.image] = clearImage;
 		crRow = *playlistBoardModel->children()[cislo];
 		crRow[m_Columns.image] = arrowImage;
+		return true;
+	}else{
+		return false;
 	}
 }
-void PlaylistGraphic::jumpToLastSave(){
-	if(*lastAddSave){
-		if(isSetCurrentRow)
+void PlaylistGraphic::jumpToLastSave() {
+	if (*lastAddSave) {
+		if (isSetCurrentRow)
 			crRow[m_Columns.image] = clearImage;
 		crRow = lastAddSave;
 		crRow[m_Columns.image] = arrowImage;
 		isSetCurrentRow = true;
 	}
 }
-IndigoFile* PlaylistGraphic::copyFile(Gtk::TreeModel::Row &row){
-	if(*row){
+IndigoFile* PlaylistGraphic::copyFile(Gtk::TreeModel::Row &row) {
+	if (row) {
 		IndigoFile *f = new IndigoFile();
 		*f = *row[m_Columns.file];
 		return f;
 	}
 	return NULL;
 }
-IndigoFile* PlaylistGraphic::getFile(){
-	if(*crRow){
-		if(crFile)
+IndigoFile* PlaylistGraphic::getFile() {
+	if (isSetCurrentRow) {
+		if (crFile)
 			delete crFile;
 		crFile = copyFile(crRow);
+		deleteAktualB = false;
+	}else{
+		delete crFile;
+		crFile = NULL;
+		deleteAktualB = true;
 	}
-	deleteAktualB = false;
 	return crFile;
 }
-bool PlaylistGraphic::isEmpty(){
+bool PlaylistGraphic::isEmpty() {
 	return numberOfRows == 0;
 }
-bool PlaylistGraphic::deleteAktual(){
-	return deleteAktualB;
+bool PlaylistGraphic::fileExistInPlaylist() {
+	return !deleteAktualB;
+}
+bool PlaylistGraphic::isLastFile(){
+	if(!isSetCurrentRow)
+			return true;
+
+	Gtk::TreeModel::Row row = crRow;
+	if(++row == *playlistBoardModel->children().end() && !repeat->get_active())
+		return true;
+	return false;
 }

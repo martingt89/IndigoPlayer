@@ -33,7 +33,7 @@ ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade){
 
 	soundAdj = new Gtk::Adjustment(100,0,100);
 	timelineAdj = new Gtk::Adjustment(0,0,0);
-	//timeline->set_flippable(true);
+
 	this->clearTime();
 	sound->set_adjustment(*soundAdj);
 	timeline->set_adjustment(*timelineAdj);
@@ -64,8 +64,6 @@ void ControlPanel::setDuration(int seconds) {
 	timeline_changed_signal = true;
 }
 void ControlPanel::setPosition(int seconds) {
-//	std::cout<<"Position: "<<seconds<<std::endl;
-//	std::cout<<timeline->get_state()<<std::endl;
 	position = seconds;
 	if (duration >= 0) {
 		time->set_text(getTimeText(position, duration)); //TODO //prepisat na multi threading
@@ -139,7 +137,6 @@ void ControlPanel::timeline_changed() {
 		aktualizeTextSignal = false;
 		setPosition(timelineAdj->get_value());
 		aktualizeTextSignal = true;
-		std::cout<<"Toto sa vykona raz"<<std::endl;
 		if (playerSignals != 0)
 			playerSignals->changeTimeLine();
 	}

@@ -17,4 +17,7 @@
 
 #define CONFIG "/home/xgeier/IndigoPlayer/confFile"
 
+#define BLANKARROW "/home/xgeier/IndigoPlayer/arrowc.png"
+#define BLACKARROW "/home/xgeier/IndigoPlayer/arrow2.png"
+
 #endif /* SETTIONGS_H_ */
