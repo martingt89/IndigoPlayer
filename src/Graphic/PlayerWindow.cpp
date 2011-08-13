@@ -80,7 +80,8 @@ void PlayerWindow::switchPage(GtkNotebookPage* page, guint page_num) {
 	}
 }
 bool PlayerWindow::leavePopup(GdkEventCrossing* event) {
-	noHide = false;
+	if(event->x < 0 || event->y < 0)
+		noHide = false;
 	return true;
 }
 bool PlayerWindow::enterPopup(GdkEventCrossing* event) {

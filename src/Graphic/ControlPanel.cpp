@@ -44,18 +44,16 @@ ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade) : toolTip
 	toolTipWindow.set_default_size(50, 25);
 	toolTipWindow.add(*toolTipLabel);
 
-	playStop->signal_toggled().connect(sigc::mem_fun(this, &ControlPanel::on_toggledPlay_clicked));
-	soundMute->signal_toggled().connect(sigc::mem_fun(this, &ControlPanel::on_toggledSound_clicked));
-	forward->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::forward_clicked));
-	backward->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::backward_clicked));
-	cancel->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::cancel_clicked));
-	open->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::open_clicked));
-	backInFile->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::backInFile_clicked));
-	soundAdj->signal_value_changed().connect(sigc::mem_fun(this, &ControlPanel::sound_changed));
+	playStop->signal_toggled().connect(sigc::mem_fun(this, &ControlPanel::playToggleClicked));
+	soundMute->signal_toggled().connect(sigc::mem_fun(this, &ControlPanel::soundToggleClicked));
+	forward->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::forwardClicked));
+	backward->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::backwardClicked));
+	cancel->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::cancelClicked));
+	open->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::openButtonClicked));
+	backInFile->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::rewindButtonClicked));
+	soundAdj->signal_value_changed().connect(sigc::mem_fun(this, &ControlPanel::soundLevelChanged));
 	timeProgress->signal_button_press_event().connect(sigc::mem_fun(this, &ControlPanel::timeProgressClicked));
-
 	timeProgress->signal_query_tooltip().connect(sigc::mem_fun(this, &ControlPanel::toolTipShow));
-	std::cout<<timeProgress->get_tooltip_text()<<std::endl;
 }
 
 bool ControlPanel::toolTipShow(int x, int y, bool keyboard_tooltip, const Glib::RefPtr<Gtk::Tooltip>& tooltip){
@@ -70,7 +68,7 @@ bool ControlPanel::timeProgressClicked(GdkEventButton* event){
 		if(duration > -1){
 			double pos = (1.0/duration)*(int)((event->x / (double)timeProgress->get_width())*duration);
 			timeProgress->set_fraction(pos);
-			timeline_changed();
+			timelineChanged();
 		}
 	}
 	return true;
@@ -149,14 +147,13 @@ Glib::ustring ControlPanel::timeToWellText(int time){
 	if(sec < 10)
 		ttmm += "0";
 	ttmm += Glib::ustring::format(sec);
-	//std::cout<<sec<<" "<<min<<" "<<hod<<std::endl;
 	return ttmm;
 }
-void ControlPanel::sound_changed() {
+void ControlPanel::soundLevelChanged() {
 	if (playerSignals != 0 && sound_changed_signal)
 		playerSignals->changeSoundLevel();
 }
-void ControlPanel::timeline_changed() {
+void ControlPanel::timelineChanged() {
 	if(timeline_changed_signal){
 		aktualizeTextSignal = false;
 		setPosition(getTime());
@@ -165,31 +162,31 @@ void ControlPanel::timeline_changed() {
 			playerSignals->changeTimeLine();
 	}
 }
-void ControlPanel::open_clicked() {
+void ControlPanel::openButtonClicked() {
 	if (playerSignals != 0)
 		playerSignals->clickOpen();
 }
-void ControlPanel::forward_clicked() {
+void ControlPanel::forwardClicked() {
 	if (playerSignals != 0)
 		playerSignals->clickForward();
 }
-void ControlPanel::backward_clicked() {
+void ControlPanel::backwardClicked() {
 	if (playerSignals != 0)
 		playerSignals->clickBackward();
 }
-void ControlPanel::cancel_clicked() {
+void ControlPanel::cancelClicked() {
 	if (playerSignals != 0)
 		playerSignals->clickCancel();
 }
-void ControlPanel::thisOptions_clicked() {
+void ControlPanel::thisOptionsClicked() {
 	if (playerSignals != 0)
 		playerSignals->clickThisOptions();
 }
-void ControlPanel::backInFile_clicked() {
+void ControlPanel::rewindButtonClicked() {
 	if (playerSignals != 0)
 		playerSignals->clickRewind();
 }
-void ControlPanel::on_toggledPlay_clicked() {
+void ControlPanel::playToggleClicked() {
 	if (playerSignals != 0 && playStopSignal) {
 		if (playStop->get_active() == true)
 			playerSignals->clickPlay();
@@ -197,7 +194,7 @@ void ControlPanel::on_toggledPlay_clicked() {
 			playerSignals->clickPause();
 	}
 }
-void ControlPanel::on_toggledSound_clicked() {
+void ControlPanel::soundToggleClicked() {
 	if (playerSignals != 0) {
 		if (soundMute->get_active() == true) {
 			playerSignals->clickMute();
@@ -208,7 +205,6 @@ void ControlPanel::on_toggledSound_clicked() {
 		}
 	}
 }
-
 
 ControlPanel::~ControlPanel() {
 	delete forward;

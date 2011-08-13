@@ -23,9 +23,9 @@
 #include <gtkmm/progressbar.h>
 
 #include "../Interfaces/PlayerSignals.h"
-#include "../../Settings.h"
 #include "../Files/IndigoFile.h"
 #include "../Files/FileUtilities.h"
+#include "../../Settings.h"
 
 class ControlPanel{
 public:
@@ -72,15 +72,15 @@ private:
 	Glib::ustring timeToWellText(int time);
 
 	bool timeProgressClicked(GdkEventButton* event);
-	void on_toggledPlay_clicked();
-	void on_toggledSound_clicked();
-	void forward_clicked();
-	void backward_clicked();
-	void cancel_clicked();
-	void thisOptions_clicked();
-	void open_clicked();
-	void backInFile_clicked();
-	void sound_changed();
-	void timeline_changed();
+	void playToggleClicked();
+	void soundToggleClicked();
+	void forwardClicked();
+	void backwardClicked();
+	void cancelClicked();
+	void thisOptionsClicked();
+	void openButtonClicked();
+	void rewindButtonClicked();
+	void soundLevelChanged();
+	void timelineChanged();
 };
 #endif /* BASEPLAYERWINDOW_H_ */
