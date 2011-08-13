@@ -95,9 +95,8 @@ void IndigoPlayer::clickPlay() {
 		this->stopPlayer();
 		IndigoFile* file = playlist->getFile();
 		if(file == NULL){
-			//std::cout<<"Neser ma"<<std::endl;
 			openDialog->show();
-			//controlPanel->popPlayButton();
+			controlPanel->popPlayButton();
 		}else{
 			this->playFile(file);
 		}

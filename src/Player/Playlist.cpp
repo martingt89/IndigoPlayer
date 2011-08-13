@@ -37,7 +37,6 @@ IndigoFile* Playlist::getFile(){
 	if(graphic->fileExistInPlaylist()){
 		return file;
 	}else{
-		//this->goNextFile();
 		bool ok;
 		if(graphic->isRandom()){
 			ok = graphic->getRandom();

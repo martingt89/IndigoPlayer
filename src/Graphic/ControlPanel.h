@@ -55,6 +55,9 @@ private:
 	Gtk::HScale* sound;
 	Gtk::ProgressBar* timeProgress;
 
+	Gtk::Window toolTipWindow;
+	Gtk::Label* toolTipLabel;
+
 	PlayerSignals *playerSignals;
 	//
 	int duration;
@@ -65,6 +68,8 @@ private:
 	bool playStopSignal;
 	bool aktualizeTextSignal;
 	Glib::ustring getTimeText(int position, int duration);
+	bool toolTipShow(int x, int y, bool keyboard_tooltip, const Glib::RefPtr<Gtk::Tooltip>& tooltip);
+	Glib::ustring timeToWellText(int time);
 
 	bool timeProgressClicked(GdkEventButton* event);
 	void on_toggledPlay_clicked();

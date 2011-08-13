@@ -12,7 +12,7 @@
 
 #include <iostream>
 
-ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade){
+ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade) : toolTipWindow(Gtk::WINDOW_POPUP){
 	m_refGlade = refGlade;
 	playerSignals = NULL;
 	timeline_changed_signal = true;
@@ -37,6 +37,13 @@ ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade){
 	this->clearTime();
 	sound->set_adjustment(*soundAdj);
 	timeProgress->add_events(Gdk::BUTTON_PRESS_MASK);
+
+	timeProgress->set_tooltip_window(toolTipWindow);
+	toolTipLabel = Gtk::manage(new Gtk::Label(""));
+	toolTipLabel->show();
+	toolTipWindow.set_default_size(50, 25);
+	toolTipWindow.add(*toolTipLabel);
+
 	playStop->signal_toggled().connect(sigc::mem_fun(this, &ControlPanel::on_toggledPlay_clicked));
 	soundMute->signal_toggled().connect(sigc::mem_fun(this, &ControlPanel::on_toggledSound_clicked));
 	forward->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::forward_clicked));
@@ -46,6 +53,17 @@ ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade){
 	backInFile->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::backInFile_clicked));
 	soundAdj->signal_value_changed().connect(sigc::mem_fun(this, &ControlPanel::sound_changed));
 	timeProgress->signal_button_press_event().connect(sigc::mem_fun(this, &ControlPanel::timeProgressClicked));
+
+	timeProgress->signal_query_tooltip().connect(sigc::mem_fun(this, &ControlPanel::toolTipShow));
+	std::cout<<timeProgress->get_tooltip_text()<<std::endl;
+}
+
+bool ControlPanel::toolTipShow(int x, int y, bool keyboard_tooltip, const Glib::RefPtr<Gtk::Tooltip>& tooltip){
+	toolTipWindow.hide();
+	if(duration == -1) return false;
+	int secTime = (int)(x / (double)timeProgress->get_width()*duration);
+	toolTipLabel->set_text(timeToWellText(secTime));
+	return true;
 }
 bool ControlPanel::timeProgressClicked(GdkEventButton* event){
 	if(event->type == GDK_BUTTON_PRESS){
@@ -113,26 +131,26 @@ Glib::ustring ControlPanel::getTimeText(int position, int duration) {
 	if (position < 0 || duration < 0) {
 		return ("--:-- / --:--");
 	}
-	int min = position / 60;
-	int sec = position % 60;
-	int min10 = min / 10;
-	min = min % 10;
-	int sec10 = sec / 10;
-	sec = sec % 10;
-
-	Glib::ustring time = Glib::ustring::format(min10) + Glib::ustring::format(min) + ":"
-			+ Glib::ustring::format(sec10) + Glib::ustring::format(sec) + " / ";
-
-	min = duration / 60;
-	sec = duration % 60;
-	min10 = min / 10;
-	min = min % 10;
-	sec10 = sec / 10;
-	sec = sec % 10;
-
-	time += Glib::ustring::format(min10) + Glib::ustring::format(min) + ":" + Glib::ustring::format(sec10)
-			+ Glib::ustring::format(sec);
+	Glib::ustring time = timeToWellText(position)+"/"+timeToWellText(duration);
 	return time;
+}
+Glib::ustring ControlPanel::timeToWellText(int time){
+	Glib::ustring ttmm = "";
+	int sec = time % 60;
+	int min = (time - sec) % 3600;
+	int hod = (time - min - sec);
+	min /= 60;
+	hod /= 3600;
+	if(hod > 0)
+		ttmm += Glib::ustring::format(hod)+":";
+	if(min < 10)
+		ttmm += "0";
+	ttmm += Glib::ustring::format(min)+":";
+	if(sec < 10)
+		ttmm += "0";
+	ttmm += Glib::ustring::format(sec);
+	//std::cout<<sec<<" "<<min<<" "<<hod<<std::endl;
+	return ttmm;
 }
 void ControlPanel::sound_changed() {
 	if (playerSignals != 0 && sound_changed_signal)

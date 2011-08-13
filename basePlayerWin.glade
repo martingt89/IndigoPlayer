@@ -1064,7 +1064,7 @@
         </child>
         <child>
           <object class="GtkLabel" id="TimeLabelBase">
-            <property name="width_request">100</property>
+            <property name="width_request">110</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">--:-- / --:--</property>
