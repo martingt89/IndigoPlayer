@@ -52,8 +52,7 @@ void IndigoPlayer::messageIncomming(){
 	}
 	if(mediaPackage->getVariable("ID_EXIT").size() != 0){
 		clearPlaying();
-		if(!playlist->isLastFile())
-			clickForward();
+		clickForward();
 	}
 }
 
@@ -78,9 +77,12 @@ void IndigoPlayer::playFile(IndigoFile* file) {
 	if(file != NULL){
 		kernel->setGenerator(generator);
 		videoBoard->showLogo(false);
-		kernel->play(file);
-		controlPanel->pushPlayButton();
-		playerWindow->setWindowTitle(file->getName());
+		if(kernel->play(file)){
+			controlPanel->pushPlayButton();
+			playerWindow->setWindowTitle(file->getName());
+		}else{
+			//asi nejake logy
+		}
 	}
 }
 void IndigoPlayer::clickPlay() {
@@ -93,8 +95,9 @@ void IndigoPlayer::clickPlay() {
 		this->stopPlayer();
 		IndigoFile* file = playlist->getFile();
 		if(file == NULL){
+			//std::cout<<"Neser ma"<<std::endl;
 			openDialog->show();
-			controlPanel->popPlayButton();
+			//controlPanel->popPlayButton();
 		}else{
 			this->playFile(file);
 		}
@@ -108,8 +111,7 @@ void IndigoPlayer::clickPause() {
 void IndigoPlayer::clickForward() {
 	if(true){
 		this->stopPlayer();
-		std::cout<<playlist->isLastFile()<<std::endl;
-		if(!playlist->isLastFile() && playlist->goNextFile())
+		if(playlist->goNextFile())
 			this->playFile(playlist->getFile());
 	}
 }

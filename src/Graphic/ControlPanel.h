@@ -20,6 +20,7 @@
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/notebook.h>
 #include <gtkmm/frame.h>
+#include <gtkmm/progressbar.h>
 
 #include "../Interfaces/PlayerSignals.h"
 #include "../../Settings.h"
@@ -50,10 +51,9 @@ private:
 	Gtk::ToggleButton* playStop;
 	Gtk::ToggleButton* soundMute;
 	Gtk::Label* time;
-	Gtk::Adjustment* timelineAdj;
 	Gtk::Adjustment* soundAdj;
 	Gtk::HScale* sound;
-	Gtk::HScale* timeline;
+	Gtk::ProgressBar* timeProgress;
 
 	PlayerSignals *playerSignals;
 	//
@@ -66,6 +66,7 @@ private:
 	bool aktualizeTextSignal;
 	Glib::ustring getTimeText(int position, int duration);
 
+	bool timeProgressClicked(GdkEventButton* event);
 	void on_toggledPlay_clicked();
 	void on_toggledSound_clicked();
 	void forward_clicked();

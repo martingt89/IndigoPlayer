@@ -9,6 +9,7 @@
 #define STRINGANALYZE_H_
 
 #include <glibmm/dispatcher.h>
+#include <glibmm/thread.h>
 #include <string>
 #include <map>
 
@@ -23,6 +24,7 @@ public:
 private:
 	std::map<std::string, int> hashTable;
 	std::map<std::string, std::string> valueTable;
+	Glib::Mutex lock;
 };
 
 #endif /* STRINGANALYZE_H_ */

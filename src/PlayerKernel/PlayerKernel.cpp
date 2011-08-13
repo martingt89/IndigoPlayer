@@ -20,11 +20,11 @@ PlayerKernel::~PlayerKernel() {
 void PlayerKernel::setGenerator(ScriptGenerator* gener){
 	generator = gener;
 }
-void PlayerKernel::play(IndigoFile* file){
+bool PlayerKernel::play(IndigoFile* file){
 	stopAnalyze = false;
-//	std::cout<<"play"<<std::endl;
 	stringAnalyze->clear();
 	isPause = false;
+	if(childPid != -1) return false;
 	childPid = -1;
 	std::list<Glib::ustring> script = generator->generate(file);
 	char *ll[script.size()];
@@ -48,13 +48,16 @@ void PlayerKernel::play(IndigoFile* file){
 		close(toPlayer[0]);
 		execv(ll[0], ll);
 		exit(0);
-	}else{
+	}
+	if(childPid > 0){
 		close(fromPlayer[1]);
 		close(toPlayer[0]);
 		thread = Glib::Thread::create(sigc::mem_fun(*this, &PlayerKernel::listener), false);
 		Glib::signal_timeout().connect(sigc::mem_fun(*this, &PlayerKernel::aktualTime), 300);
 		playing = true;
+		return true;
 	}
+	return false;
 }
 bool PlayerKernel::aktualTime(){
 	if(childPid == -1){
@@ -71,7 +74,6 @@ void PlayerKernel::listener(){
 	std::string ss;
 	int i;
 	while((n = read(fromPlayer[0], buf, 1024)) > 0){
-		//std::cout<<buf<<std::endl;
 		odsad = 0;
 		buf[n] = '\0';
 		for(i=0; i < n; i++){
@@ -87,6 +89,7 @@ void PlayerKernel::listener(){
 		ss += buf+odsad;
 	}
 	playing = false;
+	childPid = -1;
 }
 void PlayerKernel::pause(){
 	if(playing && !isPause){
@@ -103,13 +106,18 @@ void PlayerKernel::resume(){
 	}
 }
 void PlayerKernel::stop(){
+	if(!playing && childPid != -1){
+		kill(childPid, 9);
+		childPid = -1;
+		playing = false;
+	}
 	if(playing){
 		stopAnalyze = true;
 		dprintf(toPlayer[1], "quit\n");
 		playing = false;
 		int status;
-		childPid = -1;
 		wait(&status);
+		childPid = -1;
 	}
 }
 void PlayerKernel::mute(bool mut){
@@ -134,9 +142,3 @@ void PlayerKernel::changeTime(int time){
 bool PlayerKernel::isPlaying(){
 	return playing;
 }
-/*
- * 1. vygenerujem spustaci skript
- * 2. vytvor pipu, fork, exec
- * 3. vytvor thread, citaj pipu, ak nieco dojde posli vyssie cez dispatchera
- *
- */

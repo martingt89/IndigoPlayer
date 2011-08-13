@@ -8,9 +8,7 @@
 #ifndef PLAYERKERNEL_H_
 #define PLAYERKERNEL_H_
 
-#include "../../Settings.h"
 #include "ScriptGenerator.h"
-#include "../Files/IndigoFile.h"
 #include "StringAnalyze.h"
 #include <glibmm/ustring.h>
 #include <glibmm/thread.h>
@@ -20,12 +18,17 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <string>
+#include <sys/types.h>
+#include <signal.h>
+#include "../Files/IndigoFile.h"
+#include "../../Settings.h"
+
 
 class PlayerKernel {
 public:
 	PlayerKernel(StringAnalyze*);
 	virtual ~PlayerKernel();
-	void play(IndigoFile* file);
+	bool play(IndigoFile* file);
 	void setGenerator(ScriptGenerator* gener);
 	bool isPlaying();
 	void pause();

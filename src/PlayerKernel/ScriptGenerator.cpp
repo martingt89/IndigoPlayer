@@ -11,7 +11,6 @@ ScriptGenerator::ScriptGenerator() {
 	controlPanel = NULL;
 	videoBoard = NULL;
 	mplayerPath = MPLAYER;
-//	XID = xid;
 }
 
 ScriptGenerator::~ScriptGenerator() {
@@ -36,7 +35,7 @@ std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file) {
 	empty.push_back("-vo");
 	empty.push_back("gl");
 	empty.push_back("-ao");
-	empty.push_back("alsa");
+	empty.push_back("pulse");
 	empty.push_back("-osdlevel");
 	empty.push_back("0");
 

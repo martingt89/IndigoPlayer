@@ -26,17 +26,17 @@ ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade){
 	m_refGlade->get_widget("CanceButtonBase", cancel);
 	m_refGlade->get_widget("MuteTButtonBase", soundMute);
 	m_refGlade->get_widget("BackInFileButtonBase", backInFile);
-	m_refGlade->get_widget("TimeLineHScaleBase", timeline);
+	m_refGlade->get_widget("TimeProgressBase", timeProgress);
+
 	m_refGlade->get_widget("TimeLabelBase", time);
 	m_refGlade->get_widget("OpenButtonBase", open);
 	m_refGlade->get_widget("SoundHScaleBase", sound);
 
 	soundAdj = new Gtk::Adjustment(100,0,100);
-	timelineAdj = new Gtk::Adjustment(0,0,0);
 
 	this->clearTime();
 	sound->set_adjustment(*soundAdj);
-	timeline->set_adjustment(*timelineAdj);
+	timeProgress->add_events(Gdk::BUTTON_PRESS_MASK);
 	playStop->signal_toggled().connect(sigc::mem_fun(this, &ControlPanel::on_toggledPlay_clicked));
 	soundMute->signal_toggled().connect(sigc::mem_fun(this, &ControlPanel::on_toggledSound_clicked));
 	forward->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::forward_clicked));
@@ -44,23 +44,30 @@ ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade){
 	cancel->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::cancel_clicked));
 	open->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::open_clicked));
 	backInFile->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::backInFile_clicked));
-	timelineAdj->signal_value_changed().connect(sigc::mem_fun(this, &ControlPanel::timeline_changed));
 	soundAdj->signal_value_changed().connect(sigc::mem_fun(this, &ControlPanel::sound_changed));
+	timeProgress->signal_button_press_event().connect(sigc::mem_fun(this, &ControlPanel::timeProgressClicked));
+}
+bool ControlPanel::timeProgressClicked(GdkEventButton* event){
+	if(event->type == GDK_BUTTON_PRESS){
+		if(duration > -1){
+			double pos = (1.0/duration)*(int)((event->x / (double)timeProgress->get_width())*duration);
+			timeProgress->set_fraction(pos);
+			timeline_changed();
+		}
+	}
+	return true;
 }
 void ControlPanel::clearTime() {
 	duration = -1;
 	position = -1;
 	time->set_text(getTimeText(position, duration));
-	timelineAdj->set_upper(0);
-	timelineAdj->set_value(0);
+	timeProgress->set_fraction(0);
 }
 void ControlPanel::setDuration(int seconds) {
 	duration = seconds;
 	position = 0;
 	time->set_text(getTimeText(position, duration)); //TODO //prepisat na multi threading
 	timeline_changed_signal = false;
-	timelineAdj->set_upper(duration);
-	timelineAdj->set_value(position);
 	timeline_changed_signal = true;
 }
 void ControlPanel::setPosition(int seconds) {
@@ -69,8 +76,7 @@ void ControlPanel::setPosition(int seconds) {
 		time->set_text(getTimeText(position, duration)); //TODO //prepisat na multi threading
 		if(aktualizeTextSignal){
 			timeline_changed_signal = false;
-			timelineAdj->set_upper(duration);
-			timelineAdj->set_value(position);
+			timeProgress->set_fraction(position/(double)duration);
 			timeline_changed_signal = true;
 		}
 	}
@@ -84,7 +90,7 @@ double ControlPanel::getAudioLevel() {
 	return soundAdj->get_value(); //TODO //prepisat na multi threading
 }
 int ControlPanel::getTime(){
-	return (int)timelineAdj->get_value();
+	return timeProgress->get_fraction()*duration;
 }
 bool ControlPanel::isMute() {
 	return soundMute->get_active();
@@ -135,7 +141,7 @@ void ControlPanel::sound_changed() {
 void ControlPanel::timeline_changed() {
 	if(timeline_changed_signal){
 		aktualizeTextSignal = false;
-		setPosition(timelineAdj->get_value());
+		setPosition(getTime());
 		aktualizeTextSignal = true;
 		if (playerSignals != 0)
 			playerSignals->changeTimeLine();

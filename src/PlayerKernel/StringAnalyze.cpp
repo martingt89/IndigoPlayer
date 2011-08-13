@@ -30,8 +30,11 @@ void StringAnalyze::analyze(std::string text){
 		std::string value = std::string(text, n+1);
 		if(hashTable[identifier]){
 		//	std::cout<<identifier<<std::endl;
-			if(hashTable[identifier] == 1 || hashTable[identifier] == 2)
+			if(hashTable[identifier] == 1 || hashTable[identifier] == 2){
+				lock.lock();
 				valueTable[identifier] = value;
+				lock.unlock();
+			}
 			if(hashTable[identifier] == 2)
 				message();
 		}
@@ -41,5 +44,9 @@ void StringAnalyze::clear(){
 	valueTable.clear();
 }
 std::string StringAnalyze::getVariable(std::string variable){
-	return valueTable[variable];
+	std::string var = "";
+	lock.lock();
+	var = valueTable[variable];
+	lock.unlock();
+	return var;
 }
