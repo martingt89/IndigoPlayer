@@ -34,7 +34,6 @@ void IndigoPlayer::setOpenDialog(OpenFileDialog* dialog) {
 	openDialog = dialog;
 	openDialog->setListener(this);
 }
-
 void IndigoPlayer::messageIncomming(){
 	if(mediaPackage->getVariable("ID_LENGTH").size() != 0){
 		std::stringstream ss;
@@ -55,7 +54,12 @@ void IndigoPlayer::messageIncomming(){
 		clickForward();
 	}
 }
+void IndigoPlayer::addSubtitle(Glib::ustring file){
 
+}
+void IndigoPlayer::keyPressed(int control, int keyVal){
+//	std::cout<<control<<" "<<keyVal<<std::endl;
+}
 void IndigoPlayer::addFiles(std::list<IndigoFile*> files, bool play) {
 	playlist->addFiles(files);
 	if (play) {

@@ -24,7 +24,7 @@ int main(int argc, char *argv[]){
 		for(listIter2 = ma.begin(); listIter2 != ma.end(); listIter2++)
 			uris.push_back(new IndigoFile(*listIter2, true));
 	}
-//	ConfigFile file;
+	ConfigFile file(true);
 
 	GraphicLoader *gLoader = new GraphicLoader();
 	IndigoPlayer *player = new IndigoPlayer(gLoader->getPlayerWindow());

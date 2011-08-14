@@ -17,10 +17,13 @@
 class ConfigFile {
 public:
 	ConfigFile();
+	ConfigFile(bool load);
 	virtual ~ConfigFile();
 	bool isOneInstance();
+	std::string getSubCp();
+	std::string getSubColor();
 private:
-	std::map<std::string, std::string> config;
+	static std::map<std::string, std::string> config;
 };
 
 #endif /* CONFIGFILE_H_ */

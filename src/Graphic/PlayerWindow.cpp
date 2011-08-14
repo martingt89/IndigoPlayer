@@ -28,6 +28,7 @@ PlayerWindow::PlayerWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Buil
 
 	capitalPanel->pack_end(*panel, false, false, 0);
 	panelHeight = 64;
+	panelWidth = 1024;
 	std::list<Gtk::TargetEntry> listTargets;
 	listTargets.push_back(Gtk::TargetEntry("text/uri-list"));
 	this->drag_dest_set(listTargets);
@@ -36,6 +37,7 @@ PlayerWindow::PlayerWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Buil
 	video->set_active(true);
 	gdkCapitalWindow = this->get_window();
 	playlistPanel->set_visible(false);
+	this->setWindowTitle("");
 
 	this->add_events(Gdk::POINTER_MOTION_MASK);
 	fullScreen->signal_toggled().connect(sigc::mem_fun(this, &PlayerWindow::fullScreenClicked));
@@ -48,6 +50,7 @@ PlayerWindow::PlayerWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Buil
 	popupWindow->signal_enter_notify_event().connect(sigc::mem_fun(this, &PlayerWindow::enterPopup));
 	vidListNotebook->signal_switch_page().connect(sigc::mem_fun(this, &PlayerWindow::switchPage));
 	this->signal_hide().connect(sigc::mem_fun(this, &PlayerWindow::quitWindow));
+	popupWindow->signal_show().connect(sigc::mem_fun(this, &PlayerWindow::popupShow));
 }
 PlayerWindow::~PlayerWindow() {
 	delete fullScreen;
@@ -63,6 +66,10 @@ void PlayerWindow::quitWindow(){
 	if(playerSignals){
 		playerSignals->quit();
 	}
+}
+void PlayerWindow::popupShow(){
+	panelHeight = popupWindow->get_height();
+	panelWidth = popupWindow->get_width();
 }
 void PlayerWindow::switchPage(GtkNotebookPage* page, guint page_num) {
 	if (fullScreen->get_active()) {
@@ -80,7 +87,7 @@ void PlayerWindow::switchPage(GtkNotebookPage* page, guint page_num) {
 	}
 }
 bool PlayerWindow::leavePopup(GdkEventCrossing* event) {
-	if(event->x < 0 || event->y < 0)
+	if(event->x < 0 || event->y < 0 || event->x > panelHeight || event->y > panelWidth)
 		noHide = false;
 	return true;
 }
@@ -221,7 +228,6 @@ void PlayerWindow::dropFiles(const Glib::RefPtr<Gdk::DragContext>& context, int,
 //		if(file_list.size() == 0){
 //			test_for_subtitle()
 //		}
-		//	std::cout<<file_list.size()<<std::endl;
 		std::list<Glib::ustring>::iterator listIter2;
 		std::list<IndigoFile*> uris;
 		FileUtilities fu;
@@ -237,7 +243,11 @@ void PlayerWindow::dropFiles(const Glib::RefPtr<Gdk::DragContext>& context, int,
 	context->drag_finish(false, false, time);
 }
 bool PlayerWindow::keyPress(GdkEventKey* evt) {
-
+	if(vidListNotebook->get_current_page() == 0){
+		if(playerSignals)
+			playerSignals->keyPressed(evt->state, evt->keyval);
+		return true;
+	}
 	return false;
 }
 void PlayerWindow::setVideoBoardSize(int x, int y) {

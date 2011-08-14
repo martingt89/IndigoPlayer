@@ -45,6 +45,7 @@ private:
 	Gtk::VBox* playlistPanel;
 
 	int panelHeight;
+	int panelWidth;
 	bool stopVPO;
 	bool isHideElements;
 	bool once;
@@ -62,6 +63,7 @@ private:
 	bool enterPopup(GdkEventCrossing* event);
 	void switchPage(GtkNotebookPage* page, guint page_num);
 	void quitWindow();
+	void popupShow();
 
 	void removePanel();
 	void addPanel();

@@ -30,6 +30,8 @@ public:
 	void setOpenDialog(OpenFileDialog* dialog);
 	void setControlPanel(ControlPanel* control);
 	void messageIncomming();
+	void addSubtitle(Glib::ustring file);
+	void keyPressed(int control, int keyVal);
 	void clickPlay();
 	void clickPause();
 	void clickForward();

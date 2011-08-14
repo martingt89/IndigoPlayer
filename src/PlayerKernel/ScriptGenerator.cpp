@@ -32,6 +32,11 @@ std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file) {
 	if (videoBoard)
 		getVideoBoard(empty);
 
+	empty.push_back("-ass");
+
+	getConfig(empty);
+
+
 	empty.push_back("-vo");
 	empty.push_back("gl");
 	empty.push_back("-ao");
@@ -56,4 +61,18 @@ void ScriptGenerator::getFromControlPanel(std::list<Glib::ustring> &parameters) 
 void ScriptGenerator::getVideoBoard(std::list<Glib::ustring> &parameters) {
 	parameters.push_back("-wid");
 	parameters.push_back(Glib::ustring::format(videoBoard->getXID()));
+}
+void ScriptGenerator::getConfig(std::list<Glib::ustring> &parameters){
+	Glib::ustring cp = config.getSubCp();
+	if(cp.length() > 0){
+		parameters.push_back("-subcp");
+		parameters.push_back(cp);
+//		std::cout<<"-subcp "<<cp<<std::endl;
+	}
+	cp = config.getSubColor();
+	if(cp.length() > 0){
+		parameters.push_back("-ass-color");
+		parameters.push_back(cp);
+//		std::cout<<"-ass-color"<<cp<<std::endl;
+	}
 }

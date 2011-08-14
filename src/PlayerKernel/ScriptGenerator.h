@@ -14,6 +14,7 @@
 #include "../Graphic/VideoBoard.h"
 #include "../Graphic/ControlPanel.h"
 #include "../../Settings.h"
+#include "../Files/ConfigFile.h"
 
 class ScriptGenerator {
 public:
@@ -25,8 +26,10 @@ public:
 private:
 	void getFromControlPanel(std::list<Glib::ustring> &parameters);
 	void getVideoBoard(std::list<Glib::ustring> &parameters);
+	void getConfig(std::list<Glib::ustring> &parameters);
 	ControlPanel* controlPanel;
 	VideoBoard* videoBoard;
+	ConfigFile config;
 	Glib::ustring mplayerPath;
 	int XID;
 };
