@@ -16,7 +16,6 @@
 #include <giomm/file.h>
 #include "../Interfaces/PlayerSignals.h"
 #include "PlayerWindow.h"
-#include "Display.h"
 
 class VideoBoard {
 public:

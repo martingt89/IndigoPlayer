@@ -27,6 +27,7 @@ ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade) : toolTip
 	m_refGlade->get_widget("MuteTButtonBase", soundMute);
 	m_refGlade->get_widget("BackInFileButtonBase", backInFile);
 	m_refGlade->get_widget("TimeProgressBase", timeProgress);
+	m_refGlade->get_widget("ThisOptionsButtonBase", thisOptionsButton);
 
 	m_refGlade->get_widget("TimeLabelBase", time);
 	m_refGlade->get_widget("OpenButtonBase", open);
@@ -54,6 +55,7 @@ ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade) : toolTip
 	soundAdj->signal_value_changed().connect(sigc::mem_fun(this, &ControlPanel::soundLevelChanged));
 	timeProgress->signal_button_press_event().connect(sigc::mem_fun(this, &ControlPanel::timeProgressClicked));
 	timeProgress->signal_query_tooltip().connect(sigc::mem_fun(this, &ControlPanel::toolTipShow));
+	thisOptionsButton->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::thisOptionsClicked));
 }
 
 bool ControlPanel::toolTipShow(int x, int y, bool keyboard_tooltip, const Glib::RefPtr<Gtk::Tooltip>& tooltip){

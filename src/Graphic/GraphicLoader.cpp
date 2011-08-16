@@ -9,9 +9,13 @@
 
 GraphicLoader::GraphicLoader() {
 	Glib::RefPtr<Gtk::Builder> refBuilder = Gtk::Builder::create();
-
 	try {
-		refBuilder->add_from_file(GLADEFILE);
+		refBuilder->add_from_file(GLADEPLAYERWINDOW);
+		refBuilder->add_from_file(GLADETHISOPTIONS);
+		refBuilder->add_from_file(GLADEOPENDIALOG);
+		refBuilder->add_from_file(GLADECONTROLPANEL);
+		refBuilder->add_from_file(GLADEOPENWINDOW);
+
 	} catch (const Glib::FileError& ex) {
 		std::cerr << "FileError: " << ex.what() << std::endl;
 	} catch (const Gtk::BuilderError& ex) {
@@ -23,10 +27,10 @@ GraphicLoader::GraphicLoader() {
 	controlPanel = new ControlPanel(refBuilder);
 	videoBoard = new VideoBoard(refBuilder, playerWindow);
 	playlist = new PlaylistGraphic(refBuilder);
+	thisOptions = new ThisOptions(refBuilder);
 }
 
 GraphicLoader::~GraphicLoader() {
-	// TODO Auto-generated destructor stub
 }
 
 ControlPanel* GraphicLoader::getBasePlayerWindow(){
@@ -43,4 +47,7 @@ PlaylistGraphic* GraphicLoader::getPlaylistGraphic(){
 }
 PlayerWindow *GraphicLoader::getPlayerWindow(){
 	return playerWindow;
+}
+ThisOptions *GraphicLoader::getThisOptions(){
+	return thisOptions;
 }

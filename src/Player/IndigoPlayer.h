@@ -13,8 +13,10 @@
 #include "../Graphic/VideoBoard.h"
 #include "../Graphic/OpenFileDialog.h"
 #include "../Graphic/PlayerWindow.h"
-#include "../PlayerKernel/PlayerKernel.h"
+#include "../Graphic/ThisOptions.h"
+#include "../PlayerKernel/MplayerInterface.h"
 #include "../PlayerKernel/ScriptGenerator.h"
+
 #include "Playlist.h"
 
 #include <list>
@@ -29,6 +31,7 @@ public:
 	void setVideoBoard(VideoBoard* board);
 	void setOpenDialog(OpenFileDialog* dialog);
 	void setControlPanel(ControlPanel* control);
+	void setThisOptions(ThisOptions* opt);
 	void messageIncomming();
 	void addSubtitle(Glib::ustring file);
 	void keyPressed(int control, int keyVal);
@@ -57,9 +60,10 @@ private:
 	VideoBoard* videoBoard;
 	OpenFileDialog* openDialog;
 	ControlPanel* controlPanel;
-	PlayerKernel* kernel;
+	MplayerInterface* mplayer;
 	ScriptGenerator* generator;
 	StringAnalyze* mediaPackage;
+	ThisOptions* thisOptions;
 };
 
 #endif /* PLAYER_H_ */

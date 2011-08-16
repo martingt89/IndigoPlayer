@@ -10,25 +10,30 @@
 
 #include <glibmm/ustring.h>
 #include <list>
+#include "SavedData.h"
+#include "VideoFilters.h"
 #include "../Files/IndigoFile.h"
 #include "../Graphic/VideoBoard.h"
 #include "../Graphic/ControlPanel.h"
-#include "../../Settings.h"
 #include "../Files/ConfigFile.h"
+#include "../../Settings.h"
 
 class ScriptGenerator {
 public:
 	ScriptGenerator();
 	virtual ~ScriptGenerator();
-	std::list<Glib::ustring> generate(IndigoFile* file);
+	std::list<Glib::ustring> generate(IndigoFile* file, bool load, SavedData data);
 	void setVideoBoard(VideoBoard* board);
 	void setControlPanel(ControlPanel* panel);
+	void setVideoFilters(VideoFilters* filters);
 private:
 	void getFromControlPanel(std::list<Glib::ustring> &parameters);
+	void getFromVideoFilters(std::list<Glib::ustring> &parameters, bool load, SavedData data);
 	void getVideoBoard(std::list<Glib::ustring> &parameters);
 	void getConfig(std::list<Glib::ustring> &parameters);
 	ControlPanel* controlPanel;
 	VideoBoard* videoBoard;
+	VideoFilters* videoFilters;
 	ConfigFile config;
 	Glib::ustring mplayerPath;
 	int XID;

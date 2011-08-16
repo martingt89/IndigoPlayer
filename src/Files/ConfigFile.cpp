@@ -6,6 +6,7 @@
  */
 
 #include "ConfigFile.h"
+#include <iostream>
 
 std::map<std::string, std::string> ConfigFile::config;
 ConfigFile::ConfigFile(){
@@ -24,8 +25,8 @@ ConfigFile::ConfigFile(bool load) {
 					continue;
 				j = line.find('=', 0);
 				config[line.substr(i, j - i)] = line.substr(j + 1, line.length() - (j + 1));
-				std::cout << line.substr(i, j - i) << " " << line.substr(j + 1, line.length() - (j + 1))
-						<< std::endl;
+				std::cout <<"ConfigFile PARSE: '" <<line.substr(i, j - i) << " " << line.substr(j + 1, line.length() - (j + 1))
+						<< "'" <<std::endl;
 			}
 		}
 	}

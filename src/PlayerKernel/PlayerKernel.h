@@ -20,8 +20,10 @@
 #include <string>
 #include <sys/types.h>
 #include <signal.h>
+#include <cstdlib>
 #include "../Files/IndigoFile.h"
 #include "../../Settings.h"
+#include "SavedData.h"
 
 
 class PlayerKernel {
@@ -31,24 +33,34 @@ public:
 	bool play(IndigoFile* file);
 	void setGenerator(ScriptGenerator* gener);
 	bool isPlaying();
-	void pause();
-	void resume();
 	void stop();
-	void mute(bool mut);
-	void soundLevel(double level);
-	void changeTime(int time);
+	void sendCommand(Glib::ustring command);
+	bool playChapter(int chap);
+	void rebootPlay();
 private:
 	void listener();
+	void mplayerError();
 	bool aktualTime();
+	void endPlaying();
+	void playNextChapter();
+
 	ScriptGenerator* generator;
 	StringAnalyze* stringAnalyze;
 	Glib::Thread* thread;
+	Glib::Thread* errThread;
+	IndigoFile* lastSetFile;
+	SavedData savedData;
 	bool playing;
 	bool isPause;
+	int fromPlayerErr[2];
 	int fromPlayer[2];
 	int toPlayer[2];
 	int childPid;
+	int chapter;
 	bool stopAnalyze;
+	bool setInfo;
+	bool isAlive;
+	bool save;
 };
 
 #endif /* PLAYERKERNEL_H_ */

@@ -10,17 +10,21 @@
 
 #include <glibmm/dispatcher.h>
 #include <glibmm/thread.h>
+#include <cstdlib>
 #include <string>
 #include <map>
+#include "SavedData.h"
 
 class StringAnalyze {
 public:
 	StringAnalyze();
 	virtual ~StringAnalyze();
-	void analyze(std::string);
+	int analyze(std::string);
 	std::string getVariable(std::string variable);
 	Glib::Dispatcher message;
 	void clear();
+	void quitPlay();
+	SavedData getSavedData();
 private:
 	std::map<std::string, int> hashTable;
 	std::map<std::string, std::string> valueTable;

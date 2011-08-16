@@ -20,7 +20,7 @@ VideoBoard::VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder, PlayerWindow* 
 	win->clear();
 	videoBoard->signal_expose_event().connect(
 			sigc::mem_fun(this, &VideoBoard::on_expose_event));
-	image = Gdk::Pixbuf::create_from_file("myimage.svg");
+	image = Gdk::Pixbuf::create_from_file(ICONIMAGE);
 	imgX = image->get_width();
 	imgY = image->get_height();
 	videoBoard->add_events(Gdk::BUTTON_PRESS_MASK);

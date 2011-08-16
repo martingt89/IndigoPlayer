@@ -48,6 +48,7 @@ private:
 	Gtk::Button* cancel;
 	Gtk::Button* backInFile;
 	Gtk::Button* open;
+	Gtk::Button* thisOptionsButton;
 	Gtk::ToggleButton* playStop;
 	Gtk::ToggleButton* soundMute;
 	Gtk::Label* time;

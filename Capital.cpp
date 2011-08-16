@@ -32,6 +32,7 @@ int main(int argc, char *argv[]){
 	player->setVideoBoard(gLoader->getVideoBoard());
 	player->setPlaylist(new Playlist(gLoader->getPlaylistGraphic()));
 	player->setOpenDialog(gLoader->getOpenDialog());
+	player->setThisOptions(gLoader->getThisOptions());
 	if(uris.size()> 0)
 		player->addFiles(uris, true);
 

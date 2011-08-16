@@ -16,6 +16,7 @@
 #include "OpenFileDialog.h"
 #include "PlaylistGraphic.h"
 #include "PlayerWindow.h"
+#include "ThisOptions.h"
 
 class GraphicLoader {
 public:
@@ -26,12 +27,14 @@ public:
 	VideoBoard* getVideoBoard();
 	OpenFileDialog* getOpenDialog();
 	PlaylistGraphic* getPlaylistGraphic();
+	ThisOptions *getThisOptions();
 private:
 	PlayerWindow *playerWindow;
 	ControlPanel *controlPanel;
 	OpenFileDialog* openWindow;
 	VideoBoard *videoBoard;
 	PlaylistGraphic* playlist;
+	ThisOptions* thisOptions;
 };
 
 #endif /* GRAPHICLOADER_H_ */

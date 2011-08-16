@@ -1,4 +1,8 @@
 Version 0.2
++SmallOptions window
++Crop video
++Rotate video
++Color settings
 
 Version 0.1
 +App Design
@@ -7,4 +11,3 @@ Version 0.1
 +Control panel hiding
 +Base player ability
 +tooltip for timeline
-
