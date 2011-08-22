@@ -15,20 +15,28 @@
 #include <map>
 #include "SavedData.h"
 
-class StringAnalyze {
+class MediaPackage {
 public:
-	StringAnalyze();
-	virtual ~StringAnalyze();
+	MediaPackage();
+	virtual ~MediaPackage();
 	int analyze(std::string);
 	std::string getVariable(std::string variable);
+	int getVariableAsInteger(std::string variable);
 	Glib::Dispatcher message;
 	void clear();
 	void quitPlay();
 	SavedData getSavedData();
+	bool isVideoParamChange();
+	int getValueFromSubtitlePath(std::string path);
+	void setAktualPlaySubtitles(int number);
 private:
 	std::map<std::string, int> hashTable;
 	std::map<std::string, std::string> valueTable;
 	Glib::Mutex lock;
+	bool changeVideoParam;
+	std::list<std::pair<int, std::string> > loadedSubtitles;
+	int lastNumber;
+	std::string aktualPlaySubtitles;
 };
 
 #endif /* STRINGANALYZE_H_ */

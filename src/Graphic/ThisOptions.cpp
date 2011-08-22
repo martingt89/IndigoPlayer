@@ -41,10 +41,11 @@ ThisOptions::ThisOptions(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 	myAudioStream = new MyComboBox(audioStream);
 	mySubtitleStream = new MyComboBox(subtitleStream);
 
-	myRotate->pushBack("0", 0);
+	myRotate->pushBack("0", 0 ,true);
 	myRotate->pushBack("90", 90);
 	myRotate->pushBack("180", 180);
 	myRotate->pushBack("270", 270);
+	mySubtitleStream->addNone();
 	makrInit();
 
 	videoSpeed->set_adjustment(videoSpeedAdj);
@@ -72,6 +73,9 @@ void ThisOptions::show() {
 }
 void ThisOptions::setPlayerInt(MplayerInterface* interface) {
 	mplayerInterface = interface;
+}
+void ThisOptions::addSubtitles(Glib::ustring path, bool play){
+	mySubtitleStream->pushBack(path, play);
 }
 void ThisOptions::makrInit() {
 	videoSpeed->add_mark(0, Gtk::POS_LEFT, "0,25x");

@@ -9,7 +9,7 @@
 #define PLAYERKERNEL_H_
 
 #include "ScriptGenerator.h"
-#include "StringAnalyze.h"
+#include "MediaPackage.h"
 #include <glibmm/ustring.h>
 #include <glibmm/thread.h>
 #include <list>
@@ -28,7 +28,7 @@
 
 class PlayerKernel {
 public:
-	PlayerKernel(StringAnalyze*);
+	PlayerKernel(MediaPackage*);
 	virtual ~PlayerKernel();
 	bool play(IndigoFile* file);
 	void setGenerator(ScriptGenerator* gener);
@@ -45,7 +45,7 @@ private:
 	void playNextChapter();
 
 	ScriptGenerator* generator;
-	StringAnalyze* stringAnalyze;
+	MediaPackage* stringAnalyze;
 	Glib::Thread* thread;
 	Glib::Thread* errThread;
 	IndigoFile* lastSetFile;

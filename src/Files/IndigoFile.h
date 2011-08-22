@@ -12,9 +12,13 @@
 #include <glibmm/ustring.h>
 #include <giomm/file.h>
 
+namespace IndigoFileType{
+	enum FileType { VIDEO, AUDIO, SUBTITLE, UNKNOWN, PLAYLIST, DVD };
+};
+
 class IndigoFile {
 public:
-	IndigoFile(Glib::ustring path, bool);
+	IndigoFile(Glib::ustring path , IndigoFileType::FileType type);
 	IndigoFile();
 	virtual ~IndigoFile();
 	Glib::ustring getName();
@@ -25,6 +29,7 @@ public:
 	double getSubtitleFPS();
 	int getSubtitleDelayms();
 	int getSoundDelayms();
+	IndigoFileType::FileType getType();
 private:
 	Glib::ustring filePath;
 	bool menu;
@@ -34,6 +39,7 @@ private:
 	double subtitleFPS;
 	int subtitleDelayms;
 	int soundDelayms;
+	IndigoFileType::FileType type;
 };
 
 #endif /* INDIGOFILE_H_ */

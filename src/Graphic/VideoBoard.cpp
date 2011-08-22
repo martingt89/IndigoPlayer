@@ -11,9 +11,10 @@ VideoBoard::VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder, PlayerWindow* 
 	playerWindow = wina;
 	boardSizeX = 0;
 	boardSizeY = 0;
+	videoWidth = 0;
+	videoHeight = 0;
 	showText = true;
 	builder->get_widget("videoBoardDrawindBase", videoBoard);
-//builder->get_widget_derived("videoBoardDrawindBase", videoBoard);
 	Gdk::Color black;
 	Glib::RefPtr<Gdk::Window> win = videoBoard->get_window();
 	win->set_background(black);
@@ -65,7 +66,21 @@ bool VideoBoard::on_expose_event(GdkEventExpose* ev) {
 	}
 	return true;
 }
-void VideoBoard::resize(int x, int y){
-	//videoBoard->get_window()->resize(x,y);
-	playerWindow->setVideoBoardSize(x,y);
+void VideoBoard::setHalfSize(){
+	if(videoWidth > 0 && videoHeight > 0)
+		playerWindow->setVideoBoardSize(videoWidth/2,videoHeight/2);
+}
+void VideoBoard::setFullSize(){
+	if(videoWidth > 0 && videoHeight > 0)
+		playerWindow->setVideoBoardSize(videoWidth,videoHeight);
+}
+void VideoBoard::setDoubleSize(){
+	if(videoWidth > 0 && videoHeight > 0)
+		playerWindow->setVideoBoardSize(videoWidth*2,videoHeight*2);
+}
+void VideoBoard::setVideoResolution(int width, int height, bool resize){
+	videoWidth = width;
+	videoHeight = height;
+	if(resize)
+		playerWindow->setVideoBoardSize(width,height);
 }

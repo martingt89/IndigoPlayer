@@ -23,7 +23,11 @@ public:
 	virtual ~VideoBoard();
 	void showLogo(bool);
 	int getXID();
-	void resize(int x, int y);
+	//void resize(int x, int y);
+	void setVideoResolution(int width, int height, bool resize);
+	void setHalfSize();
+	void setFullSize();
+	void setDoubleSize();
 private:
 	Gtk::DrawingArea* videoBoard;
 	//IDisplay* videoBoard;
@@ -35,6 +39,8 @@ private:
 	int imgY;
 	int boardSizeX;
 	int boardSizeY;
+	int videoWidth;
+	int videoHeight;
 	bool showText;
 	PlayerWindow* playerWindow;
 };

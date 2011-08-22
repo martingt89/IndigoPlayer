@@ -46,6 +46,11 @@ std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool load, 
 	if (load) {
 		empty.push_back("-ss");
 		empty.push_back(Glib::ustring::format(data.getPosition()));
+
+		if(data.getSubPath().size() != 0){
+			empty.push_back("-sub");
+			empty.push_back(data.getSubPath());
+		}
 	}
 
 	//empty.push_back("dvd://");

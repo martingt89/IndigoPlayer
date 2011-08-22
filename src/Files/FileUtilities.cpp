@@ -6,10 +6,26 @@
  */
 
 #include "FileUtilities.h"
-//#include <iostream>
+#include <iostream>
+
+ std::map<Glib::ustring, IndigoFileType::FileType> FileUtilities::types;
 
 FileUtilities::FileUtilities() {
-	// TODO Auto-generated constructor stub
+	if(types.size() == 0){
+		types[".iso"] = IndigoFileType::DVD;
+		types[".flv"] = IndigoFileType::VIDEO;
+		types[".mp3"] = IndigoFileType::AUDIO;
+		types[".m3p"] = IndigoFileType::PLAYLIST;
+		types[".ass"] = IndigoFileType::SUBTITLE;
+		types[".aqt"] = IndigoFileType::SUBTITLE;
+		types[".jss"] = IndigoFileType::SUBTITLE;
+		types[".sub"] = IndigoFileType::SUBTITLE;
+		types[".ttxt"] = IndigoFileType::SUBTITLE;
+		types[".ssf"] = IndigoFileType::SUBTITLE;
+		types[".srt"] = IndigoFileType::SUBTITLE;
+		types[".ssa"] = IndigoFileType::SUBTITLE;
+		types[".ass"] = IndigoFileType::SUBTITLE;
+	}
 }
 
 FileUtilities::~FileUtilities() {
@@ -35,4 +51,43 @@ std::list<Glib::ustring> FileUtilities::fileToPlaylist(Glib::ustring filePath) {
 	files.push_back(filePath);
 
 	return files;
+}
+Glib::ustring FileUtilities::fileToPath(Glib::ustring file) {
+	Glib::ustring files = file;
+	if (!Glib::file_test(file, Glib::FILE_TEST_EXISTS)) {
+		Glib::RefPtr<Gio::File> filets = Gio::File::create_for_uri(file);
+		if (filets->get_path().length() != 0) {
+			files = filets->get_path();
+		} else if (filets->get_uri().length() != 0) {
+			files = filets->get_uri();
+		}
+	}
+	return files;
+}
+std::list<IndigoFile*> FileUtilities::stringListToFiles(std::list<Glib::ustring> files, bool folders, int depth){
+	std::list<Glib::ustring>::iterator it;
+	Glib::ustring::size_type pos;
+	IndigoFileType::FileType ift;
+	std::list<IndigoFile*> fileList;
+
+	for(it = files.begin(); it != files.end(); it++){
+		ift = IndigoFileType::UNKNOWN;
+		pos = 0;
+		pos = it->find_last_of(".");
+		if(pos < it->size()){
+			if(types.find(Glib::ustring(*it, pos)) != types.end())
+				ift = types[Glib::ustring(*it, pos)];
+		}
+		if(ift == IndigoFileType::PLAYLIST){
+			//prekonvertuj na list stringov, pusti rekurziu a margni s existujucim
+		}else{
+			Glib::ustring path = fileToPath(*it);
+			if(path == "folder"){
+				//zmen priecinok a pokracuj reukrzivne
+			}else{
+				fileList.push_back(new IndigoFile(path, ift));
+			}
+		}
+	}
+	return fileList;
 }

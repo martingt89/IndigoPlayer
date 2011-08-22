@@ -27,8 +27,9 @@ private:
 public:
 	MyComboBox(Gtk::ComboBox* myBox);
 	virtual ~MyComboBox();
-	void pushBack(Glib::ustring);
-	void pushBack(Glib::ustring text, double value);
+	void pushBack(Glib::ustring, bool select = false);
+	void pushBack(Glib::ustring text, int value, bool select = false);
+	void pushBack(Glib::ustring text, double value, bool select = false);
 	void clear();
 	void addNone();
 	double getDoubleValue();

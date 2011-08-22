@@ -11,6 +11,7 @@ SavedData::SavedData() {
 	resX = 0;
 	resY = 0;
 	position = 0;
+	subPath = "";
 }
 
 SavedData::~SavedData() {
@@ -32,4 +33,10 @@ int SavedData::getY(){
 }
 double SavedData::getPosition(){
 	return position;
+}
+void SavedData::setSubtitle(Glib::ustring path){
+	subPath = path;
+}
+Glib::ustring  SavedData::getSubPath(){
+	return subPath;
 }

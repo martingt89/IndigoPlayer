@@ -7,23 +7,9 @@
 
 #include "IndigoFile.h"
 
-IndigoFile::IndigoFile(Glib::ustring path, bool trust) {
+IndigoFile::IndigoFile(Glib::ustring path, IndigoFileType::FileType type) {
 	filePath = path;
-//	play = false;
-//this->menu = menu;
-//if(Glib::file_test(path, Glib::FILE_TEST_EXISTS)){
-//	filePath = path;
-//}else{
-//	static Glib::RefPtr< Gio::File > file = Gio::File::create_for_uri (path);
-//	if(file->get_path().length() != 0){
-//		filePath = file->get_path();
-//	}else
-//		if(file->get_uri().length() != 0){
-//			filePath = file->get_uri();
-//		}else{
-//			filePath = path;
-//		}
-//	}
+	this->type = type;
 }
 IndigoFile::IndigoFile() {
 
@@ -55,4 +41,7 @@ int IndigoFile::getSubtitleDelayms(){
 }
 int IndigoFile::getSoundDelayms(){
 	return soundDelayms;
+}
+IndigoFileType::FileType IndigoFile::getType(){
+	return type;
 }

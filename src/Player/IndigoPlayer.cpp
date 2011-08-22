@@ -12,10 +12,11 @@
 IndigoPlayer::IndigoPlayer(PlayerWindow *playerWin) {
 	playerWindow = playerWin;
 	playerWindow->setListener(this);
-	mediaPackage = new StringAnalyze();
+	mediaPackage = new MediaPackage();
 	mplayer = new MplayerInterface(mediaPackage);
 	generator = new ScriptGenerator();
 	mediaPackage->message.connect(sigc::mem_fun(this, &IndigoPlayer::messageIncomming));
+	playSub = false;
 }
 void IndigoPlayer::setPlaylist(Playlist *playlist) {
 	this->playlist = playlist;
@@ -39,29 +40,41 @@ void IndigoPlayer::setThisOptions(ThisOptions* opt){
 	thisOptions->setPlayerInt(mplayer);
 }
 void IndigoPlayer::messageIncomming(){
-//	std::cout<<"Message"<<std::endl;
-	if(mediaPackage->getVariable("ID_LENGTH").size() != 0){
-		//std::cout<<"Length"<<std::endl;
-		std::stringstream ss;
-		ss << mediaPackage->getVariable("ID_LENGTH");
-		int duration = 0;
-		ss >> duration;
-		controlPanel->setDuration(duration);
+	if(mediaPackage->isVideoParamChange()){
+		if(mediaPackage->getVariable("ID_LENGTH").size() != 0){
+			controlPanel->setDuration(mediaPackage->getVariableAsInteger("ID_LENGTH"));
+		}
+		int h = mediaPackage->getVariableAsInteger("ID_VIDEO_HEIGHT");
+		int w = mediaPackage->getVariableAsInteger("ID_VIDEO_WIDTH");
+		if(h > 0 && w > 0)
+			videoBoard->setVideoResolution(w, h, true);
 	}
 	if(mediaPackage->getVariable("ANS_TIME_POSITION").size() != 0){
-		std::stringstream ss;
-		ss << mediaPackage->getVariable("ANS_TIME_POSITION");
-		double position = 0;
-		ss >> position;
-		controlPanel->setPosition((int)position);
+		controlPanel->setPosition(mediaPackage->getVariableAsInteger("ANS_TIME_POSITION"));
 	}
 	if(mediaPackage->getVariable("EXIT").size() != 0){
 		clearPlaying();
 		clickForward();
 	}
+	if(playSub){
+		int ret = mediaPackage->getValueFromSubtitlePath(subtitles);
+		if(ret != -1){
+			std::cout<<"SPUSTAM: "<<ret<<std::endl;
+			playSub = false;
+			mplayer->playSubtitles(ret);
+		}
+	}
 }
 void IndigoPlayer::addSubtitle(Glib::ustring file){
-
+	if(mplayer->isPlaying()){
+		thisOptions->addSubtitles(file, true);
+		playSubtitles(file);
+	}
+}
+void IndigoPlayer::playSubtitles(Glib::ustring sub){
+	mplayer->loadSubtitles(sub);
+	subtitles = sub;
+	playSub = true;
 }
 void IndigoPlayer::keyPressed(int control, int keyVal){
 //	std::cout<<control<<" "<<keyVal<<std::endl;

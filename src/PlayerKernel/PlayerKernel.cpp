@@ -8,7 +8,7 @@
 #include "PlayerKernel.h"
 #include <iostream>
 
-PlayerKernel::PlayerKernel(StringAnalyze *analyze) {
+PlayerKernel::PlayerKernel(MediaPackage *analyze) {
 	setInfo = false;
 	playing = false;
 	save = false;

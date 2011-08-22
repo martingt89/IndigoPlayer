@@ -17,13 +17,13 @@ int main(int argc, char *argv[]){
 	Glib::thread_init();
 	Gtk::Main kit(argc, argv);
 	std::list<Glib::ustring>::iterator listIter2;
+	std::list<Glib::ustring> files;
 	std::list<IndigoFile*> uris;
 	FileUtilities fu;
 	for (int i = 1; i < argc; i++) {
-		std::list<Glib::ustring> ma = fu.fileToPlaylist(std::string(argv[i]));
-		for(listIter2 = ma.begin(); listIter2 != ma.end(); listIter2++)
-			uris.push_back(new IndigoFile(*listIter2, true));
+		files.push_back(std::string(argv[i]));
 	}
+	uris = fu.stringListToFiles(files, true);
 	ConfigFile file(true);
 
 	GraphicLoader *gLoader = new GraphicLoader();
@@ -35,8 +35,6 @@ int main(int argc, char *argv[]){
 	player->setThisOptions(gLoader->getThisOptions());
 	if(uris.size()> 0)
 		player->addFiles(uris, true);
-
-	//Gtk::Main::run(*(gLoader->getPlayerWindow()));
 	Gtk::Main::run();
 	delete gLoader;
 	delete player;

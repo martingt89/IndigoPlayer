@@ -8,6 +8,8 @@
 #ifndef SAVEDDATA_H_
 #define SAVEDDATA_H_
 
+#include <glibmm/ustring.h>
+
 class SavedData {
 public:
 	SavedData();
@@ -17,10 +19,13 @@ public:
 	int getX();
 	int getY();
 	double getPosition();
+	void setSubtitle(Glib::ustring path);
+	Glib::ustring getSubPath();
 private:
 	int resX;
 	int resY;
 	int position;
+	Glib::ustring subPath;
 };
 
 #endif /* SAVEDDATA_H_ */

@@ -73,15 +73,9 @@ void OpenFileDialog::playOpenFileClicked() {
 			Glib::ustring warning = "You must choose minimal one file";
 			openFileWarningLabel->set_markup("<span color=\"red\">" + warning + "</span>");
 		} else {
-			std::list<Glib::ustring>::iterator listIterator;
-			std::list<Glib::ustring>::iterator listIter2;
 			std::list<IndigoFile*> finalFilesList;
 			FileUtilities fu;
-			for(listIterator = regularFiles.begin(); listIterator!= regularFiles.end(); listIterator++){
-				std::list<Glib::ustring> ma = fu.fileToPlaylist(*listIterator);
-				for(listIter2 = ma.begin(); listIter2 != ma.end(); listIter2++)
-					finalFilesList.push_back(new IndigoFile(*listIter2, true));
-			}
+			finalFilesList = fu.stringListToFiles(regularFiles, false);
 			signal->addFiles(finalFilesList, true);
 			this->hide();
 		}

@@ -23,6 +23,7 @@ public:
 	virtual ~ThisOptions();
 	void show();
 	void setPlayerInt(MplayerInterface* interface);
+	void addSubtitles(Glib::ustring, bool play);
 private:
 	void rotateChanged();
 	void leftRightClicked();

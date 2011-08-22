@@ -8,7 +8,7 @@
 #ifndef MPLAYERINTERFACE_H_
 #define MPLAYERINTERFACE_H_
 
-#include "StringAnalyze.h"
+#include "MediaPackage.h"
 #include "PlayerKernel.h"
 #include "ScriptGenerator.h"
 #include "../Files/IndigoFile.h"
@@ -16,7 +16,7 @@
 
 class MplayerInterface {
 public:
-	MplayerInterface(StringAnalyze* media);
+	MplayerInterface(MediaPackage* media);
 	virtual ~MplayerInterface();
 	void setGenerator(ScriptGenerator* gener);
 	bool play(IndigoFile* file);
@@ -36,8 +36,10 @@ public:
 	void applyFilters();
 	void crop(int a, int b, int c, int d);
 	void rotate(int deg);
+	void playSubtitles(int number);
+	void loadSubtitles(Glib::ustring file);
 private:
-	StringAnalyze* mediaPackage;
+	MediaPackage* mediaPackage;
 	PlayerKernel* kernel;
 	VideoFilters* filter;
 	bool isPlayNoPause;

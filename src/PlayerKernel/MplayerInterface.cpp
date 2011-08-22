@@ -7,7 +7,7 @@
 
 #include "MplayerInterface.h"
 
-MplayerInterface::MplayerInterface(StringAnalyze* media) {
+MplayerInterface::MplayerInterface(MediaPackage* media) {
 	mediaPackage = media;
 	kernel = new PlayerKernel(mediaPackage);
 	filter = new VideoFilters();
@@ -27,6 +27,13 @@ void MplayerInterface::setGenerator(ScriptGenerator* gener) {
 bool MplayerInterface::play(IndigoFile* file) {
 	isPlayNoPause = true;
 	return kernel->play(file);
+}
+void MplayerInterface::loadSubtitles(Glib::ustring file){
+	kernel->sendCommand("sub_load '"+file+"'\n");
+}
+void MplayerInterface::playSubtitles(int number){
+	kernel->sendCommand("sub_select "+Glib::ustring::format(number)+"\n");
+	mediaPackage->setAktualPlaySubtitles(number);
 }
 void MplayerInterface::applyFilters() {
 	if (kernel->isPlaying())

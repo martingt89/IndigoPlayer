@@ -62,12 +62,12 @@ PlayerWindow::~PlayerWindow() {
 	delete popupWindow;
 	delete capitalPopupVBox;
 }
-void PlayerWindow::quitWindow(){
-	if(playerSignals){
+void PlayerWindow::quitWindow() {
+	if (playerSignals) {
 		playerSignals->quit();
 	}
 }
-void PlayerWindow::popupShow(){
+void PlayerWindow::popupShow() {
 	panelHeight = popupWindow->get_height();
 	panelWidth = popupWindow->get_width();
 }
@@ -87,7 +87,7 @@ void PlayerWindow::switchPage(GtkNotebookPage* page, guint page_num) {
 	}
 }
 bool PlayerWindow::leavePopup(GdkEventCrossing* event) {
-	if(event->x < 0 || event->y < 0 || event->x > panelHeight || event->y > panelWidth)
+	if (event->x < 0 || event->y < 0 || event->x > panelHeight || event->y > panelWidth)
 		noHide = false;
 	return true;
 }
@@ -223,28 +223,20 @@ void PlayerWindow::dropFiles(const Glib::RefPtr<Gdk::DragContext>& context, int,
 		const Gtk::SelectionData& selection_data, guint, guint time) {
 	const int length = selection_data.get_length();
 	if ((length >= 0) && (selection_data.get_format() == 8)) {
-		std::vector<Glib::ustring> file_list;
-		file_list = selection_data.get_uris();
-//		if(file_list.size() == 0){
-//			test_for_subtitle()
-//		}
-		std::list<Glib::ustring>::iterator listIter2;
-		std::list<IndigoFile*> uris;
 		FileUtilities fu;
-		for (unsigned int i = 0; i < file_list.size(); i++) {
-			std::list<Glib::ustring> ma = fu.fileToPlaylist(file_list[i]);
-			for (listIter2 = ma.begin(); listIter2 != ma.end(); listIter2++) {
-				uris.push_back(new IndigoFile(*listIter2, true));
-			}
-		}
-		if (file_list.size() > 0 && playerSignals != 0)
+		std::list<IndigoFile*> uris;
+		uris = fu.stringListToFiles(selection_data.get_uris(), true);
+		if (uris.size() == 1 && (*uris.begin())->getType() == IndigoFileType::SUBTITLE) {
+			playerSignals->addSubtitle((*uris.begin())->getFilePath());
+		}else
+		if (uris.size() > 0 && playerSignals != 0)
 			playerSignals->addFiles(uris, vidListNotebook->get_current_page() != 1);
 	}
 	context->drag_finish(false, false, time);
 }
 bool PlayerWindow::keyPress(GdkEventKey* evt) {
-	if(vidListNotebook->get_current_page() == 0){
-		if(playerSignals)
+	if (vidListNotebook->get_current_page() == 0) {
+		if (playerSignals)
 			playerSignals->keyPressed(evt->state, evt->keyval);
 		return true;
 	}

@@ -55,6 +55,7 @@ public:
 	void quit();
 private:
 	void clearPlaying();
+	void playSubtitles(Glib::ustring sub);
 	PlayerWindow *playerWindow;
 	Playlist* playlist;
 	VideoBoard* videoBoard;
@@ -62,8 +63,10 @@ private:
 	ControlPanel* controlPanel;
 	MplayerInterface* mplayer;
 	ScriptGenerator* generator;
-	StringAnalyze* mediaPackage;
+	MediaPackage* mediaPackage;
 	ThisOptions* thisOptions;
+	bool playSub;
+	Glib::ustring subtitles;
 };
 
 #endif /* PLAYER_H_ */
