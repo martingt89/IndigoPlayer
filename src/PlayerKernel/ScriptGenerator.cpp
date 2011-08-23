@@ -117,7 +117,4 @@ void ScriptGenerator::getConfig(std::list<Glib::ustring> &parameters) {
 	}
 }
 //-noautosub
-//-sub file
 //-audiofile XX
-//-vf-add rotate=1
-//-flip

@@ -6,7 +6,7 @@
  */
 
 #include "MplayerInterface.h"
-
+#include <iostream>
 MplayerInterface::MplayerInterface(MediaPackage* media) {
 	mediaPackage = media;
 	kernel = new PlayerKernel(mediaPackage);
@@ -33,11 +33,16 @@ void MplayerInterface::loadSubtitles(Glib::ustring file){
 }
 void MplayerInterface::playSubtitles(int number){
 	kernel->sendCommand("sub_select "+Glib::ustring::format(number)+"\n");
+	std::cout<<"sub_select "+Glib::ustring::format(number)<<std::endl;
 	mediaPackage->setAktualPlaySubtitles(number);
 }
 void MplayerInterface::applyFilters() {
 	if (kernel->isPlaying())
 		kernel->rebootPlay();
+}
+void MplayerInterface::replayFile() {
+	if (kernel->isPlaying())
+		kernel->replay();
 }
 bool MplayerInterface::isPlaying() {
 	return kernel->isPlaying();

@@ -23,7 +23,8 @@ public:
 	virtual ~ThisOptions();
 	void show();
 	void setPlayerInt(MplayerInterface* interface);
-	void addSubtitles(Glib::ustring, bool play);
+	void stopPlaying();
+	void runPlaying();
 private:
 	void rotateChanged();
 	void leftRightClicked();
@@ -42,17 +43,6 @@ private:
 	void makrInit();
 	Gtk::Window* thisOptionsWindow;
 	Gtk::HScale* videoSpeed;
-	Gtk::Button* audioLoad;
-	Gtk::Button* subtitleLoad;
-	Gtk::SpinButton* audioDelay;
-	Gtk::SpinButton* subtitleDelay;
-	Gtk::ComboBox* videoStream;
-	Gtk::ComboBox* audioStream;
-	Gtk::ComboBox* subtitleStream;
-
-	MyComboBox* myVideoStream;
-	MyComboBox* myAudioStream;
-	MyComboBox* mySubtitleStream;
 
 	Gtk::ComboBox* rotate;
 	MyComboBox* myRotate;

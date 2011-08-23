@@ -38,6 +38,7 @@ public:
 	void rotate(int deg);
 	void playSubtitles(int number);
 	void loadSubtitles(Glib::ustring file);
+	void replayFile();
 private:
 	MediaPackage* mediaPackage;
 	PlayerKernel* kernel;

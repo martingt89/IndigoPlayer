@@ -230,3 +230,15 @@ void PlayerKernel::rebootPlay() {
 		childPid = -1;
 	}
 }
+void PlayerKernel::replay() {
+	if (isPlaying()) {
+		save = true;
+		savedData = stringAnalyze->getSavedData();
+		savedData.setPosition(0);
+		dprintf(toPlayer[1], "quit\n");
+		playing = false;
+		int status;
+		wait(&status);
+		childPid = -1;
+	}
+}

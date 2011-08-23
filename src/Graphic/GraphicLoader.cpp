@@ -28,6 +28,7 @@ GraphicLoader::GraphicLoader() {
 	videoBoard = new VideoBoard(refBuilder, playerWindow);
 	playlist = new PlaylistGraphic(refBuilder);
 	thisOptions = new ThisOptions(refBuilder);
+	thisOptionsLoad = new ThisOptionsLoad(refBuilder);
 }
 
 GraphicLoader::~GraphicLoader() {
@@ -50,4 +51,7 @@ PlayerWindow *GraphicLoader::getPlayerWindow(){
 }
 ThisOptions *GraphicLoader::getThisOptions(){
 	return thisOptions;
+}
+ThisOptionsLoad *GraphicLoader::getThisOptionsLoad(){
+	return thisOptionsLoad;
 }

@@ -29,6 +29,8 @@ public:
 	bool isVideoParamChange();
 	int getValueFromSubtitlePath(std::string path);
 	void setAktualPlaySubtitles(int number);
+	bool subtitleChanged();
+	std::list<Glib::ustring> getListSubtitles();
 private:
 	std::map<std::string, int> hashTable;
 	std::map<std::string, std::string> valueTable;
@@ -37,6 +39,7 @@ private:
 	std::list<std::pair<int, std::string> > loadedSubtitles;
 	int lastNumber;
 	std::string aktualPlaySubtitles;
+	bool subChanged;
 };
 
 #endif /* STRINGANALYZE_H_ */

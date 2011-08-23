@@ -37,6 +37,7 @@ public:
 	void sendCommand(Glib::ustring command);
 	bool playChapter(int chap);
 	void rebootPlay();
+	void replay();
 private:
 	void listener();
 	void mplayerError();

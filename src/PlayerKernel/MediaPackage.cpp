@@ -20,6 +20,7 @@ MediaPackage::MediaPackage() {
 	hashTable["ID_FILE_SUB_ID"] = 5;
 	hashTable["ID_FILE_SUB_FILENAME"] = 6;
 	changeVideoParam = false;
+	subChanged = false;
 	lastNumber = 0;
 	aktualPlaySubtitles = "";
 }
@@ -47,19 +48,24 @@ int MediaPackage::analyze(std::string text) {
 		}
 		if (vauleI == 3)
 			message();
-		if (vauleI == 5)
+		if (vauleI == 5){
 			lastNumber = atoi(value.c_str());
+		}
 		if (vauleI == 6) {
 			std::pair<int, std::string> pair(lastNumber, value);
 			lock.lock();
 			loadedSubtitles.push_back(pair);
 			lock.unlock();
+			subChanged = true;
 		}
 	}
 	return 0;
 }
 void MediaPackage::clear() {
+	lock.lock();
 	valueTable.clear();
+	loadedSubtitles.clear();
+	lock.unlock();
 	changeVideoParam = true;
 }
 void MediaPackage::quitPlay() {
@@ -94,10 +100,12 @@ bool MediaPackage::isVideoParamChange() {
 	return is;
 }
 int MediaPackage::getValueFromSubtitlePath(std::string path) {
+	std::cerr<<"Potrebujeme: "<<path<<std::endl;
 	int find = -1;
 	std::list<std::pair<int, std::string> >::iterator it;
 	lock.lock();
 	for (it = loadedSubtitles.begin(); it != loadedSubtitles.end(); it++) {
+		std::cerr<<"Hladam: "<<it->second<<" "<<it->first<<std::endl;
 		if (it->second == path) {
 			find = it->first;
 			break;
@@ -107,7 +115,7 @@ int MediaPackage::getValueFromSubtitlePath(std::string path) {
 	return find;
 }
 void MediaPackage::setAktualPlaySubtitles(int number) {
-	if(number == -1){
+	if (number == -1) {
 		aktualPlaySubtitles = "";
 		return;
 	}
@@ -120,4 +128,19 @@ void MediaPackage::setAktualPlaySubtitles(int number) {
 		}
 	}
 	lock.unlock();
+}
+bool MediaPackage::subtitleChanged() {
+	bool tmp = subChanged;
+	subChanged = false;
+	return tmp;
+}
+std::list<Glib::ustring> MediaPackage::getListSubtitles() {
+	std::list<Glib::ustring> list;
+	std::list<std::pair<int, std::string> >::iterator it;
+	lock.lock();
+	for (it = loadedSubtitles.begin(); it != loadedSubtitles.end(); it++) {
+		list.push_back(it->second);
+	}
+	lock.unlock();
+	return list;
 }

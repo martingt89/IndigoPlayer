@@ -13,13 +13,6 @@ ThisOptions::ThisOptions(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 	mplayerInterface = NULL;
 	refGlade->get_widget("ThisOptionsWindow", thisOptionsWindow);
 	refGlade->get_widget("VideoSpeed", videoSpeed);
-	refGlade->get_widget("AudioLoad", audioLoad);
-	refGlade->get_widget("SubtitleLoad", subtitleLoad);
-	refGlade->get_widget("AudioDelay", audioDelay);
-	refGlade->get_widget("SubtitleDelay", subtitleDelay);
-	refGlade->get_widget("VideoStream", videoStream);
-	refGlade->get_widget("AudioStream", audioStream);
-	refGlade->get_widget("SubtitleStream", subtitleStream);
 
 	refGlade->get_widget("rotateComboBox", rotate);
 	refGlade->get_widget("LeftRight", leftRight);
@@ -37,15 +30,8 @@ ThisOptions::ThisOptions(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 	refGlade->get_widget("SaturationScale", saturation);
 
 	myRotate = new MyComboBox(rotate);
-	myVideoStream = new MyComboBox(videoStream);
-	myAudioStream = new MyComboBox(audioStream);
-	mySubtitleStream = new MyComboBox(subtitleStream);
 
-	myRotate->pushBack("0", 0 ,true);
-	myRotate->pushBack("90", 90);
-	myRotate->pushBack("180", 180);
-	myRotate->pushBack("270", 270);
-	mySubtitleStream->addNone();
+
 	makrInit();
 
 	videoSpeed->set_adjustment(videoSpeedAdj);
@@ -71,12 +57,27 @@ ThisOptions::ThisOptions(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 void ThisOptions::show() {
 	thisOptionsWindow->show();
 }
+void ThisOptions::stopPlaying(){
+	myRotate->clear();
+	upSpin->set_sensitive(false);
+	downSpin->set_sensitive(false);
+	leftSpin->set_sensitive(false);
+	rightSpin->set_sensitive(false);
+}
+void ThisOptions::runPlaying(){
+	myRotate->pushBack("0", 0 ,true);
+	myRotate->pushBack("90", 90);
+	myRotate->pushBack("180", 180);
+	myRotate->pushBack("270", 270);
+	upSpin->set_sensitive(true);
+	downSpin->set_sensitive(true);
+	leftSpin->set_sensitive(true);
+	rightSpin->set_sensitive(true);
+}
 void ThisOptions::setPlayerInt(MplayerInterface* interface) {
 	mplayerInterface = interface;
 }
-void ThisOptions::addSubtitles(Glib::ustring path, bool play){
-	mySubtitleStream->pushBack(path, play);
-}
+
 void ThisOptions::makrInit() {
 	videoSpeed->add_mark(0, Gtk::POS_LEFT, "0,25x");
 	videoSpeed->add_mark(1, Gtk::POS_LEFT, "0,50x");

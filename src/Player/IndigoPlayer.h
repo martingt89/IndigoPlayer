@@ -14,6 +14,7 @@
 #include "../Graphic/OpenFileDialog.h"
 #include "../Graphic/PlayerWindow.h"
 #include "../Graphic/ThisOptions.h"
+#include "../Graphic/ThisOptionsLoad.h"
 #include "../PlayerKernel/MplayerInterface.h"
 #include "../PlayerKernel/ScriptGenerator.h"
 
@@ -32,6 +33,7 @@ public:
 	void setOpenDialog(OpenFileDialog* dialog);
 	void setControlPanel(ControlPanel* control);
 	void setThisOptions(ThisOptions* opt);
+	void setThisOptionsLoad(ThisOptionsLoad* optLoad);
 	void messageIncomming();
 	void addSubtitle(Glib::ustring file);
 	void keyPressed(int control, int keyVal);
@@ -65,7 +67,9 @@ private:
 	ScriptGenerator* generator;
 	MediaPackage* mediaPackage;
 	ThisOptions* thisOptions;
+	ThisOptionsLoad* thisOptionsLoad;
 	bool playSub;
+	bool firstLog;
 	Glib::ustring subtitles;
 };
 

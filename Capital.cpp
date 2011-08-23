@@ -33,6 +33,7 @@ int main(int argc, char *argv[]){
 	player->setPlaylist(new Playlist(gLoader->getPlaylistGraphic()));
 	player->setOpenDialog(gLoader->getOpenDialog());
 	player->setThisOptions(gLoader->getThisOptions());
+	player->setThisOptionsLoad(gLoader->getThisOptionsLoad());
 	if(uris.size()> 0)
 		player->addFiles(uris, true);
 	Gtk::Main::run();
