@@ -20,7 +20,21 @@ FileChoosers::~FileChoosers() {
 
 Glib::ustring FileChoosers::getSubtitleFile() {
 	fileOpen->set_title("Select subtitle file");
-//	fileOpen->set
+	int result = fileOpen->run();
+	switch (result) {
+	case (Gtk::RESPONSE_OK): {
+		return fileOpen->get_filename();
+	}
+	case (Gtk::RESPONSE_CANCEL): {
+		return "";
+	}
+	default: {
+		return "";
+	}
+	}
+}
+Glib::ustring FileChoosers::getSoundFile() {
+	fileOpen->set_title("Select sound file");
 	int result = fileOpen->run();
 	switch (result) {
 	case (Gtk::RESPONSE_OK): {

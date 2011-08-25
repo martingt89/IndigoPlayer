@@ -36,6 +36,8 @@ public:
 	void applyFilters();
 	void crop(int a, int b, int c, int d);
 	void rotate(int deg);
+	void playAudio(int number);
+	void playAudioPath(Glib::ustring path);
 	void playSubtitles(int number);
 	void loadSubtitles(Glib::ustring file);
 	void replayFile();

@@ -58,11 +58,13 @@ bool PlayerKernel::playChapter(int chap) {
 	ll[i] = NULL;
 	if (pipe(fromPlayer) == -1) {
 		//LOGGING TODO
+		std::cerr<<"SEVERE: Cannot creat Pipe!!!"<<std::endl;
 		return false;
 	}
 	if (pipe(toPlayer) == -1) {
 		close(fromPlayer[0]);
 		close(fromPlayer[1]);
+		std::cerr<<"SEVERE: Cannot creat Pipe!!!"<<std::endl;
 		//LOGGING TODO
 		return false;
 	}
@@ -71,33 +73,49 @@ bool PlayerKernel::playChapter(int chap) {
 		close(fromPlayer[1]);
 		close(toPlayer[0]);
 		close(toPlayer[1]);
+		std::cerr<<"SEVERE: Cannot creat Pipe!!!"<<std::endl;
 		//LOGGING TODO
 		return false;
 	}
+	int hh[2];
+	pipe(hh);
 	childPid = fork();
+	if(childPid == -1) {
+		std::cerr<<"SEVERE: Cannot fork process!!!"<<std::endl;
+	}
 	if (childPid == 0) { //child
 		close(1);
 		dup(fromPlayer[1]);
+		close(0);
+		dup(toPlayer[0]);
 		close(fromPlayer[0]);
 		close(fromPlayer[1]);
 		close(toPlayer[1]);
-		close(0);
-		dup(toPlayer[0]);
 		close(toPlayer[0]);
 		close(2);
 		dup(fromPlayerErr[1]);
 		close(fromPlayerErr[0]);
 		close(fromPlayerErr[1]);
+//		close(hh[0]);
+//		close(hh[1]);
 		execv(ll[0], ll);
+		std::cerr<<"SEVERE: Cannot start MPlayer!!!"<<std::endl;
 		exit(0);
 	}
 	if (childPid > 0) {
+		std::cout<<"INFO: childPid > 0"<<std::endl;
 		close(fromPlayer[1]);
 		close(toPlayer[0]);
+//		close(hh[1]);
+//		char f;
+//		int a;
+//		while((a =read(hh[0], &f, 1)) > 0);
 		close(fromPlayerErr[1]);
+		std::cout<<"Start threads"<<std::endl;
 		thread = Glib::Thread::create(sigc::mem_fun(*this, &PlayerKernel::listener), false);
-		errThread = Glib::Thread::create(sigc::mem_fun(*this, &PlayerKernel::mplayerError), false);
+		errThread = Glib::Thread::create(sigc::mem_fun(*this, &PlayerKernel::mplayerError), true);
 		Glib::signal_timeout().connect(sigc::mem_fun(*this, &PlayerKernel::aktualTime), 300);
+		std::cout<<"INFO: Start playing!!!"<<std::endl;
 		return true;
 	}
 	return true;
@@ -139,6 +157,7 @@ bool PlayerKernel::aktualTime() {
 	return true;
 }
 void PlayerKernel::mplayerError() {
+	std::cout<<"INFO: Starting error read"<<std::endl;
 	char buf[1024];
 	int n = 0, odsad = 0, i = 0;
 	std::string ss = "";
@@ -157,6 +176,7 @@ void PlayerKernel::mplayerError() {
 		ss += buf + odsad;
 	}
 	close(fromPlayerErr[0]);
+	std::cout<<"INFO: Closing error read"<<std::endl;
 }
 void PlayerKernel::listener() {
 	char buf[1024];
@@ -187,6 +207,7 @@ void PlayerKernel::listener() {
 	close(fromPlayer[0]);
 	playing = false;
 	childPid = -1;
+	errThread->join();
 	playNextChapter();
 }
 
@@ -228,6 +249,8 @@ void PlayerKernel::rebootPlay() {
 		int status;
 		wait(&status);
 		childPid = -1;
+		std::cout<<"To nie je mozne"<<std::endl;
+
 	}
 }
 void PlayerKernel::replay() {

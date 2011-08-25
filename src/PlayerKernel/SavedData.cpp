@@ -12,6 +12,9 @@ SavedData::SavedData() {
 	resY = 0;
 	position = 0;
 	subPath = "";
+	audioPath = "";
+	subID = -1;
+	audioID = -1;
 }
 
 SavedData::~SavedData() {
@@ -34,9 +37,28 @@ int SavedData::getY(){
 double SavedData::getPosition(){
 	return position;
 }
-void SavedData::setSubtitle(Glib::ustring path){
+void SavedData::setSubtitlePath(Glib::ustring path){
 	subPath = path;
 }
-Glib::ustring  SavedData::getSubPath(){
+void SavedData::setSubtitleID(int id){
+	subID = id;
+}
+void SavedData::setAudioPath(Glib::ustring path){
+	audioPath = path;
+}
+void SavedData::setAudioID(int id){
+	audioID = id;
+}
+//-------------------------------------------------
+int SavedData::getSubID(){
+	return subID;
+}
+Glib::ustring SavedData::getSubPath(){
 	return subPath;
+}
+int SavedData::getAudioID(){
+	return audioID;
+}
+Glib::ustring SavedData::getAudioPath(){
+	return audioPath;
 }

@@ -17,7 +17,8 @@ IndigoPlayer::IndigoPlayer(PlayerWindow *playerWin) {
 	generator = new ScriptGenerator();
 	mediaPackage->message.connect(sigc::mem_fun(this, &IndigoPlayer::messageIncomming));
 	playSub = false;
-	firstLog = false;
+	firstLogSub = false;
+	firstLogAud = false;
 }
 void IndigoPlayer::setPlaylist(Playlist *playlist) {
 	this->playlist = playlist;
@@ -53,7 +54,7 @@ void IndigoPlayer::messageIncomming() {
 		int h = mediaPackage->getVariableAsInteger("ID_VIDEO_HEIGHT");
 		int w = mediaPackage->getVariableAsInteger("ID_VIDEO_WIDTH");
 		if (h > 0 && w > 0)
-			videoBoard->setVideoResolution(w, h, true);
+			videoBoard->setVideoResolution(w, h, false);
 	}
 	if (mediaPackage->getVariable("ANS_TIME_POSITION").size() != 0) {
 		controlPanel->setPosition(mediaPackage->getVariableAsInteger("ANS_TIME_POSITION"));
@@ -62,12 +63,20 @@ void IndigoPlayer::messageIncomming() {
 		clearPlaying();
 		clickForward();
 	}
-	if(mediaPackage->subtitleChanged()){
-		if(firstLog){
-			firstLog = false;
+	if (mediaPackage->subtitleChanged()) {
+		if (firstLogSub) {
+			firstLogSub = false;
 			thisOptionsLoad->addSubtitleList(mediaPackage->getListSubtitles(), true);
-		}else{
+		} else {
 			thisOptionsLoad->addSubtitleList(mediaPackage->getListSubtitles(), false);
+		}
+	}
+	if (mediaPackage->audioChanged()) {
+		if (firstLogAud) {
+			firstLogAud = false;
+			thisOptionsLoad->addAudioList(mediaPackage->getListAudios(), true);
+		} else {
+			thisOptionsLoad->addAudioList(mediaPackage->getListAudios(), false);
 		}
 	}
 	if (playSub) {
@@ -87,17 +96,28 @@ void IndigoPlayer::addSubtitle(Glib::ustring file) {
 void IndigoPlayer::playSubtitles(Glib::ustring sub) {
 	if (sub.size() > 0) {
 		int ret = mediaPackage->getValueFromSubtitlePath(sub);
-		if(ret == -1){
+		if (ret == -1) {
 			mplayer->loadSubtitles(sub);
 			subtitles = sub;
 			playSub = true;
-		}else{
+		} else {
 			mplayer->playSubtitles(ret);
 		}
 	} else {
 		mplayer->playSubtitles(-1);
 	}
 }
+void IndigoPlayer::playAudio(Glib::ustring name) {
+	if (name.size() > 0) {
+		int ret = mediaPackage->getValueFromAudioText(name);
+		if (ret == -1) {
+			mplayer->playAudioPath(name);
+		} else {
+			mplayer->playAudio(ret);
+		}
+	}
+}
+
 void IndigoPlayer::keyPressed(int control, int keyVal) {
 //	std::cout<<control<<" "<<keyVal<<std::endl;
 }
@@ -128,7 +148,8 @@ void IndigoPlayer::playFile(IndigoFile* file) {
 			playerWindow->setWindowTitle(file->getName());
 			thisOptions->runPlaying();
 			thisOptionsLoad->runPlaying();
-			firstLog = true;
+			firstLogSub = true;
+			firstLogAud = true;
 		} else {
 			//asi nejake logy
 		}

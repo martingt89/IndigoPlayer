@@ -14,7 +14,7 @@
 #include <gtkmm/combobox.h>
 #include "../MyWidget/MyComboBox.h"
 #include "../Interfaces/PlayerSignals.h"
-#include "FileChoosers.h"
+#include "../MyWidget/FileChoosers.h"
 #include <list>
 class ThisOptionsLoad {
 public:
@@ -22,12 +22,15 @@ public:
 	virtual ~ThisOptionsLoad();
 	void addSubtitles(Glib::ustring, bool play);
 	void addSubtitleList(std::list<Glib::ustring> files, bool firstShow = false);
+	void addAudioList(std::list<Glib::ustring> files, bool firstShow = false);
 	void setListener(PlayerSignals *sig);
 	void runPlaying();
 	void stopPlaying();
 private:
 	void subStraemChanged();
 	void subButtonClicked();
+	void audButtonClicked();
+	void audStraemChanged();
 	Gtk::Button* audioLoad;
 	Gtk::Button* subtitleLoad;
 	Gtk::SpinButton* audioDelay;

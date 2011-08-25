@@ -34,6 +34,7 @@ public:
 	virtual void addFiles(std::list<IndigoFile*> files,  bool play) = 0;
 	virtual void addSubtitle(Glib::ustring file) = 0;
 	virtual void playSubtitles(Glib::ustring file) = 0;
+	virtual void playAudio(Glib::ustring name) = 0;
 
 	virtual void keyPressed(int control, int keyVal) = 0;
 };

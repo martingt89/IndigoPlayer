@@ -27,6 +27,7 @@ public:
 	void setControlPanel(ControlPanel* panel);
 	void setVideoFilters(VideoFilters* filters);
 private:
+	void getVideoSavedData(std::list<Glib::ustring> &parameters, SavedData data);
 	void getFromControlPanel(std::list<Glib::ustring> &parameters);
 	void getFromVideoFilters(std::list<Glib::ustring> &parameters, bool load, SavedData data);
 	void getVideoBoard(std::list<Glib::ustring> &parameters);

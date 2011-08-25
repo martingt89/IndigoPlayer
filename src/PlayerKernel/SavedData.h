@@ -19,13 +19,25 @@ public:
 	int getX();
 	int getY();
 	double getPosition();
-	void setSubtitle(Glib::ustring path);
+	//::::::::::::::::::::::::::::::::::::::::::
+	void setSubtitlePath(Glib::ustring path);
+	void setSubtitleID(int id);
+	void setAudioPath(Glib::ustring path);
+	void setAudioID(int id);
+	//::::::::::::::::::::::::::::::::::::::::::
+	int getSubID();
 	Glib::ustring getSubPath();
+	int getAudioID();
+	Glib::ustring getAudioPath();
+	//::::::::::::::::::::::::::::::::::::::::::
 private:
 	int resX;
 	int resY;
 	int position;
 	Glib::ustring subPath;
+	Glib::ustring audioPath;
+	int subID;
+	int audioID;
 };
 
 #endif /* SAVEDDATA_H_ */

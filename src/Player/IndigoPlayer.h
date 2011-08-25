@@ -58,6 +58,7 @@ public:
 private:
 	void clearPlaying();
 	void playSubtitles(Glib::ustring sub);
+	void playAudio(Glib::ustring name);
 	PlayerWindow *playerWindow;
 	Playlist* playlist;
 	VideoBoard* videoBoard;
@@ -69,7 +70,8 @@ private:
 	ThisOptions* thisOptions;
 	ThisOptionsLoad* thisOptionsLoad;
 	bool playSub;
-	bool firstLog;
+	bool firstLogSub;
+	bool firstLogAud;
 	Glib::ustring subtitles;
 };
 

@@ -31,12 +31,10 @@ ThisOptions::ThisOptions(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 
 	myRotate = new MyComboBox(rotate);
 
-
 	makrInit();
 
 	videoSpeed->set_adjustment(videoSpeedAdj);
 	videoSpeedAdj.signal_value_changed().connect(sigc::mem_fun(this, &ThisOptions::videoSpeedChanged));
-
 	leftRight->signal_toggled().connect(sigc::mem_fun(this, &ThisOptions::leftRightClicked));
 	upDown->signal_toggled().connect(sigc::mem_fun(this, &ThisOptions::upDownClicked));
 	upSpin->signal_value_changed().connect(sigc::mem_fun(this, &ThisOptions::upSpinClicked));
@@ -63,6 +61,8 @@ void ThisOptions::stopPlaying(){
 	downSpin->set_sensitive(false);
 	leftSpin->set_sensitive(false);
 	rightSpin->set_sensitive(false);
+	videoSpeed->set_sensitive(false);
+	useCropVideo->set_sensitive(false);
 }
 void ThisOptions::runPlaying(){
 	myRotate->pushBack("0", 0 ,true);
@@ -73,6 +73,8 @@ void ThisOptions::runPlaying(){
 	downSpin->set_sensitive(true);
 	leftSpin->set_sensitive(true);
 	rightSpin->set_sensitive(true);
+	videoSpeed->set_sensitive(true);
+	useCropVideo->set_sensitive(true);
 }
 void ThisOptions::setPlayerInt(MplayerInterface* interface) {
 	mplayerInterface = interface;

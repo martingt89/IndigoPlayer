@@ -74,9 +74,15 @@ int MyComboBox::getOrder() {
 	}
 	return -1;
 }
-void MyComboBox::addNone() {
+//void MyComboBox::addNone() {
+//	Gtk::TreeModel::Row row = *(refTreeModel->append());
+//	row[columnsModel.colText] = "None";
+//	row[columnsModel.colId] = -1;
+//	comboBox->set_active(0);
+//}
+void MyComboBox::addDefault(Glib::ustring text, int value) {
 	Gtk::TreeModel::Row row = *(refTreeModel->append());
-	row[columnsModel.colText] = "None";
-	row[columnsModel.colId] = -1;
+	row[columnsModel.colText] = text;
+	row[columnsModel.colId] = value;
 	comboBox->set_active(0);
 }

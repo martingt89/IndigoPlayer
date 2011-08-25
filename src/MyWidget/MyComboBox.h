@@ -31,7 +31,8 @@ public:
 	void pushBack(Glib::ustring text, int value, bool select = false);
 	void pushBack(Glib::ustring text, double value, bool select = false);
 	void clear();
-	void addNone();
+//	void addNone();
+	void addDefault(Glib::ustring text, int value=-1);
 	double getDoubleValue();
 	Glib::ustring getStringValue();
 	int getOrder();

@@ -33,8 +33,19 @@ void MplayerInterface::loadSubtitles(Glib::ustring file){
 }
 void MplayerInterface::playSubtitles(int number){
 	kernel->sendCommand("sub_select "+Glib::ustring::format(number)+"\n");
-	std::cout<<"sub_select "+Glib::ustring::format(number)<<std::endl;
-	mediaPackage->setAktualPlaySubtitles(number);
+	if(mediaPackage->isOriginalStream(number)){
+		mediaPackage->setAktualPlaySubtitles(number);
+	}else{
+		mediaPackage->setAktualPlaySubtitles(mediaPackage->getPathOfStream(number));
+	}
+}
+void MplayerInterface::playAudio(int number){
+	kernel->sendCommand("switch_audio "+Glib::ustring::format(number)+"\n");
+//	mediaPackage->setAktualPlayAudio(number);
+}
+void MplayerInterface::playAudioPath(Glib::ustring path){
+//	mediaPackage->setAktualPlayAudio(path);
+//	applyFilters();
 }
 void MplayerInterface::applyFilters() {
 	if (kernel->isPlaying())

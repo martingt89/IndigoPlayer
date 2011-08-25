@@ -15,6 +15,7 @@ public:
 	FileChoosers();
 	virtual ~FileChoosers();
 	Glib::ustring getSubtitleFile();
+	Glib::ustring getSoundFile();
 private:
 	 Gtk::FileChooserDialog* fileOpen;
 };

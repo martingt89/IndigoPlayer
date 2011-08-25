@@ -19,10 +19,16 @@ MediaPackage::MediaPackage() {
 	hashTable["ID_EXIT"] = 2;
 	hashTable["ID_FILE_SUB_ID"] = 5;
 	hashTable["ID_FILE_SUB_FILENAME"] = 6;
+	hashTable["ID_AUDIO_ID"] = 7;
+	hashTable["ID_SUBTITLE_ID"] = 5;
 	changeVideoParam = false;
 	subChanged = false;
-	lastNumber = 0;
-	aktualPlaySubtitles = "";
+	audChanged = false;
+	unknownCounter = 0;
+	lastNumberSubtitle = 0;
+	lastNumberAudio = 0;
+	aktualPlaySubtitles = -1;
+	aktualPlaySubtitlesStr = "";
 }
 
 MediaPackage::~MediaPackage() {
@@ -48,16 +54,39 @@ int MediaPackage::analyze(std::string text) {
 		}
 		if (vauleI == 3)
 			message();
-		if (vauleI == 5){
-			lastNumber = atoi(value.c_str());
+		if (vauleI == 5) {
+			lastNumberSubtitle = atoi(value.c_str());
 		}
 		if (vauleI == 6) {
-			std::pair<int, std::string> pair(lastNumber, value);
 			lock.lock();
-			loadedSubtitles.push_back(pair);
+			loadedSubtitles.push_back(std::make_pair(lastNumberSubtitle, StreamInfo(value, false)));
 			lock.unlock();
 			subChanged = true;
 		}
+		if (vauleI == 7) {
+			lastNumberAudio = atoi(value.c_str());
+		}
+	}
+	if (Glib::ustring(identifier, 0, 7) == "ID_SID_") {
+		if (value == "und") {
+			value = "Unknown";
+		}
+		lock.lock();
+		loadedSubtitles.push_back(std::make_pair(lastNumberSubtitle, StreamInfo(value, true)));
+		lock.unlock();
+		subChanged = true;
+	}
+	if (Glib::ustring(identifier, 0, 7) == "ID_AID_") {
+		if (value == "und") {
+			value = "Unknown ";
+		}
+		if (lastNumberAudio == 0) {
+			value = value + " - Original";
+		}
+		lock.lock();
+		loadedAudio.push_back(std::make_pair(lastNumberAudio, value));
+		lock.unlock();
+		audChanged = true;
 	}
 	return 0;
 }
@@ -65,8 +94,11 @@ void MediaPackage::clear() {
 	lock.lock();
 	valueTable.clear();
 	loadedSubtitles.clear();
+	loadedAudio.clear();
 	lock.unlock();
 	changeVideoParam = true;
+	subChanged = false;
+	audChanged = false;
 }
 void MediaPackage::quitPlay() {
 	lock.lock();
@@ -91,7 +123,9 @@ SavedData MediaPackage::getSavedData() {
 			atoi(valueTable["ID_VIDEO_HEIGHT"].c_str()));
 	data.setPosition(atof(valueTable["ANS_TIME_POSITION"].c_str()));
 	lock.unlock();
-	data.setSubtitle(aktualPlaySubtitles);
+	data.setSubtitleID(aktualPlaySubtitles);
+	data.setSubtitlePath(aktualPlaySubtitlesStr);
+//	data.setAudio(aktualPlayAudio);
 	return data;
 }
 bool MediaPackage::isVideoParamChange() {
@@ -100,13 +134,24 @@ bool MediaPackage::isVideoParamChange() {
 	return is;
 }
 int MediaPackage::getValueFromSubtitlePath(std::string path) {
-	std::cerr<<"Potrebujeme: "<<path<<std::endl;
+	int find = -1;
+	std::list<std::pair<int, StreamInfo> >::iterator it;
+	lock.lock();
+	for (it = loadedSubtitles.begin(); it != loadedSubtitles.end(); it++) {
+		if ((it->second).name == path) {
+			find = it->first;
+			break;
+		}
+	}
+	lock.unlock();
+	return find;
+}
+int MediaPackage::getValueFromAudioText(std::string text) {
 	int find = -1;
 	std::list<std::pair<int, std::string> >::iterator it;
 	lock.lock();
-	for (it = loadedSubtitles.begin(); it != loadedSubtitles.end(); it++) {
-		std::cerr<<"Hladam: "<<it->second<<" "<<it->first<<std::endl;
-		if (it->second == path) {
+	for (it = loadedAudio.begin(); it != loadedAudio.end(); it++) {
+		if (it->second == text) {
 			find = it->first;
 			break;
 		}
@@ -115,15 +160,63 @@ int MediaPackage::getValueFromSubtitlePath(std::string path) {
 	return find;
 }
 void MediaPackage::setAktualPlaySubtitles(int number) {
+	aktualPlaySubtitles = number;
+	aktualPlaySubtitlesStr = "";
+
+//	std::list<std::pair<int, StreamInfo> >::iterator it;
+//	lock.lock();
+//	for (it = loadedSubtitles.begin(); it != loadedSubtitles.end(); it++) {
+//		if (it->first == number) {
+////			aktualPlaySubtitlesStr = it->second.name;
+//			aktualPlaySubtitles = -1;
+//			break;
+//		}
+//	}
+//	lock.unlock();
+}
+void MediaPackage::setAktualPlaySubtitles(std::string path){
+	aktualPlaySubtitles = -1;
+	aktualPlaySubtitlesStr = path;
+}
+bool MediaPackage::isOriginalStream(int number) {
+	if (number == -1)
+		return true;
+	std::list<std::pair<int, StreamInfo> >::iterator it;
+	lock.lock();
+	for (it = loadedSubtitles.begin(); it != loadedSubtitles.end(); it++) {
+		if (it->first == number) {
+			lock.unlock();
+		//	std::cout<<"Inside: "<<it->second.inside<<std::endl;
+			return it->second.inside;
+		}
+	}
+	lock.unlock();
+	return false;
+}
+std::string MediaPackage::getPathOfStream(int number) {
+	if (number == -1)
+		return "";
+	std::list<std::pair<int, StreamInfo> >::iterator it;
+	lock.lock();
+	for (it = loadedSubtitles.begin(); it != loadedSubtitles.end(); it++) {
+		if (it->first == number) {
+			lock.unlock();
+			return it->second.name;
+		}
+	}
+	lock.unlock();
+	return "";
+}
+void MediaPackage::setAktualPlayAudio(int number) {
 	if (number == -1) {
-		aktualPlaySubtitles = "";
+		aktualPlayAudio = "";
 		return;
 	}
 	std::list<std::pair<int, std::string> >::iterator it;
 	lock.lock();
-	for (it = loadedSubtitles.begin(); it != loadedSubtitles.end(); it++) {
+	for (it = loadedAudio.begin(); it != loadedAudio.end(); it++) {
 		if (it->first == number) {
-			aktualPlaySubtitles = it->second;
+			aktualPlayAudio = it->second;
 			break;
 		}
 	}
@@ -134,11 +227,26 @@ bool MediaPackage::subtitleChanged() {
 	subChanged = false;
 	return tmp;
 }
+bool MediaPackage::audioChanged() {
+	bool tmp = audChanged;
+	audChanged = false;
+	return tmp;
+}
 std::list<Glib::ustring> MediaPackage::getListSubtitles() {
+	std::list<Glib::ustring> list;
+	std::list<std::pair<int, StreamInfo> >::iterator it;
+	lock.lock();
+	for (it = loadedSubtitles.begin(); it != loadedSubtitles.end(); it++) {
+		list.push_back(it->second.name);
+	}
+	lock.unlock();
+	return list;
+}
+std::list<Glib::ustring> MediaPackage::getListAudios() {
 	std::list<Glib::ustring> list;
 	std::list<std::pair<int, std::string> >::iterator it;
 	lock.lock();
-	for (it = loadedSubtitles.begin(); it != loadedSubtitles.end(); it++) {
+	for (it = loadedAudio.begin(); it != loadedAudio.end(); it++) {
 		list.push_back(it->second);
 	}
 	lock.unlock();
