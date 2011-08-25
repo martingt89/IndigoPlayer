@@ -33,7 +33,7 @@ void MplayerInterface::loadSubtitles(Glib::ustring file){
 }
 void MplayerInterface::playSubtitles(int number){
 	kernel->sendCommand("sub_select "+Glib::ustring::format(number)+"\n");
-	if(mediaPackage->isOriginalStream(number)){
+	if(mediaPackage->isOriginalSubtitleStream(number)){
 		mediaPackage->setAktualPlaySubtitles(number);
 	}else{
 		mediaPackage->setAktualPlaySubtitles(mediaPackage->getPathOfStream(number));
@@ -41,11 +41,11 @@ void MplayerInterface::playSubtitles(int number){
 }
 void MplayerInterface::playAudio(int number){
 	kernel->sendCommand("switch_audio "+Glib::ustring::format(number)+"\n");
-//	mediaPackage->setAktualPlayAudio(number);
+	mediaPackage->setAktualPlayAudio(number);
 }
 void MplayerInterface::playAudioPath(Glib::ustring path){
-//	mediaPackage->setAktualPlayAudio(path);
-//	applyFilters();
+	mediaPackage->setAktualPlayAudio(path);
+	applyFilters();
 }
 void MplayerInterface::applyFilters() {
 	if (kernel->isPlaying())

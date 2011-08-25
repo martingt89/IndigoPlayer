@@ -7,6 +7,7 @@
 
 #include "ScriptGenerator.h"
 #include <iostream>
+
 ScriptGenerator::ScriptGenerator() {
 	controlPanel = NULL;
 	videoBoard = NULL;
@@ -46,7 +47,7 @@ std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool load, 
 
 	getConfig(empty);
 
-	empty.push_back("dvd://");
+//	empty.push_back("dvd://");
 
 	empty.push_back("-vo");
 	empty.push_back("gl");
@@ -58,7 +59,7 @@ std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool load, 
 	empty.push_back("-slave");
 	empty.push_back("-quiet");
 	empty.push_back("-identify");
-	empty.push_back("-dvd-device");
+//	empty.push_back("-dvd-device");
 	empty.push_back(file->getFilePath());
 	std::list<Glib::ustring>::iterator it;
 	for(it = empty.begin(); it != empty.end(); it++){
@@ -79,13 +80,13 @@ void ScriptGenerator::getVideoSavedData(std::list<Glib::ustring> &parameters, Sa
 		parameters.push_back("-sid");
 		parameters.push_back(Glib::ustring::format(data.getSubID()));
 	}
-//	if (data.getAudioPath().size() != 0) {
-//		parameters.push_back("-audiofile");
-//		parameters.push_back(data.getAudioPath());
-//	} else if (data.getSubID() != -1) {
-//		parameters.push_back("-aid");
-//		parameters.push_back(Glib::ustring::format(data.getAudioID()));
-//	}
+	if (data.getAudioPath().size() != 0) {
+		parameters.push_back("-audiofile");
+		parameters.push_back(data.getAudioPath());
+	} else if (data.getSubID() > -1) {
+		parameters.push_back("-aid");
+		parameters.push_back(Glib::ustring::format(data.getAudioID()));
+	}
 }
 void ScriptGenerator::getFromVideoFilters(std::list<Glib::ustring> &parameters, bool load, SavedData data) {
 	if (videoFilters->getRotate() != 0) {

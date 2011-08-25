@@ -48,13 +48,15 @@ public:
 	void setAktualPlaySubtitles(int number);
 	void setAktualPlaySubtitles(std::string path);
 	void setAktualPlayAudio(int number);
+	void setAktualPlayAudio(std::string path);
 
 	bool subtitleChanged();
 	bool audioChanged();
 	std::list<Glib::ustring> getListSubtitles();
 	std::list<Glib::ustring> getListAudios();
 	//==============================================
-	bool isOriginalStream(int number);
+	bool isOriginalSubtitleStream(int number);
+	bool isOriginalAudioStream(int number);
 	std::string getPathOfStream(int number);
 private:
 	std::map<std::string, int> hashTable;
@@ -62,12 +64,13 @@ private:
 	Glib::Mutex lock;
 	bool changeVideoParam;
 	std::list<std::pair<int, StreamInfo> > loadedSubtitles;
-	std::list<std::pair<int, std::string> > loadedAudio;
+	std::list<std::pair<int, StreamInfo> > loadedAudio;
 	int lastNumberSubtitle;
 	int lastNumberAudio;
 	std::string aktualPlaySubtitlesStr;
 	int aktualPlaySubtitles;
-	std::string aktualPlayAudio;
+	int aktualPlayAudio;
+	std::string aktualPlayAudioStr;
 	bool subChanged;
 	bool audChanged;
 	int unknownCounter;
