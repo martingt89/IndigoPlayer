@@ -42,7 +42,12 @@ std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool load, 
 
 	if (load)
 		getVideoSavedData(empty, data);
-
+	else {
+		empty.push_back("-aid");
+		empty.push_back("0");
+		empty.push_back("-sid");
+		empty.push_back("0");
+	}
 	empty.push_back("-ass");
 
 	getConfig(empty);
@@ -79,6 +84,9 @@ void ScriptGenerator::getVideoSavedData(std::list<Glib::ustring> &parameters, Sa
 	} else if (data.getSubID() != -1) {
 		parameters.push_back("-sid");
 		parameters.push_back(Glib::ustring::format(data.getSubID()));
+	} else {
+		parameters.push_back("-sid");
+		parameters.push_back("0");
 	}
 	if (data.getAudioPath().size() != 0) {
 		parameters.push_back("-audiofile");
@@ -86,6 +94,9 @@ void ScriptGenerator::getVideoSavedData(std::list<Glib::ustring> &parameters, Sa
 	} else if (data.getSubID() > -1) {
 		parameters.push_back("-aid");
 		parameters.push_back(Glib::ustring::format(data.getAudioID()));
+	} else {
+		parameters.push_back("-aid");
+		parameters.push_back("0");
 	}
 }
 void ScriptGenerator::getFromVideoFilters(std::list<Glib::ustring> &parameters, bool load, SavedData data) {
@@ -145,4 +156,3 @@ void ScriptGenerator::getConfig(std::list<Glib::ustring> &parameters) {
 	}
 }
 //-noautosub
-//-audiofile XX

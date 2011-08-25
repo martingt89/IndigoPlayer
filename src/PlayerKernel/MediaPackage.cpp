@@ -135,8 +135,6 @@ SavedData MediaPackage::getSavedData() {
 	data.setSubtitlePath(aktualPlaySubtitlesStr);
 	data.setAudioID(aktualPlayAudio);
 	data.setAudioPath(aktualPlayAudioStr);
-	std::cout<<"aktualPlaySubtitles "<<aktualPlaySubtitles<<" aktualPlaySubtitlesStr: "<<aktualPlaySubtitlesStr<<std::endl;
-	std::cout<<"aktualPlayAudio "<<aktualPlayAudio<<" aktualPlayAudioStr: "<<aktualPlayAudioStr<<std::endl;
 
 	return data;
 }
