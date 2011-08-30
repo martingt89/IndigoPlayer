@@ -91,7 +91,7 @@ void ScriptGenerator::getVideoSavedData(std::list<Glib::ustring> &parameters, Sa
 	if (data.getAudioPath().size() != 0) {
 		parameters.push_back("-audiofile");
 		parameters.push_back(data.getAudioPath());
-	} else if (data.getSubID() > -1) {
+	} else if (data.getAudioID() > -1) {
 		parameters.push_back("-aid");
 		parameters.push_back(Glib::ustring::format(data.getAudioID()));
 	} else {

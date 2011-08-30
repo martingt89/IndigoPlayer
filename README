@@ -18,3 +18,16 @@ Version 0.1
 +Control panel hiding
 +Base player ability
 +tooltip for timeline
+
+Blueprints
+0.3
+ - shorkeys
+ - open dialog
+0.4
+ - DVD support
+ - loging
+0.5
+ - one instance support
+0.6
+ - config menu
+ - context menu

@@ -9,7 +9,7 @@
 #define SETTIONGS_H_
 
 #define NAME "IndigoPlayer"
-#define VERSION 0.2
+#define VERSION 0.3
 
 #define MPLAYER "/home/xgeier/mplayer2/mplayer"
 

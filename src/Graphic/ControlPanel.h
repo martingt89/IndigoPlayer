@@ -23,11 +23,12 @@
 #include <gtkmm/progressbar.h>
 
 #include "../Interfaces/PlayerSignals.h"
+#include "../Interfaces/Callable.h"
 #include "../Files/IndigoFile.h"
 #include "../Files/FileUtilities.h"
 #include "../../Settings.h"
 
-class ControlPanel{
+class ControlPanel : public Callable{
 public:
 	ControlPanel(const Glib::RefPtr<Gtk::Builder>& builder);
 	virtual ~ControlPanel();
@@ -41,7 +42,13 @@ public:
 	void popPlayButton();
 	void pushPlayButton();
 	bool isMute();
+	void call(IndigoPlayerCommand::Command command);
+	std::list<IndigoPlayerCommand::Command> getCommandList();
 private:
+	typedef void (ControlPanel::*OFP)(void);
+	std::map <IndigoPlayerCommand::Command, OFP> hashTableOfFunction;
+	void initHashTable(std::map <IndigoPlayerCommand::Command, OFP> &table);
+
 	Glib::RefPtr<Gtk::Builder> m_refGlade;
 	Gtk::Button* forward;
 	Gtk::Button* backward;
@@ -71,6 +78,8 @@ private:
 	Glib::ustring getTimeText(int position, int duration);
 	bool toolTipShow(int x, int y, bool keyboard_tooltip, const Glib::RefPtr<Gtk::Tooltip>& tooltip);
 	Glib::ustring timeToWellText(int time);
+	void playStopSoftPressed();
+	void playMuteUnmutePressed();
 
 	bool timeProgressClicked(GdkEventButton* event);
 	void playToggleClicked();

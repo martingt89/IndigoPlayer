@@ -63,6 +63,11 @@ void ThisOptions::stopPlaying(){
 	rightSpin->set_sensitive(false);
 	videoSpeed->set_sensitive(false);
 	useCropVideo->set_sensitive(false);
+	brightness->set_sensitive(false);
+	contrast->set_sensitive(false);
+	gamma->set_sensitive(false);
+	hue->set_sensitive(false);
+	saturation->set_sensitive(false);
 }
 void ThisOptions::runPlaying(){
 	myRotate->pushBack("0", 0 ,true);
@@ -75,6 +80,11 @@ void ThisOptions::runPlaying(){
 	rightSpin->set_sensitive(true);
 	videoSpeed->set_sensitive(true);
 	useCropVideo->set_sensitive(true);
+	brightness->set_sensitive(true);
+	contrast->set_sensitive(true);
+	gamma->set_sensitive(true);
+	hue->set_sensitive(true);
+	saturation->set_sensitive(true);
 }
 void ThisOptions::setPlayerInt(MplayerInterface* interface) {
 	mplayerInterface = interface;

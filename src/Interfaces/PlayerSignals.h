@@ -36,7 +36,7 @@ public:
 	virtual void playSubtitles(Glib::ustring file) = 0;
 	virtual void playAudio(Glib::ustring name) = 0;
 
-	virtual void keyPressed(int control, int keyVal) = 0;
+	virtual void keyPressed(int control, int keyVal, unsigned short hardwareKey) = 0;
 };
 
 #endif /* PLAYERSIGNALS_H_ */

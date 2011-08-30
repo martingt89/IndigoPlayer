@@ -9,6 +9,7 @@
 #define PLAYER_H_
 
 #include "../Interfaces/PlayerSignals.h"
+#include "../Interfaces/Callable.h"
 #include "../Graphic/ControlPanel.h"
 #include "../Graphic/VideoBoard.h"
 #include "../Graphic/OpenFileDialog.h"
@@ -19,8 +20,10 @@
 #include "../PlayerKernel/ScriptGenerator.h"
 
 #include "Playlist.h"
+#include "ShortKeys.h"
 
 #include <list>
+#include <map>
 #include <glibmm/ustring.h>
 #include <gtkmm/main.h>
 
@@ -36,7 +39,7 @@ public:
 	void setThisOptionsLoad(ThisOptionsLoad* optLoad);
 	void messageIncomming();
 	void addSubtitle(Glib::ustring file);
-	void keyPressed(int control, int keyVal);
+	void keyPressed(int control, int keyVal, unsigned short hardwareKey);
 	void clickPlay();
 	void clickPause();
 	void clickForward();
@@ -73,6 +76,7 @@ private:
 	bool firstLogSub;
 	bool firstLogAud;
 	Glib::ustring subtitles;
+	ShortKeys shortKeys;
 };
 
 #endif /* PLAYER_H_ */

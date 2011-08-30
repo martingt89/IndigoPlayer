@@ -14,10 +14,11 @@
 #include <glibmm/ustring.h>
 #include <gdk/gdkx.h>
 #include <giomm/file.h>
-#include "../Interfaces/PlayerSignals.h"
 #include "PlayerWindow.h"
+#include "../Interfaces/PlayerSignals.h"
+#include "../Interfaces/Callable.h"
 
-class VideoBoard {
+class VideoBoard : public Callable{
 public:
 	VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder, PlayerWindow* win);
 	virtual ~VideoBoard();
@@ -27,8 +28,15 @@ public:
 	void setVideoResolution(int width, int height, bool resize);
 	void setHalfSize();
 	void setFullSize();
-	void setDoubleSize();
+	void setMaximalizeSize();
+	void setFullscreenSize();
+	void call(IndigoPlayerCommand::Command command);
+	std::list<IndigoPlayerCommand::Command> getCommandList();
 private:
+    typedef void (VideoBoard::*OFP)(void);
+    std::map <IndigoPlayerCommand::Command, OFP> hashTableOfFunction;
+    void initHashTable(std::map <IndigoPlayerCommand::Command, OFP> &table);
+
 	Gtk::DrawingArea* videoBoard;
 	//IDisplay* videoBoard;
 	Glib::RefPtr<Gdk::Pixbuf> image;

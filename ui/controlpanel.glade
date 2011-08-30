@@ -150,7 +150,6 @@
             </child>
             <child>
               <object class="GtkToggleButton" id="PlayStopTButtonBase">
-                <property name="label">Pl</property>
                 <property name="width_request">35</property>
                 <property name="height_request">35</property>
                 <property name="visible">True</property>

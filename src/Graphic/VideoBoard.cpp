@@ -28,6 +28,7 @@ VideoBoard::VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder, PlayerWindow* 
 	videoBoard->signal_button_press_event().connect(sigc::mem_fun(this, &VideoBoard::doubleClick));
 	videoBoard->set_app_paintable(false);
 	videoBoard->set_double_buffered(false);
+	initHashTable(hashTableOfFunction);
 }
 
 VideoBoard::~VideoBoard() {
@@ -67,20 +68,56 @@ bool VideoBoard::on_expose_event(GdkEventExpose* ev) {
 	return true;
 }
 void VideoBoard::setHalfSize(){
-	if(videoWidth > 0 && videoHeight > 0)
+	if(videoWidth > 0 && videoHeight > 0){
+		playerWindow->setfullscreen(false);
+		playerWindow->unmaximize();
+		playerWindow->setVideoBoardSize(100,100);
 		playerWindow->setVideoBoardSize(videoWidth/2,videoHeight/2);
+	}
 }
 void VideoBoard::setFullSize(){
-	if(videoWidth > 0 && videoHeight > 0)
+	if(videoWidth > 0 && videoHeight > 0){
+		playerWindow->setfullscreen(false);
+		playerWindow->unmaximize();
+		playerWindow->setVideoBoardSize(100,100);
 		playerWindow->setVideoBoardSize(videoWidth,videoHeight);
+	}
 }
-void VideoBoard::setDoubleSize(){
-	if(videoWidth > 0 && videoHeight > 0)
-		playerWindow->setVideoBoardSize(videoWidth*2,videoHeight*2);
+void VideoBoard::setMaximalizeSize(){
+	if(videoWidth > 0 && videoHeight > 0){
+		playerWindow->setfullscreen(false);
+		playerWindow->maximize();
+		//playerWindow->setVideoBoardSize(videoWidth*2,videoHeight*2);
+	}
+}
+void VideoBoard::setFullscreenSize(){
+	if(videoWidth > 0 && videoHeight > 0){
+		playerWindow->setfullscreen(true);
+	}
 }
 void VideoBoard::setVideoResolution(int width, int height, bool resize){
 	videoWidth = width;
 	videoHeight = height;
 	if(resize)
 		playerWindow->setVideoBoardSize(width,height);
+}
+void VideoBoard::call(IndigoPlayerCommand::Command command){
+	if(hashTableOfFunction.find(command) != hashTableOfFunction.end()){
+		OFP func = hashTableOfFunction[command];
+		(this->*func)();
+	}
+}
+void VideoBoard::initHashTable(std::map <IndigoPlayerCommand::Command, OFP> &table){
+	table[IndigoPlayerCommand::HALFSIZE] = &VideoBoard::setHalfSize;
+	table[IndigoPlayerCommand::ORIGINALSIZE] = &VideoBoard::setFullSize;
+	table[IndigoPlayerCommand::MAXIMALIZESIZE] = &VideoBoard::setMaximalizeSize;
+	table[IndigoPlayerCommand::FULLSCR] = &VideoBoard::setFullscreenSize;
+}
+std::list<IndigoPlayerCommand::Command> VideoBoard::getCommandList(){
+	std::list<IndigoPlayerCommand::Command> list;
+	std::map <IndigoPlayerCommand::Command, OFP>::iterator it;
+	for(it = hashTableOfFunction.begin(); it != hashTableOfFunction.end(); it++){
+		list.push_back(it->first);
+	}
+	return list;
 }

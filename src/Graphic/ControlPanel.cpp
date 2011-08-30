@@ -12,7 +12,8 @@
 
 #include <iostream>
 
-ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade) : toolTipWindow(Gtk::WINDOW_POPUP){
+ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade) :
+		toolTipWindow(Gtk::WINDOW_POPUP) {
 	m_refGlade = refGlade;
 	playerSignals = NULL;
 	timeline_changed_signal = true;
@@ -33,7 +34,7 @@ ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade) : toolTip
 	m_refGlade->get_widget("OpenButtonBase", open);
 	m_refGlade->get_widget("SoundHScaleBase", sound);
 
-	soundAdj = new Gtk::Adjustment(100,0,100);
+	soundAdj = new Gtk::Adjustment(100, 0, 100);
 
 	this->clearTime();
 	sound->set_adjustment(*soundAdj);
@@ -45,6 +46,8 @@ ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade) : toolTip
 	toolTipWindow.set_default_size(50, 25);
 	toolTipWindow.add(*toolTipLabel);
 
+	playStop->set_label("Pl");
+
 	playStop->signal_toggled().connect(sigc::mem_fun(this, &ControlPanel::playToggleClicked));
 	soundMute->signal_toggled().connect(sigc::mem_fun(this, &ControlPanel::soundToggleClicked));
 	forward->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::forwardClicked));
@@ -53,22 +56,27 @@ ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade) : toolTip
 	open->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::openButtonClicked));
 	backInFile->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::rewindButtonClicked));
 	soundAdj->signal_value_changed().connect(sigc::mem_fun(this, &ControlPanel::soundLevelChanged));
-	timeProgress->signal_button_press_event().connect(sigc::mem_fun(this, &ControlPanel::timeProgressClicked));
+	timeProgress->signal_button_press_event().connect(
+			sigc::mem_fun(this, &ControlPanel::timeProgressClicked));
 	timeProgress->signal_query_tooltip().connect(sigc::mem_fun(this, &ControlPanel::toolTipShow));
 	thisOptionsButton->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::thisOptionsClicked));
+	initHashTable(hashTableOfFunction);
 }
 
-bool ControlPanel::toolTipShow(int x, int y, bool keyboard_tooltip, const Glib::RefPtr<Gtk::Tooltip>& tooltip){
+bool ControlPanel::toolTipShow(int x, int y, bool keyboard_tooltip,
+		const Glib::RefPtr<Gtk::Tooltip>& tooltip) {
 	toolTipWindow.hide();
-	if(duration == -1) return false;
-	int secTime = (int)(x / (double)timeProgress->get_width()*duration);
+	if (duration == -1)
+		return false;
+	int secTime = (int) (x / (double) timeProgress->get_width() * duration);
 	toolTipLabel->set_text(timeToWellText(secTime));
 	return true;
 }
-bool ControlPanel::timeProgressClicked(GdkEventButton* event){
-	if(event->type == GDK_BUTTON_PRESS){
-		if(duration > -1){
-			double pos = (1.0/duration)*(int)((event->x / (double)timeProgress->get_width())*duration);
+bool ControlPanel::timeProgressClicked(GdkEventButton* event) {
+	if (event->type == GDK_BUTTON_PRESS) {
+		if (duration > -1) {
+			double pos = (1.0 / duration)
+					* (int) ((event->x / (double) timeProgress->get_width()) * duration);
 			timeProgress->set_fraction(pos);
 			timelineChanged();
 		}
@@ -92,9 +100,9 @@ void ControlPanel::setPosition(int seconds) {
 	position = seconds;
 	if (duration >= 0) {
 		time->set_text(getTimeText(position, duration)); //TODO //prepisat na multi threading
-		if(aktualizeTextSignal){
+		if (aktualizeTextSignal) {
 			timeline_changed_signal = false;
-			timeProgress->set_fraction(position/(double)duration);
+			timeProgress->set_fraction(position / (double) duration);
 			timeline_changed_signal = true;
 		}
 	}
@@ -107,8 +115,8 @@ void ControlPanel::setAudioLevel(double level) {
 double ControlPanel::getAudioLevel() {
 	return soundAdj->get_value(); //TODO //prepisat na multi threading
 }
-int ControlPanel::getTime(){
-	return timeProgress->get_fraction()*duration;
+int ControlPanel::getTime() {
+	return timeProgress->get_fraction() * duration;
 }
 bool ControlPanel::isMute() {
 	return soundMute->get_active();
@@ -131,22 +139,22 @@ Glib::ustring ControlPanel::getTimeText(int position, int duration) {
 	if (position < 0 || duration < 0) {
 		return ("--:-- / --:--");
 	}
-	Glib::ustring time = timeToWellText(position)+"/"+timeToWellText(duration);
+	Glib::ustring time = timeToWellText(position) + "/" + timeToWellText(duration);
 	return time;
 }
-Glib::ustring ControlPanel::timeToWellText(int time){
+Glib::ustring ControlPanel::timeToWellText(int time) {
 	Glib::ustring ttmm = "";
 	int sec = time % 60;
 	int min = (time - sec) % 3600;
 	int hod = (time - min - sec);
 	min /= 60;
 	hod /= 3600;
-	if(hod > 0)
-		ttmm += Glib::ustring::format(hod)+":";
-	if(min < 10)
+	if (hod > 0)
+		ttmm += Glib::ustring::format(hod) + ":";
+	if (min < 10)
 		ttmm += "0";
-	ttmm += Glib::ustring::format(min)+":";
-	if(sec < 10)
+	ttmm += Glib::ustring::format(min) + ":";
+	if (sec < 10)
 		ttmm += "0";
 	ttmm += Glib::ustring::format(sec);
 	return ttmm;
@@ -156,7 +164,7 @@ void ControlPanel::soundLevelChanged() {
 		playerSignals->changeSoundLevel();
 }
 void ControlPanel::timelineChanged() {
-	if(timeline_changed_signal){
+	if (timeline_changed_signal) {
 		aktualizeTextSignal = false;
 		setPosition(getTime());
 		aktualizeTextSignal = true;
@@ -189,12 +197,23 @@ void ControlPanel::rewindButtonClicked() {
 		playerSignals->clickRewind();
 }
 void ControlPanel::playToggleClicked() {
+	if (playStop->get_active() == true)
+		playStop->set_label("Pa");
+	else
+		playStop->set_label("Pl");
+
 	if (playerSignals != 0 && playStopSignal) {
 		if (playStop->get_active() == true)
 			playerSignals->clickPlay();
 		else
 			playerSignals->clickPause();
 	}
+}
+void ControlPanel::playStopSoftPressed(){
+	playStop->set_active(!playStop->get_active());
+}
+void ControlPanel::playMuteUnmutePressed(){
+	soundMute->set_active(!soundMute->get_active());
 }
 void ControlPanel::soundToggleClicked() {
 	if (playerSignals != 0) {
@@ -218,4 +237,22 @@ ControlPanel::~ControlPanel() {
 	delete soundMute;
 	delete sound;
 	delete time;
+}
+void ControlPanel::call(IndigoPlayerCommand::Command command){
+	if(hashTableOfFunction.find(command) != hashTableOfFunction.end()){
+		OFP func = hashTableOfFunction[command];
+		(this->*func)();
+	}
+}
+std::list<IndigoPlayerCommand::Command> ControlPanel::getCommandList(){
+	std::list<IndigoPlayerCommand::Command> list;
+	std::map <IndigoPlayerCommand::Command, OFP>::iterator it;
+	for(it = hashTableOfFunction.begin(); it != hashTableOfFunction.end(); it++){
+		list.push_back(it->first);
+	}
+	return list;
+}
+void ControlPanel::initHashTable(std::map <IndigoPlayerCommand::Command, OFP> &table){
+	table[IndigoPlayerCommand::PLAYSTOPBUT] = &ControlPanel::playStopSoftPressed;
+	table[IndigoPlayerCommand::MUTEUNMUTE] = &ControlPanel::playMuteUnmutePressed;
 }

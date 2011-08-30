@@ -22,9 +22,10 @@
 #include "../Files/IndigoFile.h"
 #include "../Files/FileUtilities.h"
 #include "../Interfaces/PlayerSignals.h"
+#include "../Interfaces/Callable.h"
 #include "../../Settings.h"
 
-class PlayerWindow : public Gtk::Window{
+class PlayerWindow : public Gtk::Window, public Callable{
 public:
 	PlayerWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 	virtual ~PlayerWindow();
@@ -32,7 +33,14 @@ public:
 	void setListener(PlayerSignals* sig);
 	void changeFullscreen();
 	void setVideoBoardSize(int x, int y);
+	void call(IndigoPlayerCommand::Command command);
+	std::list<IndigoPlayerCommand::Command> getCommandList();
+	void setfullscreen(bool full);
 private:
+    typedef void (PlayerWindow::*OFP)(void);
+    std::map <IndigoPlayerCommand::Command, OFP> hashTableOfFunction;
+    void initHashTable(std::map <IndigoPlayerCommand::Command, OFP> &table);
+
 	Glib::RefPtr<Gtk::Builder> m_refGlade;
 	Gtk::Window* popupWindow;
 	Gtk::VBox* capitalPopupVBox;

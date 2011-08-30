@@ -51,6 +51,8 @@ PlayerWindow::PlayerWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Buil
 	vidListNotebook->signal_switch_page().connect(sigc::mem_fun(this, &PlayerWindow::switchPage));
 	this->signal_hide().connect(sigc::mem_fun(this, &PlayerWindow::quitWindow));
 	popupWindow->signal_show().connect(sigc::mem_fun(this, &PlayerWindow::popupShow));
+
+    initHashTable(hashTableOfFunction);
 }
 PlayerWindow::~PlayerWindow() {
 	delete fullScreen;
@@ -169,6 +171,10 @@ void PlayerWindow::showElements() {
 	gdkCapitalWindow->set_cursor();
 	popupWindow->set_opacity(1);
 }
+void PlayerWindow::setfullscreen(bool full){
+	if(fullScreen->get_active() != full)
+		changeFullscreen();
+}
 void PlayerWindow::fullScreenClicked() {
 	if (fullScreen->get_active()) {
 		if (vidListNotebook->get_current_page() == 0) {
@@ -237,11 +243,28 @@ void PlayerWindow::dropFiles(const Glib::RefPtr<Gdk::DragContext>& context, int,
 bool PlayerWindow::keyPress(GdkEventKey* evt) {
 	if (vidListNotebook->get_current_page() == 0) {
 		if (playerSignals)
-			playerSignals->keyPressed(evt->state, evt->keyval);
+			playerSignals->keyPressed(evt->state, evt->keyval, evt->hardware_keycode);
 		return true;
 	}
 	return false;
 }
 void PlayerWindow::setVideoBoardSize(int x, int y) {
 	this->resize(x, y + panelHeight);
+}
+void PlayerWindow::call(IndigoPlayerCommand::Command command){
+	if(hashTableOfFunction.find(command) != hashTableOfFunction.end()){
+		OFP func = hashTableOfFunction[command];
+		(this->*func)();
+	}
+}
+std::list<IndigoPlayerCommand::Command> PlayerWindow::getCommandList(){
+	std::list<IndigoPlayerCommand::Command> list;
+	std::map <IndigoPlayerCommand::Command, OFP>::iterator it;
+	for(it = hashTableOfFunction.begin(); it != hashTableOfFunction.end(); it++){
+		list.push_back(it->first);
+	}
+	return list;
+}
+void PlayerWindow::initHashTable(std::map <IndigoPlayerCommand::Command, OFP> &table){
+	table[IndigoPlayerCommand::FULLUNFULLSCR] = &PlayerWindow::changeFullscreen;
 }
