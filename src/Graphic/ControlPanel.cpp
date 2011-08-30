@@ -212,7 +212,7 @@ void ControlPanel::playToggleClicked() {
 void ControlPanel::playStopSoftPressed(){
 	playStop->set_active(!playStop->get_active());
 }
-void ControlPanel::playMuteUnmutePressed(){
+void ControlPanel::muteUnmuteSoftPressed(){
 	soundMute->set_active(!soundMute->get_active());
 }
 void ControlPanel::soundToggleClicked() {
@@ -254,5 +254,5 @@ std::list<IndigoPlayerCommand::Command> ControlPanel::getCommandList(){
 }
 void ControlPanel::initHashTable(std::map <IndigoPlayerCommand::Command, OFP> &table){
 	table[IndigoPlayerCommand::PLAYSTOPBUT] = &ControlPanel::playStopSoftPressed;
-	table[IndigoPlayerCommand::MUTEUNMUTE] = &ControlPanel::playMuteUnmutePressed;
+	table[IndigoPlayerCommand::MUTEUNMUTE] = &ControlPanel::muteUnmuteSoftPressed;
 }

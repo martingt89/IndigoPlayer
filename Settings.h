@@ -13,17 +13,17 @@
 
 #define MPLAYER "/home/xgeier/mplayer2/mplayer"
 
-#define GLADECONTROLPANEL "/home/xgeier/IndigoPlayer/ui/controlpanel.glade"
-#define GLADEOPENDIALOG "/home/xgeier/IndigoPlayer/ui/popupwindow.glade"
-#define GLADEPLAYERWINDOW "/home/xgeier/IndigoPlayer/ui/playerwindow.glade"
-#define GLADETHISOPTIONS "/home/xgeier/IndigoPlayer/ui/thisoptions.glade"
-#define GLADEOPENWINDOW "/home/xgeier/IndigoPlayer/ui/openwindow.glade"
+#define GLADECONTROLPANEL "ui/controlpanel.glade"
+#define GLADEOPENDIALOG "ui/popupwindow.glade"
+#define GLADEPLAYERWINDOW "ui/playerwindow.glade"
+#define GLADETHISOPTIONS "ui/thisoptions.glade"
+#define GLADEOPENWINDOW "ui/openwindow.glade"
 
-#define CONFIG "/home/xgeier/IndigoPlayer/confFile"
+#define CONFIG "confFile"
 
-#define BLANKARROW "/home/xgeier/IndigoPlayer/ui/arrowc.png"
-#define BLACKARROW "/home/xgeier/IndigoPlayer/ui/arrow.png"
+#define BLANKARROW "ui/arrowc.png"
+#define BLACKARROW "ui/arrow.png"
 
-#define ICONIMAGE "/home/xgeier/IndigoPlayer/ui/myimage.svg"
+#define ICONIMAGE "ui/myimage.svg"
 
 #endif /* SETTIONGS_H_ */

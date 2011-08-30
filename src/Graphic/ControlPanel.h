@@ -79,7 +79,7 @@ private:
 	bool toolTipShow(int x, int y, bool keyboard_tooltip, const Glib::RefPtr<Gtk::Tooltip>& tooltip);
 	Glib::ustring timeToWellText(int time);
 	void playStopSoftPressed();
-	void playMuteUnmutePressed();
+	void muteUnmuteSoftPressed();
 
 	bool timeProgressClicked(GdkEventButton* event);
 	void playToggleClicked();
