@@ -79,12 +79,12 @@ void WindowBridge::setMaximalize(bool max){
 	}
 }
 void WindowBridge::keyPressed(int control, int keyVal, unsigned short hardwareKey){
-	std::cout<<control<<" "<<keyVal<<" "<<hardwareKey<<std::endl;
-	if(control & Gdk::SHIFT_MASK)
-		std::cout<<"Press: Shift"<<std::endl;
-	if(control & Gdk::LOCK_MASK)
-		std::cout<<"Press: Lock"<<std::endl;
-	if(control & Gdk::CONTROL_MASK)
-		std::cout<<"Press: Ctrl"<<std::endl;
+//	std::cout<<control<<" "<<keyVal<<" "<<hardwareKey<<std::endl;
+//	if(control & Gdk::SHIFT_MASK)
+//		std::cout<<"Press: Shift"<<std::endl;
+//	if(control & Gdk::LOCK_MASK)
+//		std::cout<<"Press: Lock"<<std::endl;
+//	if(control & Gdk::CONTROL_MASK)
+//		std::cout<<"Press: Ctrl"<<std::endl;
 	shortKeys.keyPressed(control, keyVal, hardwareKey);
 }

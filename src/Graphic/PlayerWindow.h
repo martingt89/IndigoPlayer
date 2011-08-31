@@ -39,6 +39,8 @@ public:
 	std::list<IndigoPlayerCommand::Command> getCommandList();
 	void setFullscreen(bool full);
 private:
+	void checkResize();
+
     typedef void (PlayerWindow::*OFP)(void);
     std::map <IndigoPlayerCommand::Command, OFP> hashTableOfFunction;
     void initHashTable(std::map <IndigoPlayerCommand::Command, OFP> &table);

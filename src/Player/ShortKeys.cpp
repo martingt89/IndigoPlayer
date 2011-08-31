@@ -6,7 +6,7 @@
  */
 
 #include "ShortKeys.h"
-#include <iostream>
+//#include <iostream>
 ShortKeys::ShortKeys() {
 	// TODO Auto-generated constructor stub
 }
@@ -17,11 +17,11 @@ ShortKeys::~ShortKeys() {
 
 void ShortKeys::keyPressed(int control, int keyValue, unsigned short hardValue){
 	if(hardwareTable.find(hardValue) != hardwareTable.end()){
-		std::cout<<"Find hardware"<<std::endl;
+//		std::cout<<"Find hardware"<<std::endl;
 		executeCommand(hardwareTable[hardValue]);
 	}else{
 		if(convertTable.find(std::make_pair(control, keyValue)) != convertTable.end()){
-			std::cout<<"Find soft"<<std::endl;
+//			std::cout<<"Find soft"<<std::endl;
 			executeCommand(convertTable[std::make_pair(control, keyValue)]);
 		}
 	}
@@ -35,7 +35,7 @@ void ShortKeys::addList(Callable* object, std::list<IndigoPlayerCommand::Command
 }
 void ShortKeys::executeCommand(IndigoPlayerCommand::Command command){
 	if(commandTable.find(command) != commandTable.end()){
-		std::cout<<"Find commad"<<std::endl;
+//		std::cout<<"Find commad"<<std::endl;
 		commandTable[command]->call(command);
 	}
 }

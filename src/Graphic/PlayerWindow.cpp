@@ -8,6 +8,8 @@
 #include "PlayerWindow.h"
 #include <iostream>
 
+#define OPACITYLEVEL 0.7
+
 PlayerWindow::PlayerWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder) :
 		Gtk::Window(cobject), m_refGlade(builder), m_Cursor(Gdk::BLANK_CURSOR) {
 	stopVPO = false;
@@ -41,6 +43,7 @@ PlayerWindow::PlayerWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Buil
 	this->setWindowTitle("");
 
 	this->add_events(Gdk::POINTER_MOTION_MASK);
+	this->signal_check_resize().connect(sigc::mem_fun(this, &PlayerWindow::checkResize));
 	fullScreen->signal_toggled().connect(sigc::mem_fun(this, &PlayerWindow::fullScreenClicked));
 	video->signal_toggled().connect(sigc::mem_fun(this, &PlayerWindow::videoPlaylistOpen));
 	playlist->signal_toggled().connect(sigc::mem_fun(this, &PlayerWindow::videoPlaylistOpen));
@@ -70,9 +73,15 @@ void PlayerWindow::quitWindow() {
 		playerSignals->quit();
 	}
 }
+void PlayerWindow::checkResize(){
+	std::cout<<"Nieco sa stalo width: "<<this->get_width()<<std::endl;
+	panelWidth = this->get_width();
+	popupWindow->resize(panelWidth, panelHeight);
+}
 void PlayerWindow::popupShow() {
-	panelHeight = popupWindow->get_height();
-	panelWidth = popupWindow->get_width();
+//	panelHeight = popupWindow->get_height();
+//	panelWidth = popupWindow->get_width();
+//	std::cout<<"panelHeight: "<<panelHeight<<" panelWidth: "<<panelWidth<<std::endl;
 }
 void PlayerWindow::switchPage(GtkNotebookPage* page, guint page_num) {
 	if (fullScreen->get_active()) {
@@ -90,13 +99,14 @@ void PlayerWindow::switchPage(GtkNotebookPage* page, guint page_num) {
 	}
 }
 bool PlayerWindow::leavePopup(GdkEventCrossing* event) {
-	if (event->x < 0 || event->y < 0 || event->x > panelHeight || event->y > panelWidth)
+	if (event->x < 0 || event->y < 0 || event->x > panelWidth || event->y > panelHeight){
 		noHide = false;
+	}
 	return true;
 }
 bool PlayerWindow::enterPopup(GdkEventCrossing* event) {
 	noHide = true;
-	popupWindow->set_opacity(1);
+	popupWindow->set_opacity(OPACITYLEVEL);
 	return true;
 }
 bool PlayerWindow::on_my_motion_notify_event(GdkEventMotion* event) {
@@ -106,7 +116,7 @@ bool PlayerWindow::on_my_motion_notify_event(GdkEventMotion* event) {
 			once = true;
 			myconnection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &PlayerWindow::on_timeout),
 					500);
-			popupWindow->set_opacity(1);
+			popupWindow->set_opacity(OPACITYLEVEL);
 			gdkCapitalWindow->set_cursor();
 		}
 	}
@@ -176,7 +186,7 @@ void PlayerWindow::hideElements() {
 }
 void PlayerWindow::showElements() {
 	gdkCapitalWindow->set_cursor();
-	popupWindow->set_opacity(1);
+	popupWindow->set_opacity(OPACITYLEVEL);
 }
 void PlayerWindow::setFullscreen(bool full){
 	if(fullScreen->get_active() != full)
