@@ -25,8 +25,8 @@ ConfigFile::ConfigFile(bool load) {
 					continue;
 				j = line.find('=', 0);
 				config[line.substr(i, j - i)] = line.substr(j + 1, line.length() - (j + 1));
-				std::cout <<"ConfigFile PARSE: '" <<line.substr(i, j - i) << " " << line.substr(j + 1, line.length() - (j + 1))
-						<< "'" <<std::endl;
+//				std::cout <<"ConfigFile PARSE: '" <<line.substr(i, j - i) << " " << line.substr(j + 1, line.length() - (j + 1))
+//						<< "'" <<std::endl;
 			}
 		}
 	}

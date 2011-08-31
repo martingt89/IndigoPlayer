@@ -24,6 +24,7 @@
 
 #include "../Interfaces/PlayerSignals.h"
 #include "../Interfaces/Callable.h"
+#include "../Interfaces/Bridge.h"
 #include "../Files/IndigoFile.h"
 #include "../Files/FileUtilities.h"
 #include "../../Settings.h"
@@ -33,6 +34,7 @@ public:
 	ControlPanel(const Glib::RefPtr<Gtk::Builder>& builder);
 	virtual ~ControlPanel();
 	void setListener(PlayerSignals *ps);
+	void setBridgePointer(Bridge* windowBridge);
 	void setDuration(int);
 	void setPosition(int);
 	void clearTime();
@@ -67,6 +69,7 @@ private:
 	Gtk::Label* toolTipLabel;
 
 	PlayerSignals *playerSignals;
+	Bridge* windowBridge;
 	//
 	int duration;
 	int position;

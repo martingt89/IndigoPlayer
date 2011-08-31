@@ -16,16 +16,14 @@
 #include "../Graphic/PlayerWindow.h"
 #include "../Graphic/ThisOptions.h"
 #include "../Graphic/ThisOptionsLoad.h"
+#include "../GraphicLogic/Playlist.h"
 #include "../PlayerKernel/MplayerInterface.h"
 #include "../PlayerKernel/ScriptGenerator.h"
 
-#include "Playlist.h"
-#include "ShortKeys.h"
-
-#include <list>
 #include <map>
-#include <glibmm/ustring.h>
+#include <list>
 #include <gtkmm/main.h>
+#include <glibmm/ustring.h>
 
 class IndigoPlayer: public PlayerSignals {
 public:
@@ -37,18 +35,15 @@ public:
 	void setControlPanel(ControlPanel* control);
 	void setThisOptions(ThisOptions* opt);
 	void setThisOptionsLoad(ThisOptionsLoad* optLoad);
+//-------------------------------------------------------------------------
 	void messageIncomming();
 	void addSubtitle(Glib::ustring file);
-	void keyPressed(int control, int keyVal, unsigned short hardwareKey);
 	void clickPlay();
 	void clickPause();
 	void clickForward();
 	void clickBackward();
 	void clickCancel();
-	void clickThisOptions();
 	void clickPlaylistBoard();
-	void clickKill();
-	void clickOpen();
 	void clickRewind();
 	void clickMute();
 	void clickSound();
@@ -76,7 +71,6 @@ private:
 	bool firstLogSub;
 	bool firstLogAud;
 	Glib::ustring subtitles;
-	ShortKeys shortKeys;
 };
 
 #endif /* PLAYER_H_ */

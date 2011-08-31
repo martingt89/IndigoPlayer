@@ -21,9 +21,6 @@ public:
 	virtual void clickBackward() = 0;
 	virtual void clickPlaylistBoard() = 0;
 	virtual void clickCancel() = 0;
-	virtual void clickThisOptions() = 0;
-	virtual void clickKill() = 0;
-	virtual void clickOpen() = 0;
 	virtual void clickRewind() = 0;
 	virtual void clickMute() = 0;
 	virtual void clickSound() = 0;
@@ -35,8 +32,6 @@ public:
 	virtual void addSubtitle(Glib::ustring file) = 0;
 	virtual void playSubtitles(Glib::ustring file) = 0;
 	virtual void playAudio(Glib::ustring name) = 0;
-
-	virtual void keyPressed(int control, int keyVal, unsigned short hardwareKey) = 0;
 };
 
 #endif /* PLAYERSIGNALS_H_ */

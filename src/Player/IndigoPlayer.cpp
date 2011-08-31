@@ -14,25 +14,11 @@ IndigoPlayer::IndigoPlayer(PlayerWindow *playerWin) {
 	playerWindow->setListener(this);
 	mediaPackage = new MediaPackage();
 	mplayer = new MplayerInterface(mediaPackage);
-//	shortKeys.addList(mplayer, mplayer->getCommandList());
 	generator = new ScriptGenerator();
 	mediaPackage->message.connect(sigc::mem_fun(this, &IndigoPlayer::messageIncomming));
 	playSub = false;
 	firstLogSub = false;
 	firstLogAud = false;
-	shortKeys.addList(playerWindow, playerWindow->getCommandList());
-//
-	std::map<std::pair<int, int>, IndigoPlayerCommand::Command> table;
-	table[std::make_pair(8208,32)] =  IndigoPlayerCommand::PLAYSTOPBUT;
-	table[std::make_pair(8208,102)] = IndigoPlayerCommand::FULLUNFULLSCR;
-	table[std::make_pair(8208,109)] = IndigoPlayerCommand::MUTEUNMUTE;
-	shortKeys.setConvertTable(table);
-	std::map<short unsigned, IndigoPlayerCommand::Command> hTable;
-	hTable[10] = IndigoPlayerCommand::HALFSIZE;
-	hTable[11] = IndigoPlayerCommand::ORIGINALSIZE;
-	hTable[12] = IndigoPlayerCommand::MAXIMALIZESIZE;
-	hTable[13] = IndigoPlayerCommand::FULLSCR;
-	shortKeys.setHardwareConvertTable(hTable);
 }
 void IndigoPlayer::setPlaylist(Playlist *playlist) {
 	this->playlist = playlist;
@@ -41,13 +27,11 @@ void IndigoPlayer::setPlaylist(Playlist *playlist) {
 void IndigoPlayer::setVideoBoard(VideoBoard* board) {
 	this->videoBoard = board;
 	generator->setVideoBoard(videoBoard);
-	shortKeys.addList(videoBoard, videoBoard->getCommandList());
 }
 void IndigoPlayer::setControlPanel(ControlPanel* control) {
 	controlPanel = control;
 	controlPanel->setListener(this);
 	generator->setControlPanel(controlPanel);
-	shortKeys.addList(controlPanel, controlPanel->getCommandList());
 }
 void IndigoPlayer::setOpenDialog(OpenFileDialog* dialog) {
 	openDialog = dialog;
@@ -62,6 +46,8 @@ void IndigoPlayer::setThisOptionsLoad(ThisOptionsLoad* optLoad) {
 	thisOptionsLoad = optLoad;
 	thisOptionsLoad->setListener(this);
 }
+//=====================================================================
+//=====================================================================
 void IndigoPlayer::messageIncomming() {
 	if (mediaPackage->isVideoParamChange()) {
 		if (mediaPackage->getVariable("ID_LENGTH").size() != 0) {
@@ -134,10 +120,6 @@ void IndigoPlayer::playAudio(Glib::ustring name) {
 	}
 }
 
-void IndigoPlayer::keyPressed(int control, int keyVal, unsigned short hardwareKey) {
-	shortKeys.keyPressed(control, keyVal, hardwareKey);
-	std::cout<<control<<" "<<keyVal<<" "<<hardwareKey<<std::endl;
-}
 void IndigoPlayer::addFiles(std::list<IndigoFile*> files, bool play) {
 	playlist->addFiles(files);
 	if (play) {
@@ -217,16 +199,6 @@ void IndigoPlayer::clearPlaying() {
 	playerWindow->setWindowTitle("");
 	thisOptions->stopPlaying();
 	thisOptionsLoad->stopPlaying();
-}
-void IndigoPlayer::clickThisOptions() {
-	if (thisOptions)
-		thisOptions->show();
-}
-void IndigoPlayer::clickKill() {
-	//teraz neriesit
-}
-void IndigoPlayer::clickOpen() {
-	openDialog->show();
 }
 void IndigoPlayer::clickRewind() {
 	mplayer->replayFile();

@@ -23,6 +23,7 @@
 #include "../Files/FileUtilities.h"
 #include "../Interfaces/PlayerSignals.h"
 #include "../Interfaces/Callable.h"
+#include "../Interfaces/Bridge.h"
 #include "../../Settings.h"
 
 class PlayerWindow : public Gtk::Window, public Callable{
@@ -31,16 +32,17 @@ public:
 	virtual ~PlayerWindow();
 	void setWindowTitle(Glib::ustring title);
 	void setListener(PlayerSignals* sig);
+	void setBridgePointer(Bridge* windowBridge);
 	void changeFullscreen();
-	void setVideoBoardSize(int x, int y);
+	void setVideoBoardSize(int width, int height);
 	void call(IndigoPlayerCommand::Command command);
 	std::list<IndigoPlayerCommand::Command> getCommandList();
-	void setfullscreen(bool full);
+	void setFullscreen(bool full);
 private:
     typedef void (PlayerWindow::*OFP)(void);
     std::map <IndigoPlayerCommand::Command, OFP> hashTableOfFunction;
     void initHashTable(std::map <IndigoPlayerCommand::Command, OFP> &table);
-
+    void unFullscreen();
 	Glib::RefPtr<Gtk::Builder> m_refGlade;
 	Gtk::Window* popupWindow;
 	Gtk::VBox* capitalPopupVBox;
@@ -83,6 +85,7 @@ private:
 	Glib::TimeVal time;
 	Glib::TimeVal aktualtime;
 
+	Bridge* windowBridge;
 	PlayerSignals *playerSignals;
 	Glib::RefPtr<Gdk::Window> gdkCapitalWindow;
 	sigc::connection myconnection;

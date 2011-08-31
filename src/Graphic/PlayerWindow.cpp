@@ -16,6 +16,7 @@ PlayerWindow::PlayerWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Buil
 	hasPanel = true;
 	popupHasPanel = false;
 	playerSignals = NULL;
+	windowBridge = NULL;
 	m_refGlade->get_widget("FullscreenToggleBase", fullScreen);
 	m_refGlade->get_widget("PanelVBoxBase", panel);
 	m_refGlade->get_widget("CapitalPanelVBoxBase", capitalPanel);
@@ -132,8 +133,14 @@ void PlayerWindow::setWindowTitle(Glib::ustring title) {
 void PlayerWindow::setListener(PlayerSignals* sig) {
 	playerSignals = sig;
 }
+void PlayerWindow::setBridgePointer(Bridge* windowBridge){
+	this->windowBridge = windowBridge;
+}
 void PlayerWindow::changeFullscreen() {
 	fullScreen->set_active(!fullScreen->get_active());
+}
+void PlayerWindow::unFullscreen(){
+	fullScreen->set_active(false);
 }
 void PlayerWindow::removePanel() {
 	if (hasPanel) {
@@ -171,7 +178,7 @@ void PlayerWindow::showElements() {
 	gdkCapitalWindow->set_cursor();
 	popupWindow->set_opacity(1);
 }
-void PlayerWindow::setfullscreen(bool full){
+void PlayerWindow::setFullscreen(bool full){
 	if(fullScreen->get_active() != full)
 		changeFullscreen();
 }
@@ -242,14 +249,16 @@ void PlayerWindow::dropFiles(const Glib::RefPtr<Gdk::DragContext>& context, int,
 }
 bool PlayerWindow::keyPress(GdkEventKey* evt) {
 	if (vidListNotebook->get_current_page() == 0) {
-		if (playerSignals)
-			playerSignals->keyPressed(evt->state, evt->keyval, evt->hardware_keycode);
+		if (windowBridge)
+			windowBridge->keyPressed(evt->state, evt->keyval, evt->hardware_keycode);
 		return true;
 	}
 	return false;
 }
-void PlayerWindow::setVideoBoardSize(int x, int y) {
-	this->resize(x, y + panelHeight);
+void PlayerWindow::setVideoBoardSize(int width, int height) {
+	this->setFullscreen(false);
+	this->unmaximize();
+	this->resize(width, height + panelHeight);
 }
 void PlayerWindow::call(IndigoPlayerCommand::Command command){
 	if(hashTableOfFunction.find(command) != hashTableOfFunction.end()){
@@ -267,4 +276,5 @@ std::list<IndigoPlayerCommand::Command> PlayerWindow::getCommandList(){
 }
 void PlayerWindow::initHashTable(std::map <IndigoPlayerCommand::Command, OFP> &table){
 	table[IndigoPlayerCommand::FULLUNFULLSCR] = &PlayerWindow::changeFullscreen;
+	table[IndigoPlayerCommand::UNFULLSCR] = &PlayerWindow::unFullscreen;
 }

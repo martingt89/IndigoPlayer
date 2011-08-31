@@ -16,6 +16,7 @@ ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 		toolTipWindow(Gtk::WINDOW_POPUP) {
 	m_refGlade = refGlade;
 	playerSignals = NULL;
+	windowBridge = NULL;
 	timeline_changed_signal = true;
 	sound_changed_signal = true;
 	playStopSignal = true;
@@ -134,6 +135,9 @@ void ControlPanel::pushPlayButton() {
 void ControlPanel::setListener(PlayerSignals *ps) {
 	playerSignals = ps;
 }
+void ControlPanel::setBridgePointer(Bridge* windowBridge){
+	this->windowBridge = windowBridge;
+}
 //---------------------private functions---------------------------//
 Glib::ustring ControlPanel::getTimeText(int position, int duration) {
 	if (position < 0 || duration < 0) {
@@ -173,8 +177,8 @@ void ControlPanel::timelineChanged() {
 	}
 }
 void ControlPanel::openButtonClicked() {
-	if (playerSignals != 0)
-		playerSignals->clickOpen();
+	if (windowBridge != 0)
+		windowBridge->clickOpenButton();
 }
 void ControlPanel::forwardClicked() {
 	if (playerSignals != 0)
@@ -189,8 +193,8 @@ void ControlPanel::cancelClicked() {
 		playerSignals->clickCancel();
 }
 void ControlPanel::thisOptionsClicked() {
-	if (playerSignals != 0)
-		playerSignals->clickThisOptions();
+	if (windowBridge != 0)
+		windowBridge->clickThisOptionsButton();
 }
 void ControlPanel::rewindButtonClicked() {
 	if (playerSignals != 0)

@@ -16,7 +16,6 @@ ShortKeys::~ShortKeys() {
 }
 
 void ShortKeys::keyPressed(int control, int keyValue, unsigned short hardValue){
-	std::cout<<"con: "<<control<<" keyVal: "<<keyValue<<" hard: "<<hardValue<<std::endl;
 	if(hardwareTable.find(hardValue) != hardwareTable.end()){
 		std::cout<<"Find hardware"<<std::endl;
 		executeCommand(hardwareTable[hardValue]);

@@ -67,6 +67,8 @@ void ThisOptions::stopPlaying(){
 	contrast->set_sensitive(false);
 	gamma->set_sensitive(false);
 	hue->set_sensitive(false);
+	leftRight->set_sensitive(false);
+	upDown->set_sensitive(false);
 	saturation->set_sensitive(false);
 }
 void ThisOptions::runPlaying(){
@@ -84,6 +86,8 @@ void ThisOptions::runPlaying(){
 	contrast->set_sensitive(true);
 	gamma->set_sensitive(true);
 	hue->set_sensitive(true);
+	leftRight->set_sensitive(true);
+	upDown->set_sensitive(true);
 	saturation->set_sensitive(true);
 }
 void ThisOptions::setPlayerInt(MplayerInterface* interface) {

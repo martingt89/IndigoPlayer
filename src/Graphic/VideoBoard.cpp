@@ -7,8 +7,7 @@
 
 #include "VideoBoard.h"
 #include <iostream>
-VideoBoard::VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder, PlayerWindow* wina) {
-	playerWindow = wina;
+VideoBoard::VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder) {
 	boardSizeX = 0;
 	boardSizeY = 0;
 	videoWidth = 0;
@@ -36,7 +35,7 @@ VideoBoard::~VideoBoard() {
 }
 bool VideoBoard::doubleClick(GdkEventButton *ev){
 	if(ev->type == GDK_2BUTTON_PRESS )
-		playerWindow->changeFullscreen();
+		windowBridge->changeFullscreen();
 	return true;
 }
 void VideoBoard::showLogo(bool show) {
@@ -69,37 +68,32 @@ bool VideoBoard::on_expose_event(GdkEventExpose* ev) {
 }
 void VideoBoard::setHalfSize(){
 	if(videoWidth > 0 && videoHeight > 0){
-		playerWindow->setfullscreen(false);
-		playerWindow->unmaximize();
-		playerWindow->setVideoBoardSize(100,100);
-		playerWindow->setVideoBoardSize(videoWidth/2,videoHeight/2);
+		windowBridge->setResolution(videoWidth/2, videoHeight/2);
 	}
 }
-void VideoBoard::setFullSize(){
+void VideoBoard::setOriginalSize(){
 	if(videoWidth > 0 && videoHeight > 0){
-		playerWindow->setfullscreen(false);
-		playerWindow->unmaximize();
-		playerWindow->setVideoBoardSize(100,100);
-		playerWindow->setVideoBoardSize(videoWidth,videoHeight);
+		windowBridge->setResolution(videoWidth,videoHeight);
 	}
 }
 void VideoBoard::setMaximalizeSize(){
 	if(videoWidth > 0 && videoHeight > 0){
-		playerWindow->setfullscreen(false);
-		playerWindow->maximize();
-		//playerWindow->setVideoBoardSize(videoWidth*2,videoHeight*2);
+		windowBridge->setMaximalize(true);
 	}
 }
 void VideoBoard::setFullscreenSize(){
 	if(videoWidth > 0 && videoHeight > 0){
-		playerWindow->setfullscreen(true);
+		windowBridge->setFullscreen(true);
 	}
 }
 void VideoBoard::setVideoResolution(int width, int height, bool resize){
 	videoWidth = width;
 	videoHeight = height;
 	if(resize)
-		playerWindow->setVideoBoardSize(width,height);
+		windowBridge->setResolution(width, height);
+}
+void VideoBoard::setBridgePointer(Bridge* windowBridge){
+	this->windowBridge = windowBridge;
 }
 void VideoBoard::call(IndigoPlayerCommand::Command command){
 	if(hashTableOfFunction.find(command) != hashTableOfFunction.end()){
@@ -109,7 +103,7 @@ void VideoBoard::call(IndigoPlayerCommand::Command command){
 }
 void VideoBoard::initHashTable(std::map <IndigoPlayerCommand::Command, OFP> &table){
 	table[IndigoPlayerCommand::HALFSIZE] = &VideoBoard::setHalfSize;
-	table[IndigoPlayerCommand::ORIGINALSIZE] = &VideoBoard::setFullSize;
+	table[IndigoPlayerCommand::ORIGINALSIZE] = &VideoBoard::setOriginalSize;
 	table[IndigoPlayerCommand::MAXIMALIZESIZE] = &VideoBoard::setMaximalizeSize;
 	table[IndigoPlayerCommand::FULLSCR] = &VideoBoard::setFullscreenSize;
 }
