@@ -242,21 +242,21 @@ ControlPanel::~ControlPanel() {
 	delete sound;
 	delete time;
 }
-void ControlPanel::call(IndigoPlayerCommand::Command command){
+void ControlPanel::call(IndigoPlayerEnum::Command command){
 	if(hashTableOfFunction.find(command) != hashTableOfFunction.end()){
 		OFP func = hashTableOfFunction[command];
 		(this->*func)();
 	}
 }
-std::list<IndigoPlayerCommand::Command> ControlPanel::getCommandList(){
-	std::list<IndigoPlayerCommand::Command> list;
-	std::map <IndigoPlayerCommand::Command, OFP>::iterator it;
+std::list<IndigoPlayerEnum::Command> ControlPanel::getCommandList(){
+	std::list<IndigoPlayerEnum::Command> list;
+	std::map <IndigoPlayerEnum::Command, OFP>::iterator it;
 	for(it = hashTableOfFunction.begin(); it != hashTableOfFunction.end(); it++){
 		list.push_back(it->first);
 	}
 	return list;
 }
-void ControlPanel::initHashTable(std::map <IndigoPlayerCommand::Command, OFP> &table){
-	table[IndigoPlayerCommand::PLAYSTOPBUT] = &ControlPanel::playStopSoftPressed;
-	table[IndigoPlayerCommand::MUTEUNMUTE] = &ControlPanel::muteUnmuteSoftPressed;
+void ControlPanel::initHashTable(std::map <IndigoPlayerEnum::Command, OFP> &table){
+	table[IndigoPlayerEnum::PLAYSTOPBUT] = &ControlPanel::playStopSoftPressed;
+	table[IndigoPlayerEnum::MUTEUNMUTE] = &ControlPanel::muteUnmuteSoftPressed;
 }

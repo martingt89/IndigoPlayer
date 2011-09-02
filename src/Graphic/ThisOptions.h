@@ -16,13 +16,16 @@
 #include <gtkmm/window.h>
 #include "../MyWidget/MyComboBox.h"
 #include "../PlayerKernel/MplayerInterface.h"
+#include "../Player/ColorSetings.h"
+#include "../Interfaces/VideoFilters.h"
 
 class ThisOptions {
 public:
 	ThisOptions(const Glib::RefPtr<Gtk::Builder>& refGlade);
 	virtual ~ThisOptions();
 	void show();
-	void setPlayerInt(MplayerInterface* interface);
+	void setColorsPointer(ColorSetings* colors);
+	void setFiltersPointer(VideoFilters* filter);
 	void stopPlaying();
 	void runPlaying();
 private:
@@ -63,7 +66,8 @@ private:
 	Gtk::Adjustment videoSpeedAdj;
 	int lastSpeed;
 
-	MplayerInterface* mplayerInterface;
+	VideoFilters* videoFilter;
+	ColorSetings* colors;
 };
 
 #endif /* THISOPTIONS_H_ */

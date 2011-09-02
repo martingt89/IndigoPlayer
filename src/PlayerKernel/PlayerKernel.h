@@ -23,45 +23,35 @@
 #include <cstdlib>
 #include "../Files/IndigoFile.h"
 #include "../../Settings.h"
-#include "SavedData.h"
+#include "../Player/SavedFileInfo.h"
 
 
 class PlayerKernel {
 public:
 	PlayerKernel(MediaPackage*);
 	virtual ~PlayerKernel();
-	bool play(IndigoFile* file);
+	bool play(IndigoFile* file, bool loadTime=false, SavedFileInfo* info=NULL);
 	void setGenerator(ScriptGenerator* gener);
 	bool isPlaying();
 	void stop();
 	void sendCommand(Glib::ustring command);
-	bool playChapter(int chap);
-	void rebootPlay();
-	void replay();
+
 private:
 	void listener();
 	void mplayerError();
 	bool aktualTime();
-	void endPlaying();
-	void playNextChapter();
-
 	ScriptGenerator* generator;
 	MediaPackage* stringAnalyze;
 	Glib::Thread* thread;
 	Glib::Thread* errThread;
-	IndigoFile* lastSetFile;
-	SavedData savedData;
+//	IndigoFile* lastSetFile;
+//	SavedData savedData;
+
 	bool playing;
-	bool isPause;
 	int fromPlayerErr[2];
 	int fromPlayer[2];
 	int toPlayer[2];
 	int childPid;
-	int chapter;
-	bool stopAnalyze;
-	bool setInfo;
-	bool isAlive;
-	bool save;
 };
 
 #endif /* PLAYERKERNEL_H_ */

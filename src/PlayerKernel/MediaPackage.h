@@ -14,7 +14,7 @@
 #include <cstdlib>
 #include <string>
 #include <map>
-#include "SavedData.h"
+
 class StreamInfo {
 public:
 	StreamInfo(){
@@ -39,41 +39,40 @@ public:
 	//------------------------------------------------
 	void clear();
 	void quitPlay();
-	SavedData getSavedData();
-	bool isVideoParamChange();
 
 	int getValueFromSubtitlePath(std::string path);
 	int getValueFromAudioText(std::string text);
 
-	void setAktualPlaySubtitles(int number);
-	void setAktualPlaySubtitles(std::string path);
-	void setAktualPlayAudio(int number);
-	void setAktualPlayAudio(std::string path);
+	bool isStart(bool off=true);
+	bool isEnd(bool off=true);
+	bool isVideoParamChange();
+	bool isSubtitleChanged();
+	bool isAudioChanged();
+	bool isVideoChanged();
 
-	bool subtitleChanged();
-	bool audioChanged();
 	std::list<Glib::ustring> getListSubtitles();
 	std::list<Glib::ustring> getListAudios();
 	//==============================================
 	bool isOriginalSubtitleStream(int number);
 	bool isOriginalAudioStream(int number);
-	std::string getPathOfStream(int number);
+	std::string getSubtitlePathOfStream(int number);
 private:
 	std::map<std::string, int> hashTable;
 	std::map<std::string, std::string> valueTable;
 	Glib::Mutex lock;
-	bool changeVideoParam;
+
 	std::list<std::pair<int, StreamInfo> > loadedSubtitles;
 	std::list<std::pair<int, StreamInfo> > loadedAudio;
 	int lastNumberSubtitle;
 	int lastNumberAudio;
-	std::string aktualPlaySubtitlesStr;
-	int aktualPlaySubtitles;
-	int aktualPlayAudio;
-	std::string aktualPlayAudioStr;
+
 	bool subChanged;
 	bool audChanged;
+	bool changeVideoParam;
 	int unknownCounter;
+
+	bool start;
+	bool end;
 };
 
 #endif /* STRINGANALYZE_H_ */

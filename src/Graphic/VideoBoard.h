@@ -26,13 +26,13 @@ public:
 	int getXID();
 	void setVideoResolution(int width, int height, bool resize);
 	void setBridgePointer(Bridge* windowBridge);
-	void call(IndigoPlayerCommand::Command command);
-	std::list<IndigoPlayerCommand::Command> getCommandList();
+	void call(IndigoPlayerEnum::Command command);
+	std::list<IndigoPlayerEnum::Command> getCommandList();
 
 private:
     typedef void (VideoBoard::*OFP)(void);
-    std::map <IndigoPlayerCommand::Command, OFP> hashTableOfFunction;
-    void initHashTable(std::map <IndigoPlayerCommand::Command, OFP> &table);
+    std::map <IndigoPlayerEnum::Command, OFP> hashTableOfFunction;
+    void initHashTable(std::map <IndigoPlayerEnum::Command, OFP> &table);
 	void setHalfSize();
 	void setOriginalSize();
 	void setMaximalizeSize();

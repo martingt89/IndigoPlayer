@@ -11,17 +11,20 @@
 #include <gtkmm/combobox.h>
 #include <gtkmm/liststore.h>
 #include <gtkmm/treemodel.h>
+#include <glibmm/ustring.h>
+#include <string>
 
 class MyComboBox {
 private:
 	class ModelColumns: public Gtk::TreeModel::ColumnRecord {
 	public:
 
-		ModelColumns() { add(colId); add(colText); add(doubleVlaue);}
+		ModelColumns() { add(colId); add(colText); add(doubleVlaue); add(textValue);}
 
 	    Gtk::TreeModelColumn<int> colId;
 	    Gtk::TreeModelColumn<double> doubleVlaue;
 		Gtk::TreeModelColumn<Glib::ustring> colText;
+		Gtk::TreeModelColumn<Glib::ustring> textValue;
 	};
 	ModelColumns columnsModel;
 public:
@@ -37,6 +40,7 @@ public:
 	Glib::ustring getStringValue();
 	int getOrder();
 private:
+	Glib::ustring convertText(Glib::ustring intpuText);
 	Gtk::ComboBox* comboBox;
 	Glib::RefPtr<Gtk::ListStore> refTreeModel;
 	int number;

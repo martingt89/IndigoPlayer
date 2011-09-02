@@ -35,6 +35,7 @@ int main(int argc, char *argv[]){
 	player->setOpenDialog(gLoader->getOpenDialog());
 	player->setThisOptions(gLoader->getThisOptions());
 	player->setThisOptionsLoad(gLoader->getThisOptionsLoad());
+
 	WindowBridge bridge;
 	bridge.setPlayerWindow(gLoader->getPlayerWindow());
 	bridge.setControlPanel(gLoader->getBasePlayerWindow());

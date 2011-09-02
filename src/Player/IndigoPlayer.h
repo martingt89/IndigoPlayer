@@ -8,6 +8,8 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
+#include "OneFilePlayer.h"
+#include "GraphicData.h"
 #include "../Interfaces/PlayerSignals.h"
 #include "../Interfaces/Callable.h"
 #include "../Graphic/ControlPanel.h"
@@ -36,7 +38,6 @@ public:
 	void setThisOptions(ThisOptions* opt);
 	void setThisOptionsLoad(ThisOptionsLoad* optLoad);
 //-------------------------------------------------------------------------
-	void messageIncomming();
 	void addSubtitle(Glib::ustring file);
 	void clickPlay();
 	void clickPause();
@@ -51,6 +52,7 @@ public:
 	void changeSoundLevel();
 	void addFiles(std::list<IndigoFile*> files, bool play);
 	void playFile(IndigoFile* file);
+	void incommingMessage(GraphicData data);
 	void stopPlayer();
 	void quit();
 private:
@@ -62,15 +64,14 @@ private:
 	VideoBoard* videoBoard;
 	OpenFileDialog* openDialog;
 	ControlPanel* controlPanel;
-	MplayerInterface* mplayer;
-	ScriptGenerator* generator;
-	MediaPackage* mediaPackage;
 	ThisOptions* thisOptions;
 	ThisOptionsLoad* thisOptionsLoad;
-	bool playSub;
-	bool firstLogSub;
-	bool firstLogAud;
-	Glib::ustring subtitles;
+	ScriptGenerator* generator;
+	OneFilePlayer* filePlayer;
+
+	bool playing;
+	bool firstAud;
+	bool firstSub;
 };
 
 #endif /* PLAYER_H_ */

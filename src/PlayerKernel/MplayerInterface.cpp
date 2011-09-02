@@ -10,50 +10,53 @@
 MplayerInterface::MplayerInterface(MediaPackage* media) {
 	mediaPackage = media;
 	kernel = new PlayerKernel(mediaPackage);
-	filter = new VideoFilters();
+//	filter = new VideoFilters();
 	isPlayNoPause = true;
 }
 
 MplayerInterface::~MplayerInterface() {
 	delete kernel;
-	delete filter;
+//	delete filter;
 }
 
 void MplayerInterface::setGenerator(ScriptGenerator* gener) {
-	gener->setVideoFilters(filter);
+//	gener->setVideoFilters(filter);
 	kernel->setGenerator(gener);
 }
 
-bool MplayerInterface::play(IndigoFile* file) {
+bool MplayerInterface::play(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
 	isPlayNoPause = true;
-	return kernel->play(file);
+	return kernel->play(file, loadTime, info);
 }
 void MplayerInterface::loadSubtitles(Glib::ustring file){
 	kernel->sendCommand("sub_load '"+file+"'\n");
 }
 void MplayerInterface::playSubtitles(int number){
 	kernel->sendCommand("sub_select "+Glib::ustring::format(number)+"\n");
-	if(mediaPackage->isOriginalSubtitleStream(number)){
-		mediaPackage->setAktualPlaySubtitles(number);
-	}else{
-		mediaPackage->setAktualPlaySubtitles(mediaPackage->getPathOfStream(number));
-	}
+//	if(mediaPackage->isOriginalSubtitleStream(number)){
+//		mediaPackage->setAktualPlaySubtitles(number);
+//	}else{
+//		mediaPackage->setAktualPlaySubtitles(mediaPackage->getSubtitlePathOfStream(number));
+//	}
 }
 void MplayerInterface::playAudio(int number){
 	kernel->sendCommand("switch_audio "+Glib::ustring::format(number)+"\n");
-	mediaPackage->setAktualPlayAudio(number);
+//	mediaPackage->setAktualPlayAudio(number);
 }
 void MplayerInterface::playAudioPath(Glib::ustring path){
-	mediaPackage->setAktualPlayAudio(path);
-	applyFilters();
+//	mediaPackage->setAktualPlayAudio(path);
+//	applyFilters();
 }
-void MplayerInterface::applyFilters() {
-	if (kernel->isPlaying())
-		kernel->rebootPlay();
-}
-void MplayerInterface::replayFile() {
-	if (kernel->isPlaying())
-		kernel->replay();
+//void MplayerInterface::applyFilters() {
+//	if (kernel->isPlaying())
+//		kernel->rebootPlay();
+//}
+//void MplayerInterface::replayFile() {
+//	if (kernel->isPlaying())
+//		kernel->replay();
+//}
+void MplayerInterface::relativeSeek(int time){
+	kernel->sendCommand("seek " + Glib::ustring::format(time) + " 0\n");
 }
 bool MplayerInterface::isPlaying() {
 	return kernel->isPlaying();
@@ -65,24 +68,29 @@ void MplayerInterface::mute(bool mut) {
 		kernel->sendCommand("mute 0\n osd_show_text unmute\n");
 }
 void MplayerInterface::soundLevel(double level) {
-	kernel->sendCommand("volume " + Glib::ustring::format(level) + " 1\n");
+		kernel->sendCommand("volume " + Glib::ustring::format(level) + " 1\n");
+	if(level == 0)
+		kernel->sendCommand("osd_show_text mute\n");
+	else
+		kernel->sendCommand("osd_show_text 'volume: "+Glib::ustring::format(level)+"%' \n");
 }
 void MplayerInterface::changeTime(int time) {
 	kernel->sendCommand("seek " + Glib::ustring::format(time) + " 2\n");
 }
 void MplayerInterface::pause() {
-	if (isPlayNoPause == true) {
-		kernel->sendCommand("pause\n osd_show_text pause\n");
+		kernel->sendCommand("pause\n");
+	if (isPlayNoPause) {
+		kernel->sendCommand("osd_show_text pause\n");
+		isPlayNoPause =false;
+	}else{
+		isPlayNoPause =true;
+		kernel->sendCommand("osd_show_text unpause\n");
 	}
-	isPlayNoPause = false;
 }
 void MplayerInterface::resume() {
-	if (isPlayNoPause == false) {
-		kernel->sendCommand("pause\n osd_show_text unpause\n");
-	}
-	isPlayNoPause = true;
+	kernel->sendCommand("pause\n osd_show_text unpause\n");
 }
-void MplayerInterface::cancel() {
+void MplayerInterface::stopPlayback() {
 	kernel->stop();
 }
 void MplayerInterface::setPlaySpeed(double speed) {
@@ -103,9 +111,9 @@ void MplayerInterface::setSaturation(double satur) {
 void MplayerInterface::setBrightness(double bright) {
 	kernel->sendCommand("brightness " + Glib::ustring::format(bright) + " 1\n");
 }
-void MplayerInterface::crop(int a, int b, int c, int d) {
-	filter->resize(a, b, c, d);
-}
-void MplayerInterface::rotate(int deg){
-	filter->rotate(deg);
-}
+//void MplayerInterface::crop(int a, int b, int c, int d) {
+//	filter->resize(a, b, c, d);
+//}
+//void MplayerInterface::rotate(int deg){
+//	filter->rotate(deg);
+//}

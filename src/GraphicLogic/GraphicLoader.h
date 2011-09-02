@@ -10,7 +10,6 @@
 
 #include <iostream>
 #include <gtkmm/builder.h>
-#include "../../Settings.h"
 #include "../Graphic/ControlPanel.h"
 #include "../Graphic/VideoBoard.h"
 #include "../Graphic/OpenFileDialog.h"
@@ -19,6 +18,7 @@
 #include "../Graphic/PlayerWindow.h"
 #include "../Graphic/ThisOptions.h"
 #include "../Graphic/ThisOptionsLoad.h"
+#include "../../Settings.h"
 
 class GraphicLoader {
 public:
@@ -36,7 +36,6 @@ private:
 	ControlPanel *controlPanel;
 	OpenFileDialog* openWindow;
 	VideoBoard *videoBoard;
-	PlaylistGraphic* playlist;
 	ThisOptions* thisOptions;
 	ThisOptionsLoad* thisOptionsLoad;
 	Playlist* playlistLogic;

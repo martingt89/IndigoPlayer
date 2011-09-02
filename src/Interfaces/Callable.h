@@ -8,24 +8,13 @@
 #ifndef CALLABLE_H_
 #define CALLABLE_H_
 
-namespace IndigoPlayerCommand{
-	enum Command{
-		FULLUNFULLSCR,
-		UNFULLSCR,
-		FULLSCR,
-		HALFSIZE,
-		ORIGINALSIZE,
-		MAXIMALIZESIZE,
-		PLAYSTOPBUT,
-		MUTEUNMUTE
-	};
-}
+#include "../../EnumTypes.h"
 
 class Callable {
 public:
 	Callable();
 	virtual ~Callable();
-	virtual void call(IndigoPlayerCommand::Command command) = 0;
+	virtual void call(IndigoPlayerEnum::Command command) = 0;
 };
 
 #endif /* CALLABLE_H_ */

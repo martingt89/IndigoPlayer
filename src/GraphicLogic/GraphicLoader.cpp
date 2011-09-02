@@ -15,7 +15,6 @@ GraphicLoader::GraphicLoader() {
 		refBuilder->add_from_file(GLADEOPENDIALOG);
 		refBuilder->add_from_file(GLADECONTROLPANEL);
 		refBuilder->add_from_file(GLADEOPENWINDOW);
-
 	} catch (const Glib::FileError& ex) {
 		std::cerr << "FileError: " << ex.what() << std::endl;
 	} catch (const Gtk::BuilderError& ex) {
@@ -26,13 +25,20 @@ GraphicLoader::GraphicLoader() {
 	refBuilder->get_widget_derived("OpenWindow", openWindow);
 	controlPanel = new ControlPanel(refBuilder);
 	videoBoard = new VideoBoard(refBuilder);
-	playlist = new PlaylistGraphic(refBuilder);
+	PlaylistGraphic* playlist = new PlaylistGraphic(refBuilder);
 	thisOptions = new ThisOptions(refBuilder);
 	thisOptionsLoad = new ThisOptionsLoad(refBuilder);
 	playlistLogic = new Playlist(playlist);
 }
 
 GraphicLoader::~GraphicLoader() {
+	delete playerWindow;
+	delete openWindow;
+	delete controlPanel;
+	delete videoBoard;
+	delete playlistLogic;
+	delete thisOptions;
+	delete thisOptionsLoad;
 }
 
 ControlPanel* GraphicLoader::getBasePlayerWindow(){

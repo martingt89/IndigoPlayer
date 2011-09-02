@@ -15,7 +15,7 @@ Playlist::Playlist(PlaylistGraphic* graphic) {
 }
 
 Playlist::~Playlist() {
-
+	delete graphic;
 }
 
 void Playlist::setListener(PlayerSignals* sig){

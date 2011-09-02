@@ -11,23 +11,16 @@
 ScriptGenerator::ScriptGenerator() {
 	controlPanel = NULL;
 	videoBoard = NULL;
-	videoFilters = NULL;
 	mplayerPath = MPLAYER;
 }
 
-ScriptGenerator::~ScriptGenerator() {
-	// TODO Auto-generated destructor stub
-}
 void ScriptGenerator::setVideoBoard(VideoBoard* board) {
 	videoBoard = board;
 }
 void ScriptGenerator::setControlPanel(ControlPanel* panel) {
 	controlPanel = panel;
 }
-void ScriptGenerator::setVideoFilters(VideoFilters* filters) {
-	videoFilters = filters;
-}
-std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool load, SavedData data) {
+std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
 	std::list<Glib::ustring> empty;
 	empty.push_back(mplayerPath);
 
@@ -37,11 +30,9 @@ std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool load, 
 	if (videoBoard)
 		getVideoBoard(empty);
 
-	if (videoFilters)
-		getFromVideoFilters(empty, load, data);
+	if (info)
+		getFromSavedInfo(empty, info, loadTime);
 
-	if (load)
-		getVideoSavedData(empty, data);
 	else {
 		empty.push_back("-aid");
 		empty.push_back("0");
@@ -59,6 +50,9 @@ std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool load, 
 	empty.push_back("-ao");
 	empty.push_back("pulse");
 
+	empty.push_back("-af");
+	empty.push_back("scaletempo");
+
 	empty.push_back("-osdlevel");
 	empty.push_back("0");
 	empty.push_back("-slave");
@@ -67,41 +61,59 @@ std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool load, 
 //	empty.push_back("-dvd-device");
 	empty.push_back(file->getFilePath());
 	std::list<Glib::ustring>::iterator it;
-	for(it = empty.begin(); it != empty.end(); it++){
-		std::cout<<*it<<" ";
+	for (it = empty.begin(); it != empty.end(); it++) {
+		std::cout << *it << " ";
 	}
-	std::cout<<std::endl;
+	std::cout << std::endl;
 
 	return empty;
 }
-void ScriptGenerator::getVideoSavedData(std::list<Glib::ustring> &parameters, SavedData data) {
-	parameters.push_back("-ss");
-	parameters.push_back(Glib::ustring::format(data.getPosition()));
-	//
-	if (data.getSubPath().size() != 0) {
-		parameters.push_back("-sub");
-		parameters.push_back(data.getSubPath());
-	} else if (data.getSubID() != -1) {
-		parameters.push_back("-sid");
-		parameters.push_back(Glib::ustring::format(data.getSubID()));
-	} else {
-		parameters.push_back("-sid");
-		parameters.push_back("0");
+void ScriptGenerator::getFromSavedInfo(std::list<Glib::ustring> &parameters, SavedFileInfo* info,
+		bool loadTime) {
+	if (loadTime) {
+		parameters.push_back("-ss");
+		parameters.push_back(Glib::ustring::format(info->getAktualTime()));
 	}
-	if (data.getAudioPath().size() != 0) {
-		parameters.push_back("-audiofile");
-		parameters.push_back(data.getAudioPath());
-	} else if (data.getAudioID() > -1) {
-		parameters.push_back("-aid");
-		parameters.push_back(Glib::ustring::format(data.getAudioID()));
-	} else {
-		parameters.push_back("-aid");
-		parameters.push_back("0");
+	if(info->getPlaySpeed() != 1){
+		parameters.push_back("-speed");
+		parameters.push_back(Glib::ustring::format(info->getPlaySpeed()));
 	}
-}
-void ScriptGenerator::getFromVideoFilters(std::list<Glib::ustring> &parameters, bool load, SavedData data) {
-	if (videoFilters->getRotate() != 0) {
-		switch (videoFilters->getRotate()) {
+	if(info->getAktualChapter() != 1){
+		parameters.push_back("-vid");
+		parameters.push_back(Glib::ustring::format(info->getAktualChapter()));
+	}
+	if(info->getSoundPosition() != 0){
+		parameters.push_back("-delay");
+		parameters.push_back(Glib::ustring::format(info->getSoundPosition()));
+	}
+	if(info->getSubtitlePosition() != 0){
+		parameters.push_back("-subdelay");
+		parameters.push_back(Glib::ustring::format(info->getSubtitlePosition()));
+	}
+	{
+		if (info->getSubPath().size() != 0) {
+			parameters.push_back("-sub");
+			parameters.push_back(info->getSubPath());
+		} else if (info->getSubID() != -1) {
+			parameters.push_back("-sid");
+			parameters.push_back(Glib::ustring::format(info->getSubID()));
+		} else {
+			parameters.push_back("-sid");
+			parameters.push_back("0");
+		}
+		if (info->getAudioPath().size() != 0) {
+			parameters.push_back("-audiofile");
+			parameters.push_back(info->getAudioPath());
+		} else if (info->getAudioID() > -1) {
+			parameters.push_back("-aid");
+			parameters.push_back(Glib::ustring::format(info->getAudioID()));
+		} else {
+			parameters.push_back("-aid");
+			parameters.push_back("0");
+		}
+	}
+	{
+		switch (info->getRotate()) {
 		case 90:
 			parameters.push_back("-vf-add");
 			parameters.push_back("rotate=1");
@@ -117,18 +129,19 @@ void ScriptGenerator::getFromVideoFilters(std::list<Glib::ustring> &parameters, 
 			break;
 		}
 	}
-	if (load) {
-		int x, y;
+	{
+		int w, h;
 		int up, down, left, right;
-		parameters.push_back("-vf-add");
-		x = data.getX();
-		y = data.getY();
-		videoFilters->getResize(up, down, left, right);
-		int ud = up + down;
-		int lr = left + right;
-		parameters.push_back(
-				"crop=" + Glib::ustring::format(x - lr) + ":" + Glib::ustring::format(y - ud) + ":"
-						+ Glib::ustring::format(left) + ":" + Glib::ustring::format(up));
+		info->getResolution(&w, &h);
+		if(w > 0 && h > 0){
+			info->getCrop(&up, &down, &left, &right);
+			int ud = up + down;
+			int lr = left + right;
+			parameters.push_back("-vf-add");
+			parameters.push_back( "crop=" + Glib::ustring::format(w - lr) + ":" +
+					Glib::ustring::format(h - ud) + ":" + Glib::ustring::format(left) +
+					":" + Glib::ustring::format(up));
+		}
 	}
 }
 void ScriptGenerator::getFromControlPanel(std::list<Glib::ustring> &parameters) {

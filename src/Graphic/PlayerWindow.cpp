@@ -54,7 +54,6 @@ PlayerWindow::PlayerWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Buil
 	popupWindow->signal_enter_notify_event().connect(sigc::mem_fun(this, &PlayerWindow::enterPopup));
 	vidListNotebook->signal_switch_page().connect(sigc::mem_fun(this, &PlayerWindow::switchPage));
 	this->signal_hide().connect(sigc::mem_fun(this, &PlayerWindow::quitWindow));
-	popupWindow->signal_show().connect(sigc::mem_fun(this, &PlayerWindow::popupShow));
 
     initHashTable(hashTableOfFunction);
 }
@@ -74,14 +73,10 @@ void PlayerWindow::quitWindow() {
 	}
 }
 void PlayerWindow::checkResize(){
-	std::cout<<"Nieco sa stalo width: "<<this->get_width()<<std::endl;
-	panelWidth = this->get_width();
-	popupWindow->resize(panelWidth, panelHeight);
-}
-void PlayerWindow::popupShow() {
-//	panelHeight = popupWindow->get_height();
-//	panelWidth = popupWindow->get_width();
-//	std::cout<<"panelHeight: "<<panelHeight<<" panelWidth: "<<panelWidth<<std::endl;
+	if(panelWidth != this->get_width()){
+		panelWidth = this->get_width();
+		popupWindow->resize(panelWidth, panelHeight);
+	}
 }
 void PlayerWindow::switchPage(GtkNotebookPage* page, guint page_num) {
 	if (fullScreen->get_active()) {
@@ -196,6 +191,7 @@ void PlayerWindow::fullScreenClicked() {
 	if (fullScreen->get_active()) {
 		if (vidListNotebook->get_current_page() == 0) {
 			isHideElements = true;
+			once = false;
 			this->removePanel();
 			this->fullscreen();
 			this->showPopupWindow();
@@ -270,21 +266,21 @@ void PlayerWindow::setVideoBoardSize(int width, int height) {
 	this->unmaximize();
 	this->resize(width, height + panelHeight);
 }
-void PlayerWindow::call(IndigoPlayerCommand::Command command){
+void PlayerWindow::call(IndigoPlayerEnum::Command command){
 	if(hashTableOfFunction.find(command) != hashTableOfFunction.end()){
 		OFP func = hashTableOfFunction[command];
 		(this->*func)();
 	}
 }
-std::list<IndigoPlayerCommand::Command> PlayerWindow::getCommandList(){
-	std::list<IndigoPlayerCommand::Command> list;
-	std::map <IndigoPlayerCommand::Command, OFP>::iterator it;
+std::list<IndigoPlayerEnum::Command> PlayerWindow::getCommandList(){
+	std::list<IndigoPlayerEnum::Command> list;
+	std::map <IndigoPlayerEnum::Command, OFP>::iterator it;
 	for(it = hashTableOfFunction.begin(); it != hashTableOfFunction.end(); it++){
 		list.push_back(it->first);
 	}
 	return list;
 }
-void PlayerWindow::initHashTable(std::map <IndigoPlayerCommand::Command, OFP> &table){
-	table[IndigoPlayerCommand::FULLUNFULLSCR] = &PlayerWindow::changeFullscreen;
-	table[IndigoPlayerCommand::UNFULLSCR] = &PlayerWindow::unFullscreen;
+void PlayerWindow::initHashTable(std::map <IndigoPlayerEnum::Command, OFP> &table){
+	table[IndigoPlayerEnum::FULLUNFULLSCR] = &PlayerWindow::changeFullscreen;
+	table[IndigoPlayerEnum::UNFULLSCR] = &PlayerWindow::unFullscreen;
 }

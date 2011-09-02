@@ -44,12 +44,12 @@ public:
 	void popPlayButton();
 	void pushPlayButton();
 	bool isMute();
-	void call(IndigoPlayerCommand::Command command);
-	std::list<IndigoPlayerCommand::Command> getCommandList();
+	void call(IndigoPlayerEnum::Command command);
+	std::list<IndigoPlayerEnum::Command> getCommandList();
 private:
 	typedef void (ControlPanel::*OFP)(void);
-	std::map <IndigoPlayerCommand::Command, OFP> hashTableOfFunction;
-	void initHashTable(std::map <IndigoPlayerCommand::Command, OFP> &table);
+	std::map <IndigoPlayerEnum::Command, OFP> hashTableOfFunction;
+	void initHashTable(std::map <IndigoPlayerEnum::Command, OFP> &table);
 
 	Glib::RefPtr<Gtk::Builder> m_refGlade;
 	Gtk::Button* forward;

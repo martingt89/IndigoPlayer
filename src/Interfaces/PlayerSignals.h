@@ -10,7 +10,7 @@
 
 #include <list>
 #include "../Files/IndigoFile.h"
-
+#include "../Player/GraphicData.h"
 class PlayerSignals {
 public:
 	PlayerSignals();
@@ -32,6 +32,7 @@ public:
 	virtual void addSubtitle(Glib::ustring file) = 0;
 	virtual void playSubtitles(Glib::ustring file) = 0;
 	virtual void playAudio(Glib::ustring name) = 0;
+	virtual void incommingMessage(GraphicData data) = 0;
 };
 
 #endif /* PLAYERSIGNALS_H_ */

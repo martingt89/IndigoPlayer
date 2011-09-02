@@ -10,7 +10,8 @@
 ThisOptions::ThisOptions(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 		videoSpeedAdj(2, 0, 4) {
 	lastSpeed = 1;
-	mplayerInterface = NULL;
+	colors = NULL;
+	videoFilter = NULL;
 	refGlade->get_widget("ThisOptionsWindow", thisOptionsWindow);
 	refGlade->get_widget("VideoSpeed", videoSpeed);
 
@@ -55,7 +56,7 @@ ThisOptions::ThisOptions(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 void ThisOptions::show() {
 	thisOptionsWindow->show();
 }
-void ThisOptions::stopPlaying(){
+void ThisOptions::stopPlaying() {
 	myRotate->clear();
 	upSpin->set_sensitive(false);
 	downSpin->set_sensitive(false);
@@ -71,8 +72,8 @@ void ThisOptions::stopPlaying(){
 	upDown->set_sensitive(false);
 	saturation->set_sensitive(false);
 }
-void ThisOptions::runPlaying(){
-	myRotate->pushBack("0", 0 ,true);
+void ThisOptions::runPlaying() {
+	myRotate->pushBack("0", 0, true);
 	myRotate->pushBack("90", 90);
 	myRotate->pushBack("180", 180);
 	myRotate->pushBack("270", 270);
@@ -90,10 +91,12 @@ void ThisOptions::runPlaying(){
 	upDown->set_sensitive(true);
 	saturation->set_sensitive(true);
 }
-void ThisOptions::setPlayerInt(MplayerInterface* interface) {
-	mplayerInterface = interface;
+void ThisOptions::setColorsPointer(ColorSetings* colors) {
+	this->colors = colors;
 }
-
+void ThisOptions::setFiltersPointer(VideoFilters* filter) {
+	videoFilter = filter;
+}
 void ThisOptions::makrInit() {
 	videoSpeed->add_mark(0, Gtk::POS_LEFT, "0,25x");
 	videoSpeed->add_mark(1, Gtk::POS_LEFT, "0,50x");
@@ -108,36 +111,36 @@ void ThisOptions::makrInit() {
 	saturation->add_mark(0, Gtk::POS_LEFT, "0");
 }
 void ThisOptions::cropVideoClicked() {
-	if (mplayerInterface)
-		mplayerInterface->applyFilters();
+	if (videoFilter)
+		videoFilter->apply();
 }
-void ThisOptions::rotateChanged(){
-	if (mplayerInterface)
-		mplayerInterface->rotate(myRotate->getDoubleValue());
+void ThisOptions::rotateChanged() {
+	if (videoFilter)
+		videoFilter->setRotateFilter(myRotate->getDoubleValue());
 }
 void ThisOptions::upSpinClicked() {
 	if (upDown->get_active())
 		downSpin->set_value(upSpin->get_value());
-	if (mplayerInterface)
-		mplayerInterface->crop(upSpin->get_value(), downSpin->get_value(), leftSpin->get_value(),
-				rightSpin->get_value());
+	if (videoFilter)
+		videoFilter->cropFilter(upSpin->get_value(), rightSpin->get_value(), downSpin->get_value(),
+				leftSpin->get_value());
 }
 void ThisOptions::downSpinClicked() {
-	if (mplayerInterface)
-		mplayerInterface->crop(upSpin->get_value(), downSpin->get_value(), leftSpin->get_value(),
-						rightSpin->get_value());
+	if (videoFilter)
+		videoFilter->cropFilter(upSpin->get_value(), rightSpin->get_value(), downSpin->get_value(),
+				leftSpin->get_value());
 }
 void ThisOptions::leftSpinClicked() {
 	if (leftRight->get_active())
 		rightSpin->set_value(leftSpin->get_value());
-	if (mplayerInterface)
-		mplayerInterface->crop(upSpin->get_value(), downSpin->get_value(), leftSpin->get_value(),
-						rightSpin->get_value());
+	if (videoFilter)
+		videoFilter->cropFilter(upSpin->get_value(), rightSpin->get_value(), downSpin->get_value(),
+				leftSpin->get_value());
 }
 void ThisOptions::rightSpinClicked() {
-	if (mplayerInterface)
-		mplayerInterface->crop(upSpin->get_value(), downSpin->get_value(), leftSpin->get_value(),
-						rightSpin->get_value());
+	if (videoFilter)
+		videoFilter->cropFilter(upSpin->get_value(), rightSpin->get_value(), downSpin->get_value(),
+				leftSpin->get_value());
 }
 void ThisOptions::leftRightClicked() {
 	if (leftRight->get_active()) {
@@ -154,24 +157,24 @@ void ThisOptions::upDownClicked() {
 		downSpin->set_sensitive(true);
 }
 void ThisOptions::contrastChanged() {
-	if (mplayerInterface)
-		mplayerInterface->setContrast(contrast->get_adjustment()->get_value());
+	if (colors)
+		colors->setContrast(contrast->get_adjustment()->get_value());
 }
 void ThisOptions::gammaChanged() {
-	if (mplayerInterface)
-		mplayerInterface->setGamma(gamma->get_adjustment()->get_value());
+	if (colors)
+		colors->setGamma(gamma->get_adjustment()->get_value());
 }
 void ThisOptions::hueChanged() {
-	if (mplayerInterface)
-		mplayerInterface->setHue(hue->get_adjustment()->get_value());
+	if (colors)
+		colors->setHue(hue->get_adjustment()->get_value());
 }
 void ThisOptions::saturationChanged() {
-	if (mplayerInterface)
-		mplayerInterface->setSaturation(saturation->get_adjustment()->get_value());
+	if (colors)
+		colors->setSaturation(saturation->get_adjustment()->get_value());
 }
 void ThisOptions::brightnessChanged() {
-	if (mplayerInterface)
-		mplayerInterface->setBrightness(brightness->get_adjustment()->get_value());
+	if (colors)
+		colors->setBrightness(brightness->get_adjustment()->get_value());
 }
 void ThisOptions::videoSpeedChanged() {
 	unsigned int num = 1;
@@ -182,8 +185,8 @@ void ThisOptions::videoSpeedChanged() {
 		lastSpeed = (int) (videoSpeedAdj.get_value() + 0.5);
 	}
 	videoSpeedAdj.set_value(lastSpeed);
-	if (mplayerInterface)
-		mplayerInterface->setPlaySpeed(0.25 * num);
+	if (videoFilter)
+		videoFilter->setPlaySpeed(0.25 * num);
 }
 
 ThisOptions::~ThisOptions() {

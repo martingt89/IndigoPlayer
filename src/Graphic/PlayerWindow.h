@@ -35,15 +35,14 @@ public:
 	void setBridgePointer(Bridge* windowBridge);
 	void changeFullscreen();
 	void setVideoBoardSize(int width, int height);
-	void call(IndigoPlayerCommand::Command command);
-	std::list<IndigoPlayerCommand::Command> getCommandList();
+	void call(IndigoPlayerEnum::Command command);
+	std::list<IndigoPlayerEnum::Command> getCommandList();
 	void setFullscreen(bool full);
 private:
 	void checkResize();
-
     typedef void (PlayerWindow::*OFP)(void);
-    std::map <IndigoPlayerCommand::Command, OFP> hashTableOfFunction;
-    void initHashTable(std::map <IndigoPlayerCommand::Command, OFP> &table);
+    std::map <IndigoPlayerEnum::Command, OFP> hashTableOfFunction;
+    void initHashTable(std::map <IndigoPlayerEnum::Command, OFP> &table);
     void unFullscreen();
 	Glib::RefPtr<Gtk::Builder> m_refGlade;
 	Gtk::Window* popupWindow;
@@ -75,7 +74,6 @@ private:
 	bool enterPopup(GdkEventCrossing* event);
 	void switchPage(GtkNotebookPage* page, guint page_num);
 	void quitWindow();
-	void popupShow();
 
 	void removePanel();
 	void addPanel();

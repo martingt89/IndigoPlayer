@@ -1,5 +1,8 @@
 Know isues
--DVD subtitles loaded in start playback have incorect name
+-DVD not support
+
+Version 0.3
++Base shorkeys (f, m, space, Esc, 1,2,3,4) - with time add next, yet witout configuration
 
 Version 0.2
 +SmallOptions window
@@ -21,7 +24,6 @@ Version 0.1
 
 Blueprints
 0.3
- - shorkeys
  - open dialog
 0.4
  - DVD support

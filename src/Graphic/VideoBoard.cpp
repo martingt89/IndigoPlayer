@@ -95,21 +95,21 @@ void VideoBoard::setVideoResolution(int width, int height, bool resize){
 void VideoBoard::setBridgePointer(Bridge* windowBridge){
 	this->windowBridge = windowBridge;
 }
-void VideoBoard::call(IndigoPlayerCommand::Command command){
+void VideoBoard::call(IndigoPlayerEnum::Command command){
 	if(hashTableOfFunction.find(command) != hashTableOfFunction.end()){
 		OFP func = hashTableOfFunction[command];
 		(this->*func)();
 	}
 }
-void VideoBoard::initHashTable(std::map <IndigoPlayerCommand::Command, OFP> &table){
-	table[IndigoPlayerCommand::HALFSIZE] = &VideoBoard::setHalfSize;
-	table[IndigoPlayerCommand::ORIGINALSIZE] = &VideoBoard::setOriginalSize;
-	table[IndigoPlayerCommand::MAXIMALIZESIZE] = &VideoBoard::setMaximalizeSize;
-	table[IndigoPlayerCommand::FULLSCR] = &VideoBoard::setFullscreenSize;
+void VideoBoard::initHashTable(std::map <IndigoPlayerEnum::Command, OFP> &table){
+	table[IndigoPlayerEnum::HALFSIZE] = &VideoBoard::setHalfSize;
+	table[IndigoPlayerEnum::ORIGINALSIZE] = &VideoBoard::setOriginalSize;
+	table[IndigoPlayerEnum::MAXIMALIZESIZE] = &VideoBoard::setMaximalizeSize;
+	table[IndigoPlayerEnum::FULLSCR] = &VideoBoard::setFullscreenSize;
 }
-std::list<IndigoPlayerCommand::Command> VideoBoard::getCommandList(){
-	std::list<IndigoPlayerCommand::Command> list;
-	std::map <IndigoPlayerCommand::Command, OFP>::iterator it;
+std::list<IndigoPlayerEnum::Command> VideoBoard::getCommandList(){
+	std::list<IndigoPlayerEnum::Command> list;
+	std::map <IndigoPlayerEnum::Command, OFP>::iterator it;
 	for(it = hashTableOfFunction.begin(); it != hashTableOfFunction.end(); it++){
 		list.push_back(it->first);
 	}

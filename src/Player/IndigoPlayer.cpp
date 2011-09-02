@@ -12,13 +12,12 @@
 IndigoPlayer::IndigoPlayer(PlayerWindow *playerWin) {
 	playerWindow = playerWin;
 	playerWindow->setListener(this);
-	mediaPackage = new MediaPackage();
-	mplayer = new MplayerInterface(mediaPackage);
 	generator = new ScriptGenerator();
-	mediaPackage->message.connect(sigc::mem_fun(this, &IndigoPlayer::messageIncomming));
-	playSub = false;
-	firstLogSub = false;
-	firstLogAud = false;
+	filePlayer = new OneFilePlayer(generator);
+	filePlayer->setGraphicPointer(this);
+	playing = false;
+	firstAud = true;
+	firstSub = true;
 }
 void IndigoPlayer::setPlaylist(Playlist *playlist) {
 	this->playlist = playlist;
@@ -39,7 +38,8 @@ void IndigoPlayer::setOpenDialog(OpenFileDialog* dialog) {
 }
 void IndigoPlayer::setThisOptions(ThisOptions* opt) {
 	thisOptions = opt;
-	thisOptions->setPlayerInt(mplayer);
+	thisOptions->setColorsPointer(filePlayer->getColorSettings());
+	thisOptions->setFiltersPointer(filePlayer);
 	thisOptions->stopPlaying();
 }
 void IndigoPlayer::setThisOptionsLoad(ThisOptionsLoad* optLoad) {
@@ -48,75 +48,54 @@ void IndigoPlayer::setThisOptionsLoad(ThisOptionsLoad* optLoad) {
 }
 //=====================================================================
 //=====================================================================
-void IndigoPlayer::messageIncomming() {
-	if (mediaPackage->isVideoParamChange()) {
-		if (mediaPackage->getVariable("ID_LENGTH").size() != 0) {
-			controlPanel->setDuration(mediaPackage->getVariableAsInteger("ID_LENGTH"));
-		}
-		int h = mediaPackage->getVariableAsInteger("ID_VIDEO_HEIGHT");
-		int w = mediaPackage->getVariableAsInteger("ID_VIDEO_WIDTH");
-		if (h > 0 && w > 0)
-			videoBoard->setVideoResolution(w, h, false);
+void IndigoPlayer::incommingMessage(GraphicData data) {
+	if (data.isStart()) {
+		playing = true;
+		thisOptions->runPlaying();
+		thisOptionsLoad->runPlaying();
 	}
-	if (mediaPackage->getVariable("ANS_TIME_POSITION").size() != 0) {
-		controlPanel->setPosition(mediaPackage->getVariableAsInteger("ANS_TIME_POSITION"));
+	if (data.isLenght())
+		controlPanel->setDuration(data.getLenght());
+	if (data.isAktualTime())
+		controlPanel->setPosition(data.getAktualTime());
+	if (data.isResolution()) {
+		int w = 0;
+		int h = 0;
+		data.getResolution(&w, &h);
+		videoBoard->setVideoResolution(w, h, false);
 	}
-	if (mediaPackage->getVariable("EXIT").size() != 0) {
+	if (data.isEnd()) {
+		playing = false;
 		clearPlaying();
 		clickForward();
 	}
-	if (mediaPackage->subtitleChanged()) {
-		if (firstLogSub) {
-			firstLogSub = false;
-			thisOptionsLoad->addSubtitleList(mediaPackage->getListSubtitles(), true);
-		} else {
-			thisOptionsLoad->addSubtitleList(mediaPackage->getListSubtitles(), false);
-		}
+	if(data.isSubtitle()){
+		thisOptionsLoad->addSubtitleList(data.getSubtitleList(), firstSub);
+		firstSub = false;
+//		std::cout<<"void IndigoPlayer::incommingMessage(GraphicData data)"<<std::endl;
 	}
-	if (mediaPackage->audioChanged()) {
-		if (firstLogAud) {
-			firstLogAud = false;
-			thisOptionsLoad->addAudioList(mediaPackage->getListAudios(), true);
-		} else {
-			thisOptionsLoad->addAudioList(mediaPackage->getListAudios(), false);
-		}
-	}
-	if (playSub) {
-		int ret = mediaPackage->getValueFromSubtitlePath(subtitles);
-		if (ret != -1) {
-			playSub = false;
-			mplayer->playSubtitles(ret);
-		}
+	if(data.isAudio()){
+		thisOptionsLoad->addAudioList(data.getAudioList(), firstAud);
+		firstAud = false;
 	}
 }
+
 void IndigoPlayer::addSubtitle(Glib::ustring file) {
-	if (mplayer->isPlaying()) {
+	if (playing) {
 		thisOptionsLoad->addSubtitles(file, true);
 		playSubtitles(file);
 	}
 }
 void IndigoPlayer::playSubtitles(Glib::ustring sub) {
 	if (sub.size() > 0) {
-		int ret = mediaPackage->getValueFromSubtitlePath(sub);
-		if (ret == -1) {
-			mplayer->loadSubtitles(sub);
-			subtitles = sub;
-			playSub = true;
-		} else {
-			mplayer->playSubtitles(ret);
-		}
+		filePlayer->playSubtitles(sub);
 	} else {
-		mplayer->playSubtitles(-1);
+		filePlayer->hideSubtitles();
 	}
 }
 void IndigoPlayer::playAudio(Glib::ustring name) {
 	if (name.size() > 0) {
-		int ret = mediaPackage->getValueFromAudioText(name);
-		if (ret == -1) {
-			mplayer->playAudioPath(name);
-		} else {
-			mplayer->playAudio(ret);
-		}
+		filePlayer->playSound(name);
 	}
 }
 
@@ -134,27 +113,23 @@ void IndigoPlayer::clickPlaylistBoard() {
 		this->playFile(playlist->getFile());
 }
 void IndigoPlayer::stopPlayer() {
-	mplayer->cancel();
+	if (playing)
+		filePlayer->stopPlayFile();
+	playing = false;
 	this->clearPlaying();
 }
 void IndigoPlayer::playFile(IndigoFile* file) {
 	if (file != NULL) {
-		mplayer->setGenerator(generator);
+		firstAud = true;
+		firstSub = true;
 		videoBoard->showLogo(false);
-		if (mplayer->play(file)) {
-			controlPanel->pushPlayButton();
-			playerWindow->setWindowTitle(file->getName());
-			thisOptions->runPlaying();
-			thisOptionsLoad->runPlaying();
-			firstLogSub = true;
-			firstLogAud = true;
-		} else {
-			//asi nejake logy
-		}
+		filePlayer->playFile(file);
+		controlPanel->pushPlayButton();
+		playerWindow->setWindowTitle(file->getName());
 	}
 }
 void IndigoPlayer::clickPlay() {
-	if (!mplayer->isPlaying()) {
+	if (!playing) {
 		if (playlist->isEmpty()) {
 			openDialog->show();
 			controlPanel->popPlayButton();
@@ -169,11 +144,12 @@ void IndigoPlayer::clickPlay() {
 			this->playFile(file);
 		}
 	} else {
-		mplayer->resume();
+		filePlayer->pausePlayFile(); //TODO resume
 	}
 }
 void IndigoPlayer::clickPause() {
-	mplayer->pause();
+	if (playing)
+		filePlayer->pausePlayFile();
 }
 void IndigoPlayer::clickForward() {
 	if (true) {
@@ -201,27 +177,24 @@ void IndigoPlayer::clearPlaying() {
 	thisOptionsLoad->stopPlaying();
 }
 void IndigoPlayer::clickRewind() {
-	mplayer->replayFile();
+	filePlayer->rewindPlayFile();
 }
 void IndigoPlayer::clickMute() {
-	mplayer->mute(true);
+	filePlayer->setVolume(0);
 }
 void IndigoPlayer::clickSound() {
-	mplayer->soundLevel(controlPanel->getAudioLevel());
-	mplayer->mute(false);
+	filePlayer->setVolume(controlPanel->getAudioLevel());
 }
 void IndigoPlayer::changeTimeLine() {
-	mplayer->changeTime(controlPanel->getTime());
+	filePlayer->seekTime(controlPanel->getTime());
 }
 void IndigoPlayer::changeSoundLevel() {
-	mplayer->soundLevel(controlPanel->getAudioLevel());
+	filePlayer->setVolume(controlPanel->getAudioLevel());
 }
 void IndigoPlayer::quit() {
-	mplayer->cancel();
+	stopPlayer();
 	Gtk::Main::quit();
 }
 IndigoPlayer::~IndigoPlayer() {
-	delete mediaPackage;
-	delete mplayer;
 	delete generator;
 }
