@@ -9,11 +9,13 @@
 #include <iostream>
 #include <giomm/file.h>
 
-IndigoPlayer::IndigoPlayer(PlayerWindow *playerWin) {
+IndigoPlayer::IndigoPlayer(PlayerWindow *playerWin, OneFilePlayer* player) {
 	playerWindow = playerWin;
 	playerWindow->setListener(this);
 	generator = new ScriptGenerator();
-	filePlayer = new OneFilePlayer(generator);
+//	filePlayer = new OneFilePlayer(generator);
+	filePlayer = player;
+	filePlayer->setGenerator(generator);
 	filePlayer->setGraphicPointer(this);
 	playing = false;
 	firstAud = true;

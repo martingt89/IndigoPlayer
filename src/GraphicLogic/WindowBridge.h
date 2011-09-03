@@ -28,6 +28,7 @@ public:
 	WindowBridge();
 	virtual ~WindowBridge();
 
+	void addCallable(Callable* callable);
 	void setPlayerWindow(PlayerWindow *playerWin);
 	void setPlaylist(Playlist *playlist);
 	void setVideoBoard(VideoBoard* board);

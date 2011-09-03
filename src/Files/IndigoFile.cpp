@@ -8,14 +8,25 @@
 #include "IndigoFile.h"
 
 IndigoFile::IndigoFile(Glib::ustring path, IndigoFileType::FileType type) {
+	init();
 	filePath = path;
 	this->type = type;
+
 }
 IndigoFile::IndigoFile() {
-
+	init();
 }
 IndigoFile::~IndigoFile() {
 	// TODO Auto-generated destructor stub
+}
+void IndigoFile::init(){
+	filePath = "";
+	menu = false;
+	subtitleFile = "";
+	subtitleFPS = -1;
+	subtitleDelayms = 0;
+	soundDelayms = 0;
+	type = IndigoFileType::UNKNOWN;
 }
 
 Glib::ustring IndigoFile::getName(){
@@ -44,4 +55,23 @@ int IndigoFile::getSoundDelayms(){
 }
 IndigoFileType::FileType IndigoFile::getType(){
 	return type;
+}
+//::::::::::::::::::::::::::::::::::::::::::::::
+void IndigoFile::setMenu(bool menu){
+this->menu = menu;
+}
+void IndigoFile::setSoundFile(Glib::ustring sound){
+	soundFile = sound;
+}
+void IndigoFile::setSubtitleFile(Glib::ustring subtitle){
+	subtitleFile = subtitle;
+}
+void IndigoFile::setSubtitleFPS(double fps){
+	subtitleFPS = fps;
+}
+void IndigoFile::setSubtitleDelayms(int delay){
+	subtitleDelayms = delay;
+}
+void IndigoFile::setSoundDelayms(int delay){
+	soundDelayms = delay;
 }

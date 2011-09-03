@@ -56,6 +56,7 @@ void MplayerInterface::playAudioPath(Glib::ustring path){
 //		kernel->replay();
 //}
 void MplayerInterface::relativeSeek(int time){
+	std::cout<<"void MplayerInterface::relativeSeek(int time) "<<time<<std::endl;
 	kernel->sendCommand("seek " + Glib::ustring::format(time) + " 0\n");
 }
 bool MplayerInterface::isPlaying() {

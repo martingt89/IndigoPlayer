@@ -29,7 +29,7 @@
 
 class IndigoPlayer: public PlayerSignals {
 public:
-	IndigoPlayer(PlayerWindow *playerWin);
+	IndigoPlayer(PlayerWindow *playerWin, OneFilePlayer* player);
 	virtual ~IndigoPlayer();
 	void setPlaylist(Playlist *playlist);
 	void setVideoBoard(VideoBoard* board);

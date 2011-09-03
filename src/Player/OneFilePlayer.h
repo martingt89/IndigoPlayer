@@ -15,11 +15,13 @@
 #include "../PlayerKernel/MplayerInterface.h"
 #include "../PlayerKernel/ScriptGenerator.h"
 #include "../Interfaces/VideoFilters.h"
+#include "../Interfaces/Callable.h"
 
-class OneFilePlayer : public VideoFilters{
+class OneFilePlayer : public VideoFilters, public Callable {
 public:
-	OneFilePlayer(ScriptGenerator* generator);
+	OneFilePlayer();
 	virtual ~OneFilePlayer();
+	void setGenerator(ScriptGenerator* generator);
 	void setGraphicPointer(PlayerSignals* signal);
 	ColorSetings* getColorSettings();
 	void incommingMessage();
@@ -49,9 +51,13 @@ public:
 	void timeShorJumpBackward();
 	void timeLongJumpForward();
 	void timeLongJumpBackward();
-
+	//========================
+	void call(IndigoPlayerEnum::Command command);
+	std::list<IndigoPlayerEnum::Command> getCommandList();
 private:
-
+    typedef void (OneFilePlayer::*OFP)(void);
+    std::map <IndigoPlayerEnum::Command, OFP> hashTableOfFunction;
+    void initHashTable(std::map <IndigoPlayerEnum::Command, OFP> &table);
 	IndigoFile aktualFile;
 	SavedFileInfo info;
 	MplayerInterface* mplayer;

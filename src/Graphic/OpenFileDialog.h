@@ -18,26 +18,37 @@
 #include <gtkmm/entry.h>
 #include <gtkmm/combobox.h>
 #include <giomm/file.h>
+#include <gtkmm/notebook.h>
 #include "../Interfaces/PlayerSignals.h"
+#include "../MyWidget/FileChoosers.h"
+#include "../../EnumTypes.h"
 
 class OpenFileDialog: public Gtk::Window {
 public:
 	OpenFileDialog(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& refGlade);
 	virtual ~OpenFileDialog();
 	void setListener(PlayerSignals* sig);
+	void showOn();
 private:
-	void playOpenFileClicked();
-	void playOpenFolderClicked();
+	void openFileClicked();
+	void openFolderClicked();
+	void openURLClicked();
+	void openAdvencedClicked();
 	void subDirectoryDepthChange();
 	void clearWindow();
+	void switchPage(GtkNotebookPage* page, guint pageNum);
+	void playFileClicked();
+	void openVideoClicked();
+	void openAudioClicked();
+	void openSubtitleClicked();
+	IndigoPlayerEnum::OpenWindowNotebook getOpenPage();
 
 	Glib::RefPtr<Gtk::Builder> m_refGlade;
 	Gtk::FileChooserWidget* openFileChooser;
 	Gtk::FileChooserWidget* openFolderChooser;
+	Gtk::Notebook* openFileNotebook;
 
-	Gtk::Button* playOpenFile;
-	Gtk::Button* playOpenFolder;
-	Gtk::Button* playAdvencedOpen;
+	Gtk::Button* playFile;
 	Gtk::Button* openVideoFileAdvenced;
 	Gtk::Button* openAudioFileAdvenced;
 	Gtk::Button* openSubtitleFileAdvenced;
@@ -52,13 +63,12 @@ private:
 	Gtk::Entry* audioFilePathAdvenced;
 	Gtk::Entry* subtitleFilePathAdvenced;
 
+	Gtk::Entry* urlPath;
 	Gtk::ComboBox* subtitleFpsAdvenced;
-
-	Gtk::Label* openFileWarningLabel;
-	Gtk::Label* openFolderWarningLabel;
-	Gtk::Label* advencetOpenWarningLabel;
+	Gtk::Label* openWarningLabel;
 
 	PlayerSignals* signal;
+	FileChoosers fileChooser;
 };
 
 #endif /* OPENFILEDIALOG_H_ */

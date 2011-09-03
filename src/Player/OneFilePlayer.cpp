@@ -7,10 +7,9 @@
 
 #include "OneFilePlayer.h"
 #include <iostream>
-OneFilePlayer::OneFilePlayer(ScriptGenerator* generator) {
+OneFilePlayer::OneFilePlayer() {
 	mediaPackage = new MediaPackage();
 	mplayer = new MplayerInterface(mediaPackage);
-	mplayer->setGenerator(generator);
 	colors = new ColorSetings(mplayer);
 	mediaPackage->message.connect(sigc::mem_fun(this, &OneFilePlayer::incommingMessage));
 	playerSignal = NULL;
@@ -18,11 +17,15 @@ OneFilePlayer::OneFilePlayer(ScriptGenerator* generator) {
 	endCounter = 0;
 	startingLoading = false;
 	startloadedSubtitle = "";
+	initHashTable(hashTableOfFunction);
 }
 
 OneFilePlayer::~OneFilePlayer() {
 	delete mediaPackage;
 	delete mplayer;
+}
+void OneFilePlayer::setGenerator(ScriptGenerator* generator){
+	mplayer->setGenerator(generator);
 }
 void OneFilePlayer::setGraphicPointer(PlayerSignals* signal){
 	playerSignal = signal;
@@ -98,6 +101,8 @@ void OneFilePlayer::playFile(IndigoFile* file){
 	startingLoading = false;
 	aktualFile = *file;
 	info.clear();
+	info.setSoundPosition(file->getSoundDelayms()/1000.0);
+	info.setSubtitlePosition(file->getSubtitleDelayms()/1000.0);
 	mplayer->play(&aktualFile);
 	firstStart = true;
 }
@@ -203,4 +208,25 @@ void OneFilePlayer::timeLongJumpForward(){
 }
 void OneFilePlayer::timeLongJumpBackward(){
 	mplayer->relativeSeek(-100);
+}
+//::::::::::::::::::::::::::::::::::::::::::::::::
+void OneFilePlayer::initHashTable(std::map <IndigoPlayerEnum::Command, OFP> &table){
+	table[IndigoPlayerEnum::SHORFORWARD] = &OneFilePlayer::timeShorJumpForward;
+	table[IndigoPlayerEnum::SHORBACKWARD] = &OneFilePlayer::timeShorJumpBackward;
+	table[IndigoPlayerEnum::LONGFORWARD] = &OneFilePlayer::timeLongJumpForward;
+	table[IndigoPlayerEnum::LONGBACKWARD] = &OneFilePlayer::timeLongJumpBackward;
+}
+void OneFilePlayer::call(IndigoPlayerEnum::Command command){
+	if(hashTableOfFunction.find(command) != hashTableOfFunction.end()){
+		OFP func = hashTableOfFunction[command];
+		(this->*func)();
+	}
+}
+std::list<IndigoPlayerEnum::Command> OneFilePlayer::getCommandList(){
+	std::list<IndigoPlayerEnum::Command> list;
+	std::map <IndigoPlayerEnum::Command, OFP>::iterator it;
+	for(it = hashTableOfFunction.begin(); it != hashTableOfFunction.end(); it++){
+		list.push_back(it->first);
+	}
+	return list;
 }

@@ -9,9 +9,10 @@
 
 FileChoosers::FileChoosers() {
 	fileOpen = new Gtk::FileChooserDialog("", Gtk::FILE_CHOOSER_ACTION_OPEN);
-//	fileOpen->set_transient_for(*this);
 	fileOpen->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
 	fileOpen->add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+//	fileOpen->
+	clear();
 }
 
 FileChoosers::~FileChoosers() {
@@ -47,4 +48,32 @@ Glib::ustring FileChoosers::getSoundFile() {
 		return "";
 	}
 	}
+}
+Glib::ustring FileChoosers::showFileChooser(Glib::ustring title) {
+	fileOpen->set_title(title);
+	int result = fileOpen->run();
+	switch (result) {
+	case (Gtk::RESPONSE_OK): {
+		return fileOpen->get_filename();
+	}
+	case (Gtk::RESPONSE_CANCEL): {
+		return "";
+	}
+	default: {
+		return "";
+	}
+	}
+}
+void FileChoosers::clear(){
+	Glib::ustring path = "";
+	path = Glib::get_user_special_dir(G_USER_DIRECTORY_VIDEOS);
+	if(path.size()==0){
+		path = Glib::get_home_dir ();
+	}
+	if(path.size() != 0){
+		fileOpen->set_current_folder(path);
+	}
+}
+void FileChoosers::hide(){
+	fileOpen->hide();
 }

@@ -19,13 +19,20 @@ WindowBridge::WindowBridge() {
 	hTable[12] = IndigoPlayerEnum::MAXIMALIZESIZE;
 	hTable[13] = IndigoPlayerEnum::FULLSCR;
 	hTable[65] = IndigoPlayerEnum::PLAYSTOPBUT;
+
+	hTable[114] = IndigoPlayerEnum::SHORFORWARD;
+	hTable[113] = IndigoPlayerEnum::SHORBACKWARD;
+	hTable[111] = IndigoPlayerEnum::LONGFORWARD;
+	hTable[116] = IndigoPlayerEnum::LONGBACKWARD;
 	shortKeys.setHardwareConvertTable(hTable);
 }
 
 WindowBridge::~WindowBridge() {
 	// TODO Auto-generated destructor stub
 }
-
+void WindowBridge::addCallable(Callable* callable){
+	shortKeys.addList(callable, callable->getCommandList());
+}
 void WindowBridge::setPlayerWindow(PlayerWindow *playerWin) {
 	this->playerWin = playerWin;
 	shortKeys.addList(this->playerWin, this->playerWin->getCommandList());
@@ -55,7 +62,7 @@ void WindowBridge::setThisOptionsLoad(ThisOptionsLoad* optLoad) {
 }
 //==================================================================
 void WindowBridge::clickOpenButton() {
-	dialog->show();
+	dialog->showOn();
 }
 void WindowBridge::clickThisOptionsButton() {
 	opt->show();
@@ -79,6 +86,7 @@ void WindowBridge::setMaximalize(bool max) {
 	}
 }
 void WindowBridge::keyPressed(int control, int keyVal, unsigned short hardwareKey) {
+	std::cout<<"void WindowBridge::keyPressed(int control, int keyVal, unsigned short hardwareKey) "<<hardwareKey<<std::endl;
 	IndigoPlayerEnum::ControlKey key = IndigoPlayerEnum::NONE;
 	if (control & Gdk::MOD1_MASK)
 		key = IndigoPlayerEnum::ALT;

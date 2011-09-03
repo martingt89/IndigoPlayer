@@ -13,7 +13,7 @@
 #include <giomm/file.h>
 
 namespace IndigoFileType{
-	enum FileType { VIDEO, AUDIO, SUBTITLE, UNKNOWN, PLAYLIST, DVD };
+	enum FileType { VIDEO, AUDIO, SUBTITLE, URL, UNKNOWN, PLAYLIST, DVD };
 };
 
 class IndigoFile {
@@ -21,6 +21,7 @@ public:
 	IndigoFile(Glib::ustring path , IndigoFileType::FileType type);
 	IndigoFile();
 	virtual ~IndigoFile();
+	void init();
 	Glib::ustring getName();
 	Glib::ustring getFilePath();
 	bool getMenu();
@@ -30,6 +31,13 @@ public:
 	int getSubtitleDelayms();
 	int getSoundDelayms();
 	IndigoFileType::FileType getType();
+	//===================================
+	void setMenu(bool menu);
+	void setSoundFile(Glib::ustring sound);
+	void setSubtitleFile(Glib::ustring subtitle);
+	void setSubtitleFPS(double fps);
+	void setSubtitleDelayms(int delay);
+	void setSoundDelayms(int delay);
 private:
 	Glib::ustring filePath;
 	bool menu;

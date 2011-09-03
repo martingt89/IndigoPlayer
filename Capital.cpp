@@ -28,7 +28,8 @@ int main(int argc, char *argv[]){
 	ConfigFile file(true);
 
 	GraphicLoader *gLoader = new GraphicLoader();
-	IndigoPlayer *player = new IndigoPlayer(gLoader->getPlayerWindow());
+	OneFilePlayer* filePlayer = new OneFilePlayer();
+	IndigoPlayer *player = new IndigoPlayer(gLoader->getPlayerWindow(), filePlayer);
 	player->setControlPanel(gLoader->getBasePlayerWindow());
 	player->setVideoBoard(gLoader->getVideoBoard());
 	player->setPlaylist(gLoader->getPlaylist());
@@ -37,6 +38,7 @@ int main(int argc, char *argv[]){
 	player->setThisOptionsLoad(gLoader->getThisOptionsLoad());
 
 	WindowBridge bridge;
+	bridge.addCallable(filePlayer);
 	bridge.setPlayerWindow(gLoader->getPlayerWindow());
 	bridge.setControlPanel(gLoader->getBasePlayerWindow());
 	bridge.setVideoBoard(gLoader->getVideoBoard());
@@ -44,6 +46,7 @@ int main(int argc, char *argv[]){
 	bridge.setOpenDialog(gLoader->getOpenDialog());
 	bridge.setThisOptions(gLoader->getThisOptions());
 	bridge.setThisOptionsLoad(gLoader->getThisOptionsLoad());
+
 	if(uris.size()> 0)
 		player->addFiles(uris, true);
 	Gtk::Main::run();

@@ -2,7 +2,8 @@ Know isues
 -DVD not support
 
 Version 0.3
-+Base shorkeys (f, m, space, Esc, 1,2,3,4) - with time add next, yet witout configuration
++Base shorkeys (f, m, space, Esc, 1,2,3,4, arrows)
++Open dialog add more settings
 
 Version 0.2
 +SmallOptions window
@@ -24,7 +25,7 @@ Version 0.1
 
 Blueprints
 0.3
- - open dialog
+ - file wallker
 0.4
  - DVD support
  - loging
@@ -33,3 +34,6 @@ Blueprints
 0.6
  - config menu
  - context menu
+
+ Main
+ - open dialog akcept white space
