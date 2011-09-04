@@ -119,15 +119,15 @@ void OpenFileDialog::openURLClicked() {
 	}
 }
 void OpenFileDialog::openAdvencedClicked() {
-	if (videoFilePathAdvenced->get_text().size() == 0) {
+	if (helperFunctions.trimText(videoFilePathAdvenced->get_text()).size() == 0) {
 		openVideoClicked();
 	} else {
 		std::list<IndigoFile*> finalFilesList;
-		IndigoFile* file = new IndigoFile(videoFilePathAdvenced->get_text(), IndigoFileType::UNKNOWN);
+		IndigoFile* file = new IndigoFile(helperFunctions.trimText(videoFilePathAdvenced->get_text()), IndigoFileType::UNKNOWN);
 		file->setSoundDelayms(audioDelayAdvenced->get_value_as_int());
-		file->setSoundFile(audioFilePathAdvenced->get_text());
+		file->setSoundFile(helperFunctions.trimText(audioFilePathAdvenced->get_text()));
 		file->setSubtitleDelayms(subtitleDelayAdvenced->get_value_as_int());
-		file->setSubtitleFile(subtitleFilePathAdvenced->get_text());
+		file->setSubtitleFile(helperFunctions.trimText(subtitleFilePathAdvenced->get_text()));
 		finalFilesList.push_back(file);
 		signal->addFiles(finalFilesList, true);
 		this->hide();
