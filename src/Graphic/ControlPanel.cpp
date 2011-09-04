@@ -32,6 +32,8 @@ ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 	m_refGlade->get_widget("ThisOptionsButtonBase", thisOptionsButton);
 
 	m_refGlade->get_widget("TimeLabelBase", time);
+	m_refGlade->get_widget("LoadProgress", loadProgress);
+
 	m_refGlade->get_widget("OpenButtonBase", open);
 	m_refGlade->get_widget("SoundHScaleBase", sound);
 
@@ -72,6 +74,14 @@ bool ControlPanel::toolTipShow(int x, int y, bool keyboard_tooltip,
 	int secTime = (int) (x / (double) timeProgress->get_width() * duration);
 	toolTipLabel->set_text(timeToWellText(secTime));
 	return true;
+}
+void ControlPanel::hideLoading(){
+	loadProgress->hide();
+	time->show();
+}
+void ControlPanel::showLoading(){
+	time->hide();
+	loadProgress->show();
 }
 bool ControlPanel::timeProgressClicked(GdkEventButton* event) {
 	if (event->type == GDK_BUTTON_PRESS) {

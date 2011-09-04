@@ -21,6 +21,7 @@
 #include <gtkmm/notebook.h>
 #include <gtkmm/frame.h>
 #include <gtkmm/progressbar.h>
+#include <gtkmm/spinner.h>
 
 #include "../Interfaces/PlayerSignals.h"
 #include "../Interfaces/Callable.h"
@@ -44,6 +45,8 @@ public:
 	void popPlayButton();
 	void pushPlayButton();
 	bool isMute();
+	void hideLoading();
+	void showLoading();
 	void call(IndigoPlayerEnum::Command command);
 	std::list<IndigoPlayerEnum::Command> getCommandList();
 private:
@@ -64,6 +67,7 @@ private:
 	Gtk::Adjustment* soundAdj;
 	Gtk::HScale* sound;
 	Gtk::ProgressBar* timeProgress;
+	Gtk::Spinner* loadProgress;
 
 	Gtk::Window toolTipWindow;
 	Gtk::Label* toolTipLabel;

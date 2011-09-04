@@ -17,16 +17,21 @@ PlayerKernel::PlayerKernel(MediaPackage *analyze) {
 PlayerKernel::~PlayerKernel() {
 
 }
+
 void PlayerKernel::setGenerator(ScriptGenerator* gener) {
 	generator = gener;
 }
 
 bool PlayerKernel::play(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
 	onePlay.lock();
-	if (file == NULL)
+	if (file == NULL){
+		onePlay.unlock();
 		return false;
-	if(childPid != -1)
+	}
+	if(childPid != -1){
+		onePlay.unlock();
 		return false;
+	}
 	childPid = -1;
 
 	std::list<Glib::ustring> script = generator->generate(file, loadTime, info);
@@ -40,6 +45,7 @@ bool PlayerKernel::play(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
 	if (pipe(fromPlayer) == -1) {
 		//LOGGING TODO
 		std::cerr<<"SEVERE: Cannot creat Pipe!!!"<<std::endl;
+		onePlay.unlock();
 		return false;
 	}
 	if (pipe(toPlayer) == -1) {
@@ -47,6 +53,7 @@ bool PlayerKernel::play(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
 		close(fromPlayer[1]);
 		std::cerr<<"SEVERE: Cannot creat Pipe!!!"<<std::endl;
 		//LOGGING TODO
+		onePlay.unlock();
 		return false;
 	}
 	if (pipe(fromPlayerErr) == -1) {
@@ -56,6 +63,7 @@ bool PlayerKernel::play(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
 		close(toPlayer[1]);
 		std::cerr<<"SEVERE: Cannot creat Pipe!!!"<<std::endl;
 		//LOGGING TODO
+		onePlay.unlock();
 		return false;
 	}
 	int hh[2];
@@ -99,9 +107,6 @@ bool PlayerKernel::play(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
 	return true;
 }
 
-//void PlayerKernel::endPlaying() {
-//	stringAnalyze->quitPlay(); TODO
-//}
 bool PlayerKernel::isPlaying(){
 	return playing;
 }
@@ -165,7 +170,6 @@ void PlayerKernel::listener() {
 
 void PlayerKernel::stop() {
 	int pid = childPid;
-//	isAlive = false;
 	if (!playing && pid != -1) {
 		kill(pid, 9);
 		playing = false;

@@ -103,7 +103,9 @@ void OneFilePlayer::playFile(IndigoFile* file){
 	info.clear();
 	info.setSoundPosition(file->getSoundDelayms()/1000.0);
 	info.setSubtitlePosition(file->getSubtitleDelayms()/1000.0);
-	mplayer->play(&aktualFile);
+	if(!mplayer->play(&aktualFile)){
+		mediaPackage->analyze("ID_EXIT");
+	}
 	firstStart = true;
 }
 void OneFilePlayer::reloadPlayback(){

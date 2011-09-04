@@ -57,6 +57,7 @@ void IndigoPlayer::incommingMessage(GraphicData data) {
 		playing = true;
 		thisOptions->runPlaying();
 		thisOptionsLoad->runPlaying();
+		controlPanel->hideLoading();
 	}
 	if (data.isLenght())
 		controlPanel->setDuration(data.getLenght());
@@ -91,6 +92,9 @@ void IndigoPlayer::playNextFile(){
 		playing = false;
 	if(nextFile != NULL){
 		filePlayer->playFile(nextFile);
+		videoBoard->showLogo(false);
+		playerWindow->setWindowTitle(nextFile->getName());
+		controlPanel->showLoading();
 		nextFile = NULL;
 	}
 }
@@ -143,11 +147,9 @@ void IndigoPlayer::playFile(IndigoFile* file) {
 			stopPlay = false;
 			firstAud = true;
 			firstSub = true;
-			videoBoard->showLogo(false);
 			nextFile = file;
 			playNextFile();
 			controlPanel->pushPlayButton();
-			playerWindow->setWindowTitle(file->getName());
 		}else{
 			stopPlay = false;
 			firstAud = true;
@@ -155,7 +157,6 @@ void IndigoPlayer::playFile(IndigoFile* file) {
 			nextFile = file;
 		}
 	}
-
 }
 void IndigoPlayer::clickPlay() {
 	if (!playing) {
@@ -201,6 +202,7 @@ void IndigoPlayer::clearPlaying() {
 	videoBoard->showLogo(true);
 	controlPanel->popPlayButton();
 	controlPanel->clearTime();
+	controlPanel->hideLoading();
 	playerWindow->setWindowTitle("");
 	thisOptions->stopPlaying();
 	thisOptionsLoad->stopPlaying();
