@@ -4,6 +4,7 @@ Know isues
 Version 0.3
 +Base shorkeys (f, m, space, Esc, 1,2,3,4, arrows)
 +Open dialog add more settings
++Load spinner
 
 Version 0.2
 +SmallOptions window
@@ -24,8 +25,6 @@ Version 0.1
 +tooltip for timeline
 
 Blueprints
-0.3
- - load screan
 0.4
  - DVD support
  - loging
@@ -34,6 +33,9 @@ Blueprints
 0.6
  - config menu
  - context menu
+0.7
+ - VDPAU
 
- Main
+Main (0.3)
  - open dialog akcept white space
+ - color settings not include in generator
