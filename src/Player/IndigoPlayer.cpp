@@ -17,9 +17,11 @@ IndigoPlayer::IndigoPlayer(PlayerWindow *playerWin, OneFilePlayer* player) {
 	filePlayer = player;
 	filePlayer->setGenerator(generator);
 	filePlayer->setGraphicPointer(this);
+	nextFile = NULL;
 	playing = false;
 	firstAud = true;
 	firstSub = true;
+	stopPlay = true;
 }
 void IndigoPlayer::setPlaylist(Playlist *playlist) {
 	this->playlist = playlist;
@@ -67,21 +69,35 @@ void IndigoPlayer::incommingMessage(GraphicData data) {
 		videoBoard->setVideoResolution(w, h, false);
 	}
 	if (data.isEnd()) {
-		playing = false;
 		clearPlaying();
-		clickForward();
+		playNextFile();
 	}
 	if(data.isSubtitle()){
 		thisOptionsLoad->addSubtitleList(data.getSubtitleList(), firstSub);
 		firstSub = false;
-//		std::cout<<"void IndigoPlayer::incommingMessage(GraphicData data)"<<std::endl;
 	}
 	if(data.isAudio()){
 		thisOptionsLoad->addAudioList(data.getAudioList(), firstAud);
 		firstAud = false;
 	}
 }
-
+void IndigoPlayer::playNextFile(){
+	if(nextFile == NULL){
+		if(!stopPlay){
+			clickForwardSoftware();
+		}
+	}
+	if(nextFile == NULL)
+		playing = false;
+	if(nextFile != NULL){
+		filePlayer->playFile(nextFile);
+		nextFile = NULL;
+	}
+}
+void IndigoPlayer::clickForwardSoftware(){
+	if (playlist->goNextFile())
+		this->playFile(playlist->getFile());
+}
 void IndigoPlayer::addSubtitle(Glib::ustring file) {
 	if (playing) {
 		thisOptionsLoad->addSubtitles(file, true);
@@ -115,20 +131,31 @@ void IndigoPlayer::clickPlaylistBoard() {
 		this->playFile(playlist->getFile());
 }
 void IndigoPlayer::stopPlayer() {
-	if (playing)
+	stopPlay = true;
+	if (playing){
 		filePlayer->stopPlayFile();
-	playing = false;
+	}
 	this->clearPlaying();
 }
 void IndigoPlayer::playFile(IndigoFile* file) {
 	if (file != NULL) {
-		firstAud = true;
-		firstSub = true;
-		videoBoard->showLogo(false);
-		filePlayer->playFile(file);
-		controlPanel->pushPlayButton();
-		playerWindow->setWindowTitle(file->getName());
+		if(!playing){
+			stopPlay = false;
+			firstAud = true;
+			firstSub = true;
+			videoBoard->showLogo(false);
+			nextFile = file;
+			playNextFile();
+			controlPanel->pushPlayButton();
+			playerWindow->setWindowTitle(file->getName());
+		}else{
+			stopPlay = false;
+			firstAud = true;
+			firstSub = true;
+			nextFile = file;
+		}
 	}
+
 }
 void IndigoPlayer::clickPlay() {
 	if (!playing) {

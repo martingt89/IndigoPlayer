@@ -22,6 +22,7 @@ void PlayerKernel::setGenerator(ScriptGenerator* gener) {
 }
 
 bool PlayerKernel::play(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
+	onePlay.lock();
 	if (file == NULL)
 		return false;
 	if(childPid != -1)
@@ -62,6 +63,7 @@ bool PlayerKernel::play(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
 	childPid = fork();
 	if(childPid == -1) {
 		std::cerr<<"SEVERE: Cannot fork process!!!"<<std::endl;
+		onePlay.unlock();
 	}
 	if (childPid == 0) { //child
 		close(1);
@@ -87,6 +89,8 @@ bool PlayerKernel::play(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
 		close(fromPlayerErr[1]);
 		thread = Glib::Thread::create(sigc::mem_fun(*this, &PlayerKernel::listener), false);
 		errThread = Glib::Thread::create(sigc::mem_fun(*this, &PlayerKernel::mplayerError), true);
+		if(!errThread)
+			onePlay.unlock();
 		Glib::signal_timeout().connect(sigc::mem_fun(*this, &PlayerKernel::aktualTime), 300);
 		std::cout<<"INFO: Start playing!!!"<<std::endl;
 		playing = true;
@@ -130,6 +134,7 @@ void PlayerKernel::mplayerError() {
 		ss += buf + odsad;
 	}
 	close(fromPlayerErr[0]);
+	onePlay.unlock();
 	std::cout<<"INFO: Closing error read"<<std::endl;
 }
 void PlayerKernel::listener() {

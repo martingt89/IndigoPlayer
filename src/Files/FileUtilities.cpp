@@ -65,10 +65,12 @@ Glib::ustring FileUtilities::fileToPath(Glib::ustring file) {
 	return files;
 }
 std::list<IndigoFile*> FileUtilities::stringListToFiles(std::list<Glib::ustring> files, bool folders, int depth){
+	std::cout<<"FileUtilities::stringListToFiles "<<depth<<std::endl;
 	std::list<Glib::ustring>::iterator it;
 	Glib::ustring::size_type pos;
 	IndigoFileType::FileType ift;
 	std::list<IndigoFile*> fileList;
+	if(depth < -1) return fileList;
 
 	for(it = files.begin(); it != files.end(); it++){
 		ift = IndigoFileType::UNKNOWN;
@@ -82,8 +84,23 @@ std::list<IndigoFile*> FileUtilities::stringListToFiles(std::list<Glib::ustring>
 			//prekonvertuj na list stringov, pusti rekurziu a margni s existujucim
 		}else{
 			Glib::ustring path = fileToPath(*it);
-			if(path == "folder"){
-				//zmen priecinok a pokracuj reukrzivne
+			if(Glib::file_test(path,  Glib::FILE_TEST_IS_DIR)){
+				if(Glib::path_get_basename(path) == "VIDEO_TS"){
+					fileList.push_back(new IndigoFile(path, IndigoFileType::DVD));
+				}else
+				if(folders){
+					Glib::ustring child;
+					Glib::Dir aktual(path);
+					int ss = path.size();
+					if(path.c_str()[ss] != '/')
+						path+='/';
+					std::list<Glib::ustring> ff;
+					while((child = aktual.read_name()).size() != 0){
+						ff.push_back(path+child);
+					}
+					std::list<IndigoFile*> newFiles = (stringListToFiles(ff, true, depth-1));
+					fileList.merge(newFiles);
+				}
 			}else{
 				fileList.push_back(new IndigoFile(path, ift));
 			}

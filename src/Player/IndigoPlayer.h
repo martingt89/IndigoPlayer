@@ -38,6 +38,8 @@ public:
 	void setThisOptions(ThisOptions* opt);
 	void setThisOptionsLoad(ThisOptionsLoad* optLoad);
 //-------------------------------------------------------------------------
+	void playNextFile();
+	void clickForwardSoftware();
 	void addSubtitle(Glib::ustring file);
 	void clickPlay();
 	void clickPause();
@@ -69,6 +71,8 @@ private:
 	ScriptGenerator* generator;
 	OneFilePlayer* filePlayer;
 
+	IndigoFile* nextFile;
+	bool stopPlay;
 	bool playing;
 	bool firstAud;
 	bool firstSub;

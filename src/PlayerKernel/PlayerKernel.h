@@ -44,6 +44,7 @@ private:
 	MediaPackage* stringAnalyze;
 	Glib::Thread* thread;
 	Glib::Thread* errThread;
+	Glib::Mutex onePlay;
 //	IndigoFile* lastSetFile;
 //	SavedData savedData;
 

@@ -24,7 +24,9 @@ int main(int argc, char *argv[]){
 		if(std::string(argv[i]).size()>0)
 			files.push_back(std::string(argv[i]));
 	}
-	uris = fu.stringListToFiles(files, true);
+	if(files.size() > 0){
+		uris = fu.stringListToFiles(files, true, 0);
+	}
 	ConfigFile file(true);
 
 	GraphicLoader *gLoader = new GraphicLoader();
