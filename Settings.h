@@ -11,7 +11,7 @@
 #define NAME "IndigoPlayer"
 #define VERSION 0.3
 
-#define MPLAYER "/home/xgeier/mplayer2/mplayer"
+#define MPLAYER "/usr/bin/mplayer"
 
 #define GLADECONTROLPANEL "ui/controlpanel.glade"
 #define GLADEOPENDIALOG "ui/popupwindow.glade"

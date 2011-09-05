@@ -58,7 +58,8 @@ void MplayerInterface::changeTime(int time) {
 	kernel->sendCommand("seek " + Glib::ustring::format(time) + " 2\n");
 }
 void MplayerInterface::pause() {
-		kernel->sendCommand("pause\n");
+	kernel->pausePlayer();
+	kernel->sendCommand("pause\n");
 	if (isPlayNoPause) {
 		kernel->sendCommand("osd_show_text pause\n");
 		isPlayNoPause =false;

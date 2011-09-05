@@ -35,7 +35,7 @@ public:
 	bool isPlaying();
 	void stop();
 	void sendCommand(Glib::ustring command);
-
+	void pausePlayer();
 private:
 	void listener();
 	void mplayerError();
@@ -53,6 +53,7 @@ private:
 	int fromPlayer[2];
 	int toPlayer[2];
 	int childPid;
+	bool pause;
 };
 
 #endif /* PLAYERKERNEL_H_ */

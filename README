@@ -42,3 +42,4 @@ Blueprints
 Main (0.3)
  - color settings not include in generator
  - advenced open file settings not working
+ - smart subtitle and audio load

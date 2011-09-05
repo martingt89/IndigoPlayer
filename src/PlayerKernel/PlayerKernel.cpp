@@ -21,7 +21,9 @@ PlayerKernel::~PlayerKernel() {
 void PlayerKernel::setGenerator(ScriptGenerator* gener) {
 	generator = gener;
 }
-
+void PlayerKernel::pausePlayer(){
+	pause = !pause;
+}
 bool PlayerKernel::play(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
 	onePlay.lock();
 	if (file == NULL){
@@ -33,7 +35,7 @@ bool PlayerKernel::play(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
 		return false;
 	}
 	childPid = -1;
-
+	pause = false;
 	std::list<Glib::ustring> script = generator->generate(file, loadTime, info);
 	char *ll[script.size()];
 	std::list<Glib::ustring>::iterator it;
@@ -113,7 +115,8 @@ bool PlayerKernel::isPlaying(){
 
 bool PlayerKernel::aktualTime(){
 	if(playing){
-		this->sendCommand("get_time_pos \n");
+		if(!pause)
+			this->sendCommand("get_time_pos \n");
 		return true;
 	}
 	return false;
@@ -185,6 +188,10 @@ void PlayerKernel::stop() {
 
 void PlayerKernel::sendCommand(Glib::ustring command) {
 	if (playing) {
-		dprintf(toPlayer[1], "%s", command.c_str());
+		std::cout<<"COMMAND: "<<command<<std::endl;
+		if(pause)
+			dprintf(toPlayer[1], "%s %s", "pausing",command.c_str());
+		else
+			dprintf(toPlayer[1], "%s", command.c_str());
 	}
 }

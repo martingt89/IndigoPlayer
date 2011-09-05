@@ -12,6 +12,7 @@ ScriptGenerator::ScriptGenerator() {
 	controlPanel = NULL;
 	videoBoard = NULL;
 	mplayerPath = MPLAYER;
+	//mplayerPath = "/home/martin89/Plocha/mplayer2/mplayer";
 }
 
 void ScriptGenerator::setVideoBoard(VideoBoard* board) {
