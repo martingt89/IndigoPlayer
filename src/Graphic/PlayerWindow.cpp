@@ -244,7 +244,7 @@ void PlayerWindow::dropFiles(const Glib::RefPtr<Gdk::DragContext>& context, int,
 	if ((length >= 0) && (selection_data.get_format() == 8)) {
 		FileUtilities fu;
 		std::list<IndigoFile*> uris;
-		uris = fu.stringListToFiles(selection_data.get_uris(), true);
+		uris = fu.stringListToFiles(selection_data.get_uris(), true, 0);
 		if (uris.size() == 1 && (*uris.begin())->getType() == IndigoFileType::SUBTITLE) {
 			playerSignals->addSubtitle((*uris.begin())->getFilePath());
 		}else

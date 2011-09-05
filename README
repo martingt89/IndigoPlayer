@@ -30,11 +30,15 @@ Blueprints
  - loging
 0.5
  - one instance support
+ - manual load subtitles
 0.6
  - config menu
  - context menu
 0.7
+ - enca
+0.8
  - VDPAU
 
 Main (0.3)
  - color settings not include in generator
+ - advenced open file settings not working

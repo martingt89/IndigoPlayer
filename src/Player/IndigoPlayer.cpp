@@ -74,7 +74,7 @@ void IndigoPlayer::incommingMessage(GraphicData data) {
 		playNextFile();
 	}
 	if(data.isSubtitle()){
-		thisOptionsLoad->addSubtitleList(data.getSubtitleList(), firstSub);
+		thisOptionsLoad->addSubtitleList(data.getSubtitleList(), false);
 		firstSub = false;
 	}
 	if(data.isAudio()){

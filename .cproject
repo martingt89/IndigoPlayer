@@ -118,7 +118,7 @@
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src/Interfaces"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src/MyWidget"/>
-						<entry excluding="src/ClassHelper|ClassHelper|src/GraphicLogic|GraphicLogic|src/MyWidget|MyWidget|src/Files|Files|src/PlayerKernel|PlayerKernel|src/Interfaces|Interfaces|src/Player|Player|src/Communication|Communication" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="src/Graphic/Files|src/ClassHelper|ClassHelper|src/GraphicLogic|GraphicLogic|src/MyWidget|MyWidget|src/Files|Files|src/PlayerKernel|PlayerKernel|src/Interfaces|Interfaces|src/Player|Player|src/Communication|Communication" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src/Files"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src/GraphicLogic"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src/Player"/>

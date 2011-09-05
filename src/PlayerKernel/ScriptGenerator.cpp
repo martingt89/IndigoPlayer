@@ -22,6 +22,7 @@ void ScriptGenerator::setControlPanel(ControlPanel* panel) {
 }
 std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
 	std::list<Glib::ustring> empty;
+	//if(config.getMplayerPath)
 	empty.push_back(mplayerPath);
 
 	if (controlPanel)
@@ -33,17 +34,15 @@ std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool loadTi
 	if (info)
 		getFromSavedInfo(empty, info, loadTime);
 
-	else {
-		empty.push_back("-aid");
-		empty.push_back("0");
-		empty.push_back("-sid");
-		empty.push_back("0");
-	}
+	/*else
+		if(file->getType() != IndigoFileType::DVD){
+			empty.push_back("-aid");
+			empty.push_back("0");
+		}*/
+	//empty.push_back("-nosub");
 	empty.push_back("-ass");
 
 	getConfig(empty);
-
-//	empty.push_back("dvd://");
 
 	empty.push_back("-vo");
 	empty.push_back("gl");
@@ -58,7 +57,10 @@ std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool loadTi
 	empty.push_back("-slave");
 	empty.push_back("-quiet");
 	empty.push_back("-identify");
-//	empty.push_back("-dvd-device");
+	if(file->getType() == IndigoFileType::DVD){
+		empty.push_back("dvd://");
+		empty.push_back("-dvd-device");
+	}
 	empty.push_back(file->getFilePath());
 	std::list<Glib::ustring>::iterator it;
 	for (it = empty.begin(); it != empty.end(); it++) {
@@ -90,7 +92,7 @@ void ScriptGenerator::getFromSavedInfo(std::list<Glib::ustring> &parameters, Sav
 		parameters.push_back("-subdelay");
 		parameters.push_back(Glib::ustring::format(info->getSubtitlePosition()));
 	}
-	{
+/*	{
 		if (info->getSubPath().size() != 0) {
 			parameters.push_back("-sub");
 			parameters.push_back(info->getSubPath());
@@ -111,7 +113,7 @@ void ScriptGenerator::getFromSavedInfo(std::list<Glib::ustring> &parameters, Sav
 			parameters.push_back("-aid");
 			parameters.push_back("0");
 		}
-	}
+	}*/
 	{
 		switch (info->getRotate()) {
 		case 90:
