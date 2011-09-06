@@ -34,7 +34,6 @@ MediaPackage::MediaPackage() {
 }
 
 MediaPackage::~MediaPackage() {
-	// TODO Auto-generated destructor stub
 }
 
 int MediaPackage::analyze(std::string text) {
@@ -195,19 +194,18 @@ int MediaPackage::getAudioNumberFromName(std::string name) {
 	return find;
 }
 
-bool MediaPackage::isOriginalSubtitleStream(int number) {
-	if (number == -1)
-		return true;
+bool MediaPackage::isOriginalSubtitleFromName(Glib::ustring name) {
 	std::list<std::pair<int, StreamInfo> >::iterator it;
+	bool in = false;
 	lock.lock();
 	for (it = loadedSubtitles.begin(); it != loadedSubtitles.end(); it++) {
-		if (it->first == number) {
-			lock.unlock();
-			return it->second.inside;
+		if (it->second.name == name) {
+			in = it->second.inside;
+			break;
 		}
 	}
 	lock.unlock();
-	return false;
+	return in;
 }
 bool MediaPackage::isOriginalAudioStream(int number) {
 	if (number == -1)
@@ -259,12 +257,12 @@ Glib::ustring MediaPackage::getAudioNameFromNumber(int number) {
 	lock.unlock();
 	return text;
 }
-Glib::ustring MediaPackage::getSubtitleNameFromNumber(int number) {
+Glib::ustring MediaPackage::getSubtitleNameFromNumber(int number, bool orig) {
 	std::list<std::pair<int, StreamInfo> >::iterator it;
 	Glib::ustring text = "";
 	lock.lock();
 	for (it = loadedSubtitles.begin(); it != loadedSubtitles.end(); it++) {
-		if (it->first == number) {
+		if (it->first == number && it->second.inside == orig) {
 			text = it->second.name;
 			break;
 		}

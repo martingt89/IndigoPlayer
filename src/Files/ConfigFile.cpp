@@ -8,11 +8,19 @@
 #include "ConfigFile.h"
 #include <iostream>
 
-std::map<std::string, std::string> ConfigFile::config;
+std::map<IndigoConfig::Config, std::string> ConfigFile::config;
+
 ConfigFile::ConfigFile(){
 
 }
 ConfigFile::ConfigFile(bool load) {
+	stringToConfig["subCp"] = IndigoConfig::SUBCP;
+	stringToConfig["subColor"] = IndigoConfig::SUBCOLOR;
+	stringToConfig["oneInstance"] = IndigoConfig::ONEINSTANCE;
+	stringToConfig["mplayerPath"] = IndigoConfig::MPLAYERPATH;
+	stringToConfig["audioVolume"] = IndigoConfig::AUDIOVOLUME;
+	std::string value;
+	std::string key;
 	if (load) {
 		std::ifstream in(CONFIG);
 		if (in.is_open()) {
@@ -24,9 +32,12 @@ ConfigFile::ConfigFile(bool load) {
 				if (i != std::string::npos && line[i] == '#')
 					continue;
 				j = line.find('=', 0);
-				config[line.substr(i, j - i)] = line.substr(j + 1, line.length() - (j + 1));
-//				std::cout <<"ConfigFile PARSE: '" <<line.substr(i, j - i) << " " << line.substr(j + 1, line.length() - (j + 1))
-//						<< "'" <<std::endl;
+				key = line.substr(i, j - i);
+				value = line.substr(j + 1, line.length() - (j + 1));
+
+				if(stringToConfig.find(key) != stringToConfig.end()){
+					config[stringToConfig[key]] = value;
+				}
 			}
 		}
 	}
@@ -36,12 +47,15 @@ ConfigFile::~ConfigFile() {
 	// TODO Auto-generated destructor stub
 }
 
-bool ConfigFile::isOneInstance() {
-	return config["oneInstace"] == "true";
+bool ConfigFile::isSet(IndigoConfig::Config name){
+	return config.find(name) != config.end();
 }
-std::string ConfigFile::getSubCp() {
-	return config["subCp"];
+std::string ConfigFile::getAsString(IndigoConfig::Config name){
+	return config[name];
 }
-std::string ConfigFile::getSubColor() {
-	return config["subColor"];
+bool ConfigFile::getAsBool(IndigoConfig::Config name){
+	return config[name] == "true";
+}
+double ConfigFile::getAsDouble(IndigoConfig::Config name){
+	return 0;
 }

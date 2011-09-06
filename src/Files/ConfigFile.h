@@ -13,16 +13,32 @@
 #include <fstream>
 #include <string>
 
+namespace IndigoConfig{
+	enum Config{
+		SUBCP,
+		SUBCOLOR,
+		ONEINSTANCE,
+		MPLAYERPATH,
+		AUDIOVOLUME
+	};
+}
+
 class ConfigFile {
 public:
 	ConfigFile();
 	ConfigFile(bool load);
 	virtual ~ConfigFile();
-	bool isOneInstance();
-	std::string getSubCp();
-	std::string getSubColor();
+//	bool isOneInstance();
+//	std::string getSubCp();
+//	std::string getSubColor();
+
+	bool isSet(IndigoConfig::Config name);
+	std::string getAsString(IndigoConfig::Config name);
+	bool getAsBool(IndigoConfig::Config name);
+	double getAsDouble(IndigoConfig::Config name);
 private:
-	static std::map<std::string, std::string> config;
+	static std::map<IndigoConfig::Config, std::string> config;
+	std::map<std::string, IndigoConfig::Config> stringToConfig;
 };
 
 #endif /* CONFIGFILE_H_ */

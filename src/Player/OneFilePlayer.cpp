@@ -82,7 +82,7 @@ void OneFilePlayer::incommingMessage(){
 		int sub = mediaPackage->getSubtitleNumberFromName(startloadedSubtitle);
 		if(sub != -1){
 			startingLoading = false;
-			mplayer->playSubtitles(sub);
+			mplayer->playSubtitles(sub, false);
 			info.setSubtitlePath(startloadedSubtitle);
 		}
 	}
@@ -113,7 +113,6 @@ void OneFilePlayer::loadVideoSpecialThings(GraphicData &dat, bool firstStart){
 		if(tt.size() > 0)
 			dat.setAktualAudio(tt);
 	}else if(info.getAudioPath().size() == 0){
-	//	std::cout<<"info.getAudioPath().size() == 0"<<std::endl;
 		std::list<Glib::ustring> aud = mediaPackage->getListAudios();
 		if(aud.size()!= 0){
 			mplayer->playAudio(mediaPackage->getAudioNumberFromName(*(aud.begin())));
@@ -125,8 +124,8 @@ void OneFilePlayer::loadVideoSpecialThings(GraphicData &dat, bool firstStart){
 	//loadAudio
 	//loadSubtitle
 	if(info.getSubID() != -1){
-		mplayer->playSubtitles(info.getSubID());
-		Glib::ustring tt = mediaPackage->getSubtitleNameFromNumber(info.getSubID());
+		mplayer->playSubtitles(info.getSubID(), true);
+		Glib::ustring tt = mediaPackage->getSubtitleNameFromNumber(info.getSubID(), true);
 		if(tt.size() > 0){
 			dat.setAktualSubtitle(tt);
 		}
@@ -135,10 +134,10 @@ void OneFilePlayer::loadVideoSpecialThings(GraphicData &dat, bool firstStart){
 		if(sub.size() != 0){
 			std::list<Glib::ustring>::iterator it;
 			for(it = sub.begin(); it != sub.end(); it++){
-				if(!mediaPackage->isOriginalSubtitleStream(mediaPackage->getSubtitleNumberFromName(*it))){
-					mplayer->playSubtitles(mediaPackage->getSubtitleNumberFromName(*it));
+				if(!mediaPackage->isOriginalSubtitleFromName(*it)){
+					mplayer->playSubtitles(mediaPackage->getSubtitleNumberFromName(*it), false);
 					dat.setAktualSubtitle(*it);
-					std::cout<<"TUUUUU: "<<*it<<std::endl;
+					break;
 				}
 			}
 		}
@@ -187,15 +186,17 @@ void OneFilePlayer::playSubtitles(Glib::ustring subtitles){
 		startloadedSubtitle = subtitles;
 		startingLoading = true;
 	}else{
-		mplayer->playSubtitles(sub);
-		if(mediaPackage->isOriginalSubtitleStream(sub))
+		if(mediaPackage->isOriginalSubtitleFromName(subtitles)){
 			info.setSubtitleID(sub);
-		else
+			mplayer->playSubtitles(sub, true);
+		}else{
 			info.setSubtitlePath(subtitles);
+			mplayer->playSubtitles(sub, false);
+		}
 	}
 }
 void OneFilePlayer::hideSubtitles(){
-	mplayer->playSubtitles(-1);
+	mplayer->playSubtitles(-1, true);
 	info.setSubtitleID(-1);
 }
 void OneFilePlayer::playSound(Glib::ustring sound){

@@ -11,7 +11,6 @@
 ScriptGenerator::ScriptGenerator() {
 	controlPanel = NULL;
 	videoBoard = NULL;
-	mplayerPath = MPLAYER;
 }
 
 void ScriptGenerator::setVideoBoard(VideoBoard* board) {
@@ -22,7 +21,11 @@ void ScriptGenerator::setControlPanel(ControlPanel* panel) {
 }
 std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
 	std::list<Glib::ustring> empty;
-	//if(config.getMplayerPath)
+	if(config.isSet(IndigoConfig::MPLAYERPATH)){
+		mplayerPath = config.getAsString(IndigoConfig::MPLAYERPATH);
+	}else{
+		mplayerPath = MPLAYER;
+	}
 	empty.push_back(mplayerPath);
 
 	if (controlPanel)
@@ -151,16 +154,14 @@ void ScriptGenerator::getVideoBoard(std::list<Glib::ustring> &parameters) {
 	parameters.push_back(Glib::ustring::format(videoBoard->getXID()));
 }
 void ScriptGenerator::getConfig(std::list<Glib::ustring> &parameters) {
-	Glib::ustring cp = config.getSubCp();
-
-	if (cp.length() > 0) {
+	if (config.isSet(IndigoConfig::SUBCP)) {
 		parameters.push_back("-subcp");
-		parameters.push_back(cp);
+		parameters.push_back(config.getAsString(IndigoConfig::SUBCP));
 	}
-	cp = config.getSubColor();
-	if (cp.length() > 0) {
+
+	if (config.isSet(IndigoConfig::SUBCOLOR)) {
 		parameters.push_back("-ass-color");
-		parameters.push_back(cp);
+		parameters.push_back(config.getAsString(IndigoConfig::SUBCOLOR));
 	}
 }
 void ScriptGenerator::printScript(std::list<Glib::ustring> &parameters){

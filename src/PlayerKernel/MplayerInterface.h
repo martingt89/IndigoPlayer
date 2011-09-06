@@ -34,7 +34,7 @@ public:
 	void setPlaySpeed(double speed);
 	void playAudio(int number);
 	void playAudioPath(Glib::ustring path);
-	void playSubtitles(int number);
+	void playSubtitles(int number, bool orig);
 	void loadSubtitles(Glib::ustring file);
 	void relativeSeek(int time);
 private:

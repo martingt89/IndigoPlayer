@@ -28,8 +28,11 @@ bool MplayerInterface::play(IndigoFile* file, bool loadTime, SavedFileInfo* info
 void MplayerInterface::loadSubtitles(Glib::ustring file){
 	kernel->sendCommand("sub_load '"+file+"'\n");
 }
-void MplayerInterface::playSubtitles(int number){
-	kernel->sendCommand("sub_select "+Glib::ustring::format(number)+"\n");
+void MplayerInterface::playSubtitles(int number, bool orig){
+	if(orig)
+		kernel->sendCommand("sub_demux "+Glib::ustring::format(number)+"\n");
+	else
+		kernel->sendCommand("sub_file "+Glib::ustring::format(number)+"\n");
 }
 void MplayerInterface::playAudio(int number){
 	kernel->sendCommand("switch_audio "+Glib::ustring::format(number)+"\n");

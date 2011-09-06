@@ -53,10 +53,10 @@ public:
 	std::list<Glib::ustring> getListSubtitles();
 	std::list<Glib::ustring> getListAudios();
 	//==============================================
-	bool isOriginalSubtitleStream(int number);
 	bool isOriginalAudioStream(int number);
+	bool isOriginalSubtitleFromName(Glib::ustring name);
 	//==============================================
-	Glib::ustring getSubtitleNameFromNumber(int number);
+	Glib::ustring getSubtitleNameFromNumber(int number, bool orig);
 	Glib::ustring getAudioNameFromNumber(int number);
 private:
 	std::map<std::string, int> hashTable;
