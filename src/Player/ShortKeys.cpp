@@ -8,7 +8,25 @@
 #include "ShortKeys.h"
 #include <iostream>
 ShortKeys::ShortKeys() {
-	// TODO Auto-generated constructor stub
+	std::map<std::pair<IndigoPlayerEnum::ControlKey, int>, IndigoPlayerEnum::Command> table;
+	table[std::make_pair(IndigoPlayerEnum::NONE, 102)] = IndigoPlayerEnum::FULLUNFULLSCR;
+	table[std::make_pair(IndigoPlayerEnum::NONE, 109)] = IndigoPlayerEnum::MUTEUNMUTE;
+	table[std::make_pair(IndigoPlayerEnum::NONE, 103)] = IndigoPlayerEnum::SUBFORWARD;
+	table[std::make_pair(IndigoPlayerEnum::NONE, 104)] = IndigoPlayerEnum::SUBBACKWARD;
+	setConvertTable(table);
+	std::map<short unsigned, IndigoPlayerEnum::Command> hTable;
+	hTable[9] = IndigoPlayerEnum::UNFULLSCR;
+	hTable[10] = IndigoPlayerEnum::HALFSIZE;
+	hTable[11] = IndigoPlayerEnum::ORIGINALSIZE;
+	hTable[12] = IndigoPlayerEnum::MAXIMALIZESIZE;
+	hTable[13] = IndigoPlayerEnum::FULLSCR;
+	hTable[65] = IndigoPlayerEnum::PLAYSTOPBUT;
+
+	hTable[114] = IndigoPlayerEnum::SHORFORWARD;
+	hTable[113] = IndigoPlayerEnum::SHORBACKWARD;
+	hTable[111] = IndigoPlayerEnum::LONGFORWARD;
+	hTable[116] = IndigoPlayerEnum::LONGBACKWARD;
+	setHardwareConvertTable(hTable);
 }
 
 ShortKeys::~ShortKeys() {
