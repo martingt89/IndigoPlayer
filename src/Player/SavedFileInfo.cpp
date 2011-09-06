@@ -63,6 +63,12 @@ void SavedFileInfo::setAktualChapter(int chapter){
 	aktualChapter = chapter;
 }
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+void SavedFileInfo::setHue(double hue){this->hue = hue;}
+void SavedFileInfo::setGamma(double gama){gamma = gama;}
+void SavedFileInfo::setContrast(double con){contrast = con;}
+void SavedFileInfo::setSaturation(double satur){saturation = satur;}
+void SavedFileInfo::setBrightness(double bright){brightness = bright;}
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 bool SavedFileInfo::getPause(){
 	return pp;
 }
@@ -112,6 +118,14 @@ int SavedFileInfo::getAktualChapter(){
 	return aktualChapter;
 }
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+void SavedFileInfo::getCollors(int *brig, int *satur, int *cont, int *gamma, int *hue){
+	*brig = brightness;
+	*satur = saturation;
+	*cont = contrast;
+	*gamma = this->gamma;
+	*hue = this->hue;
+}
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 void SavedFileInfo::clear(){
 	pp = false;
 	width = -1;
@@ -136,4 +150,10 @@ void SavedFileInfo::clear(){
 	//==================
 	numberChapters = 0;
 	aktualChapter = 0;
+	//==================
+	brightness = 0;
+	saturation = 0;
+	contrast = 0;
+	gamma= 0;
+	hue = 0;
 }

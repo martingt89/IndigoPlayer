@@ -39,7 +39,3 @@ Blueprints
  - enca
 0.8
  - VDPAU
-
-Bugs (0.3)
- - color settings not include in generator
- - smart loading do not akcept none subtitles

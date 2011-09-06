@@ -32,6 +32,12 @@ public:
 	void setNumberOfChapters(int number);
 	void setAktualChapter(int chapter);
 	//==================
+	void setHue(double hue);
+	void setGamma(double gama);
+	void setContrast(double con);
+	void setSaturation(double satur);
+	void setBrightness(double bright);
+	//==================
 	bool getPause();
 	int getAktualTime();
 	void getCrop(int *up, int *down, int* left, int* right);
@@ -48,6 +54,8 @@ public:
 	//==================
 	int getNumberOfChapter();
 	int getAktualChapter();
+	//==================
+	void getCollors(int *brig, int *satur, int *cont, int *gamma, int *hue);
 private:
 	bool pp;
 	int width;
@@ -72,6 +80,12 @@ private:
 	//==================
 	int numberChapters;
 	int aktualChapter;
+	//==================
+	int brightness;
+	int saturation;
+	int contrast;
+	int gamma;
+	int hue;
 };
 
 #endif /* SAVEDFILEINFO_H_ */

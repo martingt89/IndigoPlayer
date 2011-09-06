@@ -10,7 +10,7 @@
 OneFilePlayer::OneFilePlayer() {
 	mediaPackage = new MediaPackage();
 	mplayer = new MplayerInterface(mediaPackage);
-	colors = new ColorSetings(mplayer);
+	colors = new ColorSetings(mplayer, &info);
 	mediaPackage->message.connect(sigc::mem_fun(this, &OneFilePlayer::incommingMessage));
 	playerSignal = NULL;
 	firstStart = true;

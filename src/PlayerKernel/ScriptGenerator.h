@@ -24,6 +24,7 @@ public:
 	void setVideoBoard(VideoBoard* board);
 	void setControlPanel(ControlPanel* panel);
 private:
+	void getCollors(std::list<Glib::ustring> &parameters, SavedFileInfo* info);
 	void getFromSavedInfo(std::list<Glib::ustring> &parameters, SavedFileInfo* info, bool loadTime);
 	void getFromControlPanel(std::list<Glib::ustring> &parameters);
 	void getVideoBoard(std::list<Glib::ustring> &parameters);

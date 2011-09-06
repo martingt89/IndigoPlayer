@@ -12,7 +12,7 @@
 
 class ColorSetings {
 public:
-	ColorSetings(MplayerInterface* mplayer);
+	ColorSetings(MplayerInterface* mplayer, SavedFileInfo* info);
 	//=========================
 	void setHue(double hue);
 	void setGamma(double gama);
@@ -21,6 +21,7 @@ public:
 	void setBrightness(double bright);
 private:
 	MplayerInterface* mplayer;
+	SavedFileInfo* info;
 };
 
 #endif /* COLORSETINGS_H_ */

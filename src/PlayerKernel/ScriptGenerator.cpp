@@ -32,15 +32,11 @@ std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool loadTi
 	if (videoBoard)
 		getVideoBoard(empty);
 
-	if (info)
+	if (info){
 		getFromSavedInfo(empty, info, loadTime);
+		getCollors(empty, info);
+	}
 
-	/*else
-		if(file->getType() != IndigoFileType::DVD){
-			empty.push_back("-aid");
-			empty.push_back("0");
-		}*/
-	//empty.push_back("-nosub");
 	empty.push_back("-ass");
 
 	getConfig(empty);
@@ -71,6 +67,18 @@ std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool loadTi
 
 	return empty;
 }
+void ScriptGenerator::getCollors(std::list<Glib::ustring> &parameters, SavedFileInfo* info){
+	int brig, cont, satur, hue, gamma;
+	info->getCollors(&brig, &satur, &cont, &gamma, &hue);
+	parameters.push_back("-brightness");
+	parameters.push_back(Glib::ustring::format(brig));
+	parameters.push_back("-contrast");
+	parameters.push_back(Glib::ustring::format(cont));
+	parameters.push_back("-hue");
+	parameters.push_back(Glib::ustring::format(hue));
+	parameters.push_back("-saturation");
+	parameters.push_back(Glib::ustring::format(satur));
+}
 void ScriptGenerator::getFromSavedInfo(std::list<Glib::ustring> &parameters, SavedFileInfo* info,
 		bool loadTime) {
 	if (loadTime) {
@@ -93,28 +101,16 @@ void ScriptGenerator::getFromSavedInfo(std::list<Glib::ustring> &parameters, Sav
 		parameters.push_back("-subdelay");
 		parameters.push_back(Glib::ustring::format(info->getSubtitlePosition()));
 	}
-/*	{
-		*/if (info->getSubPath().size() != 0) {
+	{
+		if (info->getSubPath().size() != 0) {
 			parameters.push_back("-sub");
 			parameters.push_back(info->getSubPath());
-		}/* else if (info->getSubID() != -1) {
-			parameters.push_back("-sid");
-			parameters.push_back(Glib::ustring::format(info->getSubID()));
-		} else {
-			parameters.push_back("-sid");
-			parameters.push_back("0");
-		}*/
+		}
 		if (info->getAudioPath().size() != 0) {
 			parameters.push_back("-audiofile");
 			parameters.push_back(info->getAudioPath());
-		}/* else if (info->getAudioID() > -1) {
-			parameters.push_back("-aid");
-			parameters.push_back(Glib::ustring::format(info->getAudioID()));
-		} else {
-			parameters.push_back("-aid");
-			parameters.push_back("0");
 		}
-	}*/
+	}
 	{
 		switch (info->getRotate()) {
 		case 90:

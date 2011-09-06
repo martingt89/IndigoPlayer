@@ -85,7 +85,7 @@ void ThisOptions::runPlaying() {
 	useCropVideo->set_sensitive(true);
 	brightness->set_sensitive(true);
 	contrast->set_sensitive(true);
-	gamma->set_sensitive(true);
+//	gamma->set_sensitive(true);
 	hue->set_sensitive(true);
 	leftRight->set_sensitive(true);
 	upDown->set_sensitive(true);
