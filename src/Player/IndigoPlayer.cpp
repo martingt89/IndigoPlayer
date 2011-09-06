@@ -33,6 +33,9 @@ void IndigoPlayer::setControlPanel(ControlPanel* control) {
 	controlPanel = control;
 	controlPanel->setListener(this);
 	generator->setControlPanel(controlPanel);
+	if(config.isSet(IndigoConfig::AUDIOVOLUME)){
+		controlPanel->setAudioLevel(config.getAsDouble(IndigoConfig::AUDIOVOLUME));
+	}
 }
 void IndigoPlayer::setOpenDialog(OpenFileDialog* dialog) {
 	openDialog = dialog;

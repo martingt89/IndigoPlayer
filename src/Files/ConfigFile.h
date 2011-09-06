@@ -12,6 +12,7 @@
 #include "../../Settings.h"
 #include <fstream>
 #include <string>
+#include <sstream>
 
 namespace IndigoConfig{
 	enum Config{
@@ -37,8 +38,10 @@ public:
 	bool getAsBool(IndigoConfig::Config name);
 	double getAsDouble(IndigoConfig::Config name);
 private:
+	void init();
+	std::stringstream translate;
 	static std::map<IndigoConfig::Config, std::string> config;
-	std::map<std::string, IndigoConfig::Config> stringToConfig;
+	static std::map<std::string, IndigoConfig::Config> stringToConfig;
 };
 
 #endif /* CONFIGFILE_H_ */

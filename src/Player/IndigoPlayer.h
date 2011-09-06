@@ -10,6 +10,7 @@
 
 #include "OneFilePlayer.h"
 #include "GraphicData.h"
+#include "../Files/ConfigFile.h"
 #include "../Interfaces/PlayerSignals.h"
 #include "../Interfaces/Callable.h"
 #include "../Graphic/ControlPanel.h"
@@ -70,6 +71,7 @@ private:
 	ThisOptionsLoad* thisOptionsLoad;
 	ScriptGenerator* generator;
 	OneFilePlayer* filePlayer;
+	ConfigFile config;
 
 	IndigoFile* nextFile;
 	bool stopPlay;

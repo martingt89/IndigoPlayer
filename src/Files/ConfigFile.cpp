@@ -8,17 +8,15 @@
 #include "ConfigFile.h"
 #include <iostream>
 
+
 std::map<IndigoConfig::Config, std::string> ConfigFile::config;
+std::map<std::string, IndigoConfig::Config> ConfigFile::stringToConfig;
 
 ConfigFile::ConfigFile(){
-
+	init();
 }
 ConfigFile::ConfigFile(bool load) {
-	stringToConfig["subCp"] = IndigoConfig::SUBCP;
-	stringToConfig["subColor"] = IndigoConfig::SUBCOLOR;
-	stringToConfig["oneInstance"] = IndigoConfig::ONEINSTANCE;
-	stringToConfig["mplayerPath"] = IndigoConfig::MPLAYERPATH;
-	stringToConfig["audioVolume"] = IndigoConfig::AUDIOVOLUME;
+	init();
 	std::string value;
 	std::string key;
 	if (load) {
@@ -46,7 +44,15 @@ ConfigFile::ConfigFile(bool load) {
 ConfigFile::~ConfigFile() {
 	// TODO Auto-generated destructor stub
 }
-
+void ConfigFile::init(){
+	if(stringToConfig.size() == 0){
+		stringToConfig["subCp"] = IndigoConfig::SUBCP;
+		stringToConfig["subColor"] = IndigoConfig::SUBCOLOR;
+		stringToConfig["oneInstance"] = IndigoConfig::ONEINSTANCE;
+		stringToConfig["mplayerPath"] = IndigoConfig::MPLAYERPATH;
+		stringToConfig["audioVolume"] = IndigoConfig::AUDIOVOLUME;
+	}
+}
 bool ConfigFile::isSet(IndigoConfig::Config name){
 	return config.find(name) != config.end();
 }
@@ -57,5 +63,8 @@ bool ConfigFile::getAsBool(IndigoConfig::Config name){
 	return config[name] == "true";
 }
 double ConfigFile::getAsDouble(IndigoConfig::Config name){
-	return 0;
+	double value = 0;
+	translate << config[name];
+	translate >> value;
+	return value;
 }

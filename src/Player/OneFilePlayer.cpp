@@ -159,6 +159,7 @@ void OneFilePlayer::playFile(IndigoFile* file){
 	info.setSubtitlePosition(file->getSubtitleDelayms()/1000.0);
 	if(!mplayer->play(&aktualFile)){
 		mediaPackage->analyze("ID_EXIT");
+		std::cout<<"OneFilePlayer::playFile(IndigoFile* file)"<<std::endl;
 	}
 	firstStart = true;
 }

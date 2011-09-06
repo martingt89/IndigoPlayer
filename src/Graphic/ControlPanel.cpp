@@ -119,6 +119,10 @@ void ControlPanel::setPosition(int seconds) {
 	}
 }
 void ControlPanel::setAudioLevel(double level) {
+	if(level > 100)
+		level = 100;
+	if(level < 0)
+		level = 0;
 	sound_changed_signal = false;
 	soundAdj->set_value(level); //TODO //prepisat na multi threading
 	sound_changed_signal = true;

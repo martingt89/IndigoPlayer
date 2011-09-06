@@ -89,6 +89,7 @@ bool PlayerKernel::play(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
 		close(fromPlayerErr[0]);
 		close(fromPlayerErr[1]);
 		execv(ll[0], ll);
+		std::cout<<"ID_EXIT"<<std::endl;
 		std::cerr<<"SEVERE: Cannot start MPlayer!!!"<<std::endl;
 		exit(0);
 	}
@@ -188,7 +189,6 @@ void PlayerKernel::stop() {
 
 void PlayerKernel::sendCommand(Glib::ustring command) {
 	if (playing) {
-//		std::cout<<"COMMAND: "<<command<<std::endl;
 		if(pause)
 			dprintf(toPlayer[1], "%s %s", "pausing",command.c_str());
 		else
