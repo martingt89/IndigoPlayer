@@ -41,6 +41,13 @@ void MplayerInterface::relativeSeek(int time){
 	std::cout<<"void MplayerInterface::relativeSeek(int time) "<<time<<std::endl;
 	kernel->sendCommand("seek " + Glib::ustring::format(time) + " 0\n");
 }
+void MplayerInterface::setSubtitleDelay(double delay, bool paint){
+	if(delay < 0.1 && delay > -0.1)
+		delay = 0;
+	kernel->sendCommand("sub_delay "+Glib::ustring::format(delay)+" 1 \n");
+	if(paint)
+		kernel->sendCommand("osd_show_text 'subtitle delay "+Glib::ustring::format(delay*1000)+" ms' \n");
+}
 bool MplayerInterface::isPlaying() {
 	return kernel->isPlaying();
 }

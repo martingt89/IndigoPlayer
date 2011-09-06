@@ -82,6 +82,7 @@ void OneFilePlayer::incommingMessage(){
 		int sub = mediaPackage->getSubtitleNumberFromName(startloadedSubtitle);
 		if(sub != -1){
 			startingLoading = false;
+			info.setSubtitlePosition(0);
 			mplayer->playSubtitles(sub, false);
 			info.setSubtitlePath(startloadedSubtitle);
 		}
@@ -188,9 +189,11 @@ void OneFilePlayer::playSubtitles(Glib::ustring subtitles){
 	}else{
 		if(mediaPackage->isOriginalSubtitleFromName(subtitles)){
 			info.setSubtitleID(sub);
+			info.setSubtitlePosition(0);
 			mplayer->playSubtitles(sub, true);
 		}else{
 			info.setSubtitlePath(subtitles);
+			info.setSubtitlePosition(0);
 			mplayer->playSubtitles(sub, false);
 		}
 	}
@@ -235,11 +238,13 @@ void OneFilePlayer::subtitleMoveForward(){
 	double pos = info.getSubtitlePosition();
 	pos += 0.1;
 	info.setSubtitlePosition(pos);
+	mplayer->setSubtitleDelay(pos, true);
 }
 void OneFilePlayer::subtitleMoveBackward(){
 	double pos = info.getSubtitlePosition();
 	pos -= 0.1;
 	info.setSubtitlePosition(pos);
+	mplayer->setSubtitleDelay(pos, true);
 }
 void OneFilePlayer::timeMoveForward(){
 	double pos = info.getSoundPosition();
@@ -273,6 +278,10 @@ void OneFilePlayer::initHashTable(std::map <IndigoPlayerEnum::Command, OFP> &tab
 	table[IndigoPlayerEnum::SHORBACKWARD] = &OneFilePlayer::timeShorJumpBackward;
 	table[IndigoPlayerEnum::LONGFORWARD] = &OneFilePlayer::timeLongJumpForward;
 	table[IndigoPlayerEnum::LONGBACKWARD] = &OneFilePlayer::timeLongJumpBackward;
+	table[IndigoPlayerEnum::SUBFORWARD] = &OneFilePlayer::subtitleMoveForward;
+	table[IndigoPlayerEnum::SUBBACKWARD] = &OneFilePlayer::subtitleMoveBackward;
+	table[IndigoPlayerEnum::AUDFORWARD] = &OneFilePlayer::timeMoveForward;
+	table[IndigoPlayerEnum::AUDBACKWARD] = &OneFilePlayer::timeMoveBackward;
 }
 void OneFilePlayer::call(IndigoPlayerEnum::Command command){
 	if(hashTableOfFunction.find(command) != hashTableOfFunction.end()){

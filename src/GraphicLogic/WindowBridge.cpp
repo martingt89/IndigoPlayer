@@ -11,6 +11,8 @@ WindowBridge::WindowBridge() {
 	std::map<std::pair<IndigoPlayerEnum::ControlKey, int>, IndigoPlayerEnum::Command> table;
 	table[std::make_pair(IndigoPlayerEnum::NONE, 102)] = IndigoPlayerEnum::FULLUNFULLSCR;
 	table[std::make_pair(IndigoPlayerEnum::NONE, 109)] = IndigoPlayerEnum::MUTEUNMUTE;
+	table[std::make_pair(IndigoPlayerEnum::NONE, 103)] = IndigoPlayerEnum::SUBFORWARD;
+	table[std::make_pair(IndigoPlayerEnum::NONE, 104)] = IndigoPlayerEnum::SUBBACKWARD;
 	shortKeys.setConvertTable(table);
 	std::map<short unsigned, IndigoPlayerEnum::Command> hTable;
 	hTable[9] = IndigoPlayerEnum::UNFULLSCR;
@@ -86,7 +88,7 @@ void WindowBridge::setMaximalize(bool max) {
 	}
 }
 void WindowBridge::keyPressed(int control, int keyVal, unsigned short hardwareKey) {
-//	std::cout<<"void WindowBridge::keyPressed(int control, int keyVal, unsigned short hardwareKey) "<<hardwareKey<<std::endl;
+//	std::cout<<"void WindowBridge::keyPressed(int control, int keyVal, unsigned short hardwareKey) "<<keyVal<<" "<<hardwareKey<<std::endl;
 	IndigoPlayerEnum::ControlKey key = IndigoPlayerEnum::NONE;
 	if (control & Gdk::MOD1_MASK)
 		key = IndigoPlayerEnum::ALT;
