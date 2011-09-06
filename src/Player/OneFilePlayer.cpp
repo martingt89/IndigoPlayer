@@ -37,15 +37,17 @@ ColorSetings* OneFilePlayer::getColorSettings(){
 void OneFilePlayer::incommingMessage(){
 	bool sendPackage = false;
 	bool start = false;
+	bool fs = false;
 	GraphicData dat;
-	if (firstStart && mediaPackage->isStart(false)){
+	if(mediaPackage->isStart(false)){
+		start = true;
+		sendPackage = true;
+		fs = firstStart;
+	}
+	if (firstStart && mediaPackage->isStart(true)){
 		firstStart = false;
 		sendPackage = true;
 		dat.setStart(true);
-	}
-	if(mediaPackage->isStart(true)){
-		start = true;
-		sendPackage = true;
 	}
 	if (mediaPackage->isEnd(true)){
 		if(endCounter == 0){
@@ -94,13 +96,13 @@ void OneFilePlayer::incommingMessage(){
 	}
 	if(start){
 		start = false;
-		this->loadVideoSpecialThings(dat);
+		this->loadVideoSpecialThings(dat, fs);
 	}
 	if(sendPackage && playerSignal)
 		playerSignal->incommingMessage(dat);
 }
 //-----------------ANALYZE----------------------------//
-void OneFilePlayer::loadVideoSpecialThings(GraphicData &dat){
+void OneFilePlayer::loadVideoSpecialThings(GraphicData &dat, bool firstStart){
 	if(info.getPause()){
 		mplayer->pause();
 	}
@@ -128,7 +130,7 @@ void OneFilePlayer::loadVideoSpecialThings(GraphicData &dat){
 		if(tt.size() > 0){
 			dat.setAktualSubtitle(tt);
 		}
-	}else if(info.getSubPath().size() == 0){
+	}else if(info.getSubPath().size() == 0 && firstStart){
 		std::list<Glib::ustring> sub = mediaPackage->getListSubtitles();
 		if(sub.size() != 0){
 			mplayer->playSubtitles(mediaPackage->getSubtitleNumberFromName(*(sub.begin())));

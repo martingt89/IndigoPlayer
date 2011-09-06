@@ -55,7 +55,7 @@ public:
 	void call(IndigoPlayerEnum::Command command);
 	std::list<IndigoPlayerEnum::Command> getCommandList();
 private:
-	void loadVideoSpecialThings(GraphicData &dat);
+	void loadVideoSpecialThings(GraphicData &dat, bool firstStart);
     typedef void (OneFilePlayer::*OFP)(void);
     std::map <IndigoPlayerEnum::Command, OFP> hashTableOfFunction;
     void initHashTable(std::map <IndigoPlayerEnum::Command, OFP> &table);
