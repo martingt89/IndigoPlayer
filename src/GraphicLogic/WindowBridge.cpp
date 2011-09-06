@@ -86,7 +86,7 @@ void WindowBridge::setMaximalize(bool max) {
 	}
 }
 void WindowBridge::keyPressed(int control, int keyVal, unsigned short hardwareKey) {
-	std::cout<<"void WindowBridge::keyPressed(int control, int keyVal, unsigned short hardwareKey) "<<hardwareKey<<std::endl;
+//	std::cout<<"void WindowBridge::keyPressed(int control, int keyVal, unsigned short hardwareKey) "<<hardwareKey<<std::endl;
 	IndigoPlayerEnum::ControlKey key = IndigoPlayerEnum::NONE;
 	if (control & Gdk::MOD1_MASK)
 		key = IndigoPlayerEnum::ALT;

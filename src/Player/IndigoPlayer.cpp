@@ -19,8 +19,6 @@ IndigoPlayer::IndigoPlayer(PlayerWindow *playerWin, OneFilePlayer* player) {
 	filePlayer->setGraphicPointer(this);
 	nextFile = NULL;
 	playing = false;
-	firstAud = true;
-	firstSub = true;
 	stopPlay = true;
 }
 void IndigoPlayer::setPlaylist(Playlist *playlist) {
@@ -75,11 +73,15 @@ void IndigoPlayer::incommingMessage(GraphicData data) {
 	}
 	if(data.isSubtitle()){
 		thisOptionsLoad->addSubtitleList(data.getSubtitleList(), false);
-		firstSub = false;
 	}
 	if(data.isAudio()){
-		thisOptionsLoad->addAudioList(data.getAudioList(), firstAud);
-		firstAud = false;
+		thisOptionsLoad->addAudioList(data.getAudioList(), false);
+	}
+	if(data.isAktualAudio()){
+		thisOptionsLoad->setAktualAudio(data.getAktualAudio());
+	}
+	if(data.isAktualSubtitle()){
+		thisOptionsLoad->setAktualSubtitles(data.getAktualSubtitle());
 	}
 }
 void IndigoPlayer::playNextFile(){
@@ -145,15 +147,11 @@ void IndigoPlayer::playFile(IndigoFile* file) {
 	if (file != NULL) {
 		if(!playing){
 			stopPlay = false;
-			firstAud = true;
-			firstSub = true;
 			nextFile = file;
 			playNextFile();
 			controlPanel->pushPlayButton();
 		}else{
 			stopPlay = false;
-			firstAud = true;
-			firstSub = true;
 			nextFile = file;
 		}
 	}

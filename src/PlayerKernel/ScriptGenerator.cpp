@@ -94,20 +94,20 @@ void ScriptGenerator::getFromSavedInfo(std::list<Glib::ustring> &parameters, Sav
 		parameters.push_back(Glib::ustring::format(info->getSubtitlePosition()));
 	}
 /*	{
-		if (info->getSubPath().size() != 0) {
+		*/if (info->getSubPath().size() != 0) {
 			parameters.push_back("-sub");
 			parameters.push_back(info->getSubPath());
-		} else if (info->getSubID() != -1) {
+		}/* else if (info->getSubID() != -1) {
 			parameters.push_back("-sid");
 			parameters.push_back(Glib::ustring::format(info->getSubID()));
 		} else {
 			parameters.push_back("-sid");
 			parameters.push_back("0");
-		}
+		}*/
 		if (info->getAudioPath().size() != 0) {
 			parameters.push_back("-audiofile");
 			parameters.push_back(info->getAudioPath());
-		} else if (info->getAudioID() > -1) {
+		}/* else if (info->getAudioID() > -1) {
 			parameters.push_back("-aid");
 			parameters.push_back(Glib::ustring::format(info->getAudioID()));
 		} else {

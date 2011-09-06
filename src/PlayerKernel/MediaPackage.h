@@ -40,8 +40,8 @@ public:
 	void clear();
 	void quitPlay();
 
-	int getValueFromSubtitlePath(std::string path);
-	int getValueFromAudioText(std::string text);
+	int getSubtitleNumberFromName(std::string path);
+	int getAudioNumberFromName(std::string text);
 
 	bool isStart(bool off=true);
 	bool isEnd(bool off=true);
@@ -55,7 +55,9 @@ public:
 	//==============================================
 	bool isOriginalSubtitleStream(int number);
 	bool isOriginalAudioStream(int number);
-	std::string getSubtitlePathOfStream(int number);
+	//==============================================
+	Glib::ustring getSubtitleNameFromNumber(int number);
+	Glib::ustring getAudioNameFromNumber(int number);
 private:
 	std::map<std::string, int> hashTable;
 	std::map<std::string, std::string> valueTable;

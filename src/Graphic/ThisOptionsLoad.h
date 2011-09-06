@@ -26,6 +26,8 @@ public:
 	void setListener(PlayerSignals *sig);
 	void runPlaying();
 	void stopPlaying();
+	void setAktualSubtitles(Glib::ustring name);
+	void setAktualAudio(Glib::ustring name);
 private:
 	void subStraemChanged();
 	void subButtonClicked();

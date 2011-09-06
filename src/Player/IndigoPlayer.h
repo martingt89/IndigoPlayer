@@ -74,8 +74,6 @@ private:
 	IndigoFile* nextFile;
 	bool stopPlay;
 	bool playing;
-	bool firstAud;
-	bool firstSub;
 };
 
 #endif /* PLAYER_H_ */

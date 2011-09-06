@@ -36,14 +36,16 @@ ColorSetings* OneFilePlayer::getColorSettings(){
 //-----------------ANALYZE----------------------------//
 void OneFilePlayer::incommingMessage(){
 	bool sendPackage = false;
+	bool start = false;
 	GraphicData dat;
-//	if(mediaPackage->isStart(false)){
-//		std::cerr<<"DEBUG: mediaPackage->isStart() = false firstStart = "<<firstStart<<std::endl;
-//	}
-	if (firstStart && mediaPackage->isStart(true)){
+	if (firstStart && mediaPackage->isStart(false)){
 		firstStart = false;
 		sendPackage = true;
 		dat.setStart(true);
+	}
+	if(mediaPackage->isStart(true)){
+		start = true;
+		sendPackage = true;
 	}
 	if (mediaPackage->isEnd(true)){
 		if(endCounter == 0){
@@ -75,7 +77,7 @@ void OneFilePlayer::incommingMessage(){
 	}
 
 	if(startingLoading){
-		int sub = mediaPackage->getValueFromSubtitlePath(startloadedSubtitle);
+		int sub = mediaPackage->getSubtitleNumberFromName(startloadedSubtitle);
 		if(sub != -1){
 			startingLoading = false;
 			mplayer->playSubtitles(sub);
@@ -84,15 +86,59 @@ void OneFilePlayer::incommingMessage(){
 	}
 	if (mediaPackage->isSubtitleChanged()) {
 		dat.setSubtitleList(mediaPackage->getListSubtitles());
+		sendPackage = true;
 	}
 	if (mediaPackage->isAudioChanged()) {
 		dat.setAudioList(mediaPackage->getListAudios());
+		sendPackage = true;
 	}
-
+	if(start){
+		start = false;
+		this->loadVideoSpecialThings(dat);
+	}
 	if(sendPackage && playerSignal)
 		playerSignal->incommingMessage(dat);
 }
 //-----------------ANALYZE----------------------------//
+void OneFilePlayer::loadVideoSpecialThings(GraphicData &dat){
+	if(info.getPause()){
+		mplayer->pause();
+	}
+	//load audio
+	if(info.getAudioID() != -1){
+		mplayer->playAudio(info.getAudioID());
+		Glib::ustring tt = mediaPackage->getAudioNameFromNumber(info.getAudioID());
+		if(tt.size() > 0)
+			dat.setAktualAudio(tt);
+	}else if(info.getAudioPath().size() == 0){
+	//	std::cout<<"info.getAudioPath().size() == 0"<<std::endl;
+		std::list<Glib::ustring> aud = mediaPackage->getListAudios();
+		if(aud.size()!= 0){
+			mplayer->playAudio(mediaPackage->getAudioNumberFromName(*(aud.begin())));
+			dat.setAktualAudio(*(aud.begin()));
+		}
+	} else if (info.getAudioPath().size() != 0){
+		dat.setAktualAudio(info.getAudioPath());
+	}
+	//loadAudio
+	//loadSubtitle
+	if(info.getSubID() != -1){
+		mplayer->playSubtitles(info.getSubID());
+		Glib::ustring tt = mediaPackage->getSubtitleNameFromNumber(info.getSubID());
+		if(tt.size() > 0){
+			dat.setAktualSubtitle(tt);
+		}
+	}else if(info.getSubPath().size() == 0){
+		std::list<Glib::ustring> sub = mediaPackage->getListSubtitles();
+		if(sub.size() != 0){
+			mplayer->playSubtitles(mediaPackage->getSubtitleNumberFromName(*(sub.begin())));
+			dat.setAktualSubtitle(*(sub.begin()));
+		}
+	} else if(info.getSubPath().size() != 0){
+		dat.setAktualSubtitle(info.getSubPath());
+	}
+	//loadSubtitles
+}
 void OneFilePlayer::playFile(IndigoFile* file){
 	stopPlayFile();
 	if(file == NULL) return;
@@ -120,13 +166,14 @@ void OneFilePlayer::rewindPlayFile(){
 }
 void OneFilePlayer::pausePlayFile(){
 	mplayer->pause();
+	info.pause();
 }
 void OneFilePlayer::stopPlayFile(){
 	mplayer->stopPlayback();
 	mediaPackage->clear();
 }
 void OneFilePlayer::playSubtitles(Glib::ustring subtitles){
-	int sub = mediaPackage->getValueFromSubtitlePath(subtitles);
+	int sub = mediaPackage->getSubtitleNumberFromName(subtitles);
 	if(sub == -1) { 						//subtitle is not loaded
 		mplayer->loadSubtitles(subtitles);
 		startloadedSubtitle = subtitles;
@@ -144,7 +191,7 @@ void OneFilePlayer::hideSubtitles(){
 	info.setSubtitleID(-1);
 }
 void OneFilePlayer::playSound(Glib::ustring sound){
-	int sau = mediaPackage->getValueFromAudioText(sound);
+	int sau = mediaPackage->getAudioNumberFromName(sound);
 	if(sau == -1){
 		info.setAudioPath(sound);
 		reloadPlayback();

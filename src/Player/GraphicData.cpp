@@ -22,6 +22,8 @@ GraphicData::GraphicData() {
 	wasResolution = false;
 	wasSubtitle = false;
 	wasAudio = false;
+	wasAktualAudio = false;
+	wasAktualSubtitle = false;
 }
 
 void GraphicData::setStart(bool start){
@@ -53,6 +55,14 @@ void GraphicData::setAudioList(std::list<Glib::ustring> audio){
 	wasAudio = true;
 	this->audio = audio;
 }
+void GraphicData::setAktualAudio(Glib::ustring audioStream){
+	wasAktualAudio = true;
+	aktualAudio = audioStream;
+}
+void GraphicData::setAktualSubtitle(Glib::ustring subtitleStream){
+	wasAktualSubtitle = true;
+	aktualSubtitle = subtitleStream;
+}
 bool GraphicData::getStart(){
 	return start;
 }
@@ -75,6 +85,12 @@ std::list<Glib::ustring> GraphicData::getSubtitleList(){
 std::list<Glib::ustring> GraphicData::getAudioList(){
 	return audio;
 }
+Glib::ustring GraphicData::getAktualAudio(){
+	return aktualAudio;
+}
+Glib::ustring GraphicData::getAktualSubtitle(){
+	return aktualSubtitle;
+}
 //
 bool GraphicData::isStart(){
 	return wasStart;
@@ -96,4 +112,10 @@ bool GraphicData::isSubtitle(){
 }
 bool GraphicData::isAudio(){
 	return wasAudio;
+}
+bool GraphicData::isAktualAudio(){
+	return wasAktualAudio;
+}
+bool GraphicData::isAktualSubtitle(){
+	return wasAktualSubtitle;
 }

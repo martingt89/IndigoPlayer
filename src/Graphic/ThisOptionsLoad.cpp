@@ -73,6 +73,12 @@ void ThisOptionsLoad::stopPlaying(){
 	audioLoad->set_sensitive(false);
 	subtitleLoad->set_sensitive(false);
 }
+void ThisOptionsLoad::setAktualSubtitles(Glib::ustring name){
+	mySubtitleStream->selectText(name);
+}
+void ThisOptionsLoad::setAktualAudio(Glib::ustring name){
+	myAudioStream->selectText(name);
+}
 void ThisOptionsLoad::addSubtitleList(std::list<Glib::ustring> files, bool firstShow){
 	if(files.size() == 0) return;
 	std::list<Glib::ustring>::iterator it = files.begin();

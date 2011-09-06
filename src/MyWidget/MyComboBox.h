@@ -39,6 +39,7 @@ public:
 	double getDoubleValue();
 	Glib::ustring getStringValue();
 	int getOrder();
+	void selectText(Glib::ustring text);
 private:
 	Glib::ustring convertText(Glib::ustring intpuText);
 	Gtk::ComboBox* comboBox;

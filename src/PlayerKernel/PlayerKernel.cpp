@@ -188,7 +188,7 @@ void PlayerKernel::stop() {
 
 void PlayerKernel::sendCommand(Glib::ustring command) {
 	if (playing) {
-		std::cout<<"COMMAND: "<<command<<std::endl;
+//		std::cout<<"COMMAND: "<<command<<std::endl;
 		if(pause)
 			dprintf(toPlayer[1], "%s %s", "pausing",command.c_str());
 		else

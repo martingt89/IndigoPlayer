@@ -18,7 +18,7 @@ ShortKeys::~ShortKeys() {
 void ShortKeys::keyPressed(IndigoPlayerEnum::ControlKey controlKey, int keyValue, unsigned short hardValue){
 	if(hardwareTable.find(hardValue) != hardwareTable.end()){
 		executeCommand(hardwareTable[hardValue]);
-		std::cout<<"void ShortKeys::keyPressed"<<std::endl;
+//		std::cout<<"void ShortKeys::keyPressed"<<std::endl;
 	}else{
 		if(convertTable.find(std::make_pair(controlKey, keyValue)) != convertTable.end()){
 			executeCommand(convertTable[std::make_pair(controlKey, keyValue)]);
@@ -34,10 +34,10 @@ void ShortKeys::addList(Callable* object, std::list<IndigoPlayerEnum::Command> c
 }
 void ShortKeys::executeCommand(IndigoPlayerEnum::Command command){
 	if(commandTable.find(command) != commandTable.end()){
-		std::cout<<"void ShortKeys::executeCommand(IndigoPlayerEnum::Command command)"<<std::endl;
+//		std::cout<<"void ShortKeys::executeCommand(IndigoPlayerEnum::Command command)"<<std::endl;
 		commandTable[command]->call(command);
 	}
-	std::cout<<"void ShortKeys::executeCommand(IndigoPlayerEnum::Command command) 2"<<std::endl;
+//	std::cout<<"void ShortKeys::executeCommand(IndigoPlayerEnum::Command command) 2"<<std::endl;
 }
 void ShortKeys::setConvertTable(std::map<std::pair<IndigoPlayerEnum::ControlKey, int>, IndigoPlayerEnum::Command> table){
 	convertTable = table;

@@ -21,6 +21,9 @@ public:
 	void setSubtitleList(std::list<Glib::ustring> subtitle);
 	void setAudioList(std::list<Glib::ustring> audio);
 	void setResolution(int width, int height);
+	void setAktualAudio(Glib::ustring audioStream);
+	void setAktualSubtitle(Glib::ustring subtitleStream);
+
 	bool getStart();
 	bool getEnd();
 	int getAktualTime();
@@ -28,6 +31,8 @@ public:
 	void getResolution(int *width, int* height);
 	std::list<Glib::ustring> getSubtitleList();
 	std::list<Glib::ustring> getAudioList();
+	Glib::ustring getAktualAudio();
+	Glib::ustring getAktualSubtitle();
 	//
 	bool isStart();
 	bool isEnd();
@@ -36,6 +41,8 @@ public:
 	bool isResolution();
 	bool isSubtitle();
 	bool isAudio();
+	bool isAktualAudio();
+	bool isAktualSubtitle();
 private:
 	bool start;
 	bool end;
@@ -45,6 +52,8 @@ private:
 	int height;
 	std::list<Glib::ustring> subtitle;
 	std::list<Glib::ustring> audio;
+	Glib::ustring aktualAudio;
+	Glib::ustring aktualSubtitle;
 	//
 	bool wasStart;
 	bool wasEnd;
@@ -53,6 +62,8 @@ private:
 	bool wasResolution;
 	bool wasSubtitle;
 	bool wasAudio;
+	bool wasAktualAudio;
+	bool wasAktualSubtitle;
 };
 
 #endif /* GRAPHICDATA_H_ */

@@ -15,6 +15,7 @@ public:
 	SavedFileInfo();
 	void clear();
 	//==================
+	void pause();
 	void setAktulaTime(int time);
 	void setCrop(int up, int down, int left, int right);
 	void setSubtitlePosition(double pos);
@@ -31,6 +32,7 @@ public:
 	void setNumberOfChapters(int number);
 	void setAktualChapter(int chapter);
 	//==================
+	bool getPause();
 	int getAktualTime();
 	void getCrop(int *up, int *down, int* left, int* right);
 	double getSubtitlePosition();
@@ -47,6 +49,7 @@ public:
 	int getNumberOfChapter();
 	int getAktualChapter();
 private:
+	bool pp;
 	int width;
 	int height;
 	//==================

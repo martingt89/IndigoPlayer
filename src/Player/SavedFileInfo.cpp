@@ -13,6 +13,9 @@ SavedFileInfo::SavedFileInfo() {
 void SavedFileInfo::setAktulaTime(int time){
 	aktualTime = time;
 }
+void SavedFileInfo::pause(){
+	pp = !pp;
+}
 void SavedFileInfo::setCrop(int up, int down, int left, int right){
 	this->cropUP = up;
 	this->cropDown = down;
@@ -60,6 +63,9 @@ void SavedFileInfo::setAktualChapter(int chapter){
 	aktualChapter = chapter;
 }
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+bool SavedFileInfo::getPause(){
+	return pp;
+}
 int SavedFileInfo::getAktualTime(){
 	return aktualTime;
 }
@@ -107,6 +113,7 @@ int SavedFileInfo::getAktualChapter(){
 }
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 void SavedFileInfo::clear(){
+	pp = false;
 	width = -1;
 	height = -1;
 	//==================

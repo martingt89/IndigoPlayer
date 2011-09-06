@@ -45,8 +45,10 @@ int MediaPackage::analyze(std::string text) {
 	bool mess = false;
 	if (hashTable[identifier]) {
 		vauleI = hashTable[identifier];
-		if(vauleI == 1)
+		if(vauleI == 1){
 			start = true;
+			mess = true;
+		}
 		if(vauleI == 2){
 			end = true;
 			mess = true;
@@ -68,6 +70,7 @@ int MediaPackage::analyze(std::string text) {
 			loadedSubtitles.push_back(std::make_pair(lastNumberSubtitle, StreamInfo(value, false)));
 			lock.unlock();
 			subChanged = true;
+			mess = true;
 		}
 		if (vauleI == 7) {
 			lastNumberAudio = atoi(value.c_str());
@@ -93,6 +96,7 @@ int MediaPackage::analyze(std::string text) {
 		}
 		lock.unlock();
 		subChanged = true;
+		message();
 	}
 	if (Glib::ustring(identifier, 0, 7) == "ID_AID_") {
 		if (value == "und") {
@@ -112,6 +116,7 @@ int MediaPackage::analyze(std::string text) {
 		}
 		lock.unlock();
 		audChanged = true;
+		message();
 	}
 	return 0;
 }
@@ -163,12 +168,12 @@ bool MediaPackage::isVideoChanged() {
 	return false;
 }
 
-int MediaPackage::getValueFromSubtitlePath(std::string path) {
+int MediaPackage::getSubtitleNumberFromName(std::string name) {
 	int find = -1;
 	std::list<std::pair<int, StreamInfo> >::iterator it;
 	lock.lock();
 	for (it = loadedSubtitles.begin(); it != loadedSubtitles.end(); it++) {
-		if ((it->second).name == path) {
+		if ((it->second).name == name) {
 			find = it->first;
 			break;
 		}
@@ -176,12 +181,12 @@ int MediaPackage::getValueFromSubtitlePath(std::string path) {
 	lock.unlock();
 	return find;
 }
-int MediaPackage::getValueFromAudioText(std::string text) {
+int MediaPackage::getAudioNumberFromName(std::string name) {
 	int find = -1;
 	std::list<std::pair<int, StreamInfo> >::iterator it;
 	lock.lock();
 	for (it = loadedAudio.begin(); it != loadedAudio.end(); it++) {
-		if (it->second.name == text) {
+		if (it->second.name == name) {
 			find = it->first;
 			break;
 		}
@@ -218,20 +223,7 @@ bool MediaPackage::isOriginalAudioStream(int number) {
 	lock.unlock();
 	return false;
 }
-std::string MediaPackage::getSubtitlePathOfStream(int number) {
-	if (number == -1)
-		return "";
-	std::list<std::pair<int, StreamInfo> >::iterator it;
-	lock.lock();
-	for (it = loadedSubtitles.begin(); it != loadedSubtitles.end(); it++) {
-		if (it->first == number) {
-			lock.unlock();
-			return it->second.name;
-		}
-	}
-	lock.unlock();
-	return "";
-}
+
 
 std::list<Glib::ustring> MediaPackage::getListSubtitles() {
 	std::list<Glib::ustring> list;
@@ -252,6 +244,33 @@ std::list<Glib::ustring> MediaPackage::getListAudios() {
 	}
 	lock.unlock();
 	return list;
+}
+Glib::ustring MediaPackage::getAudioNameFromNumber(int number) {
+	std::list<Glib::ustring> list;
+	std::list<std::pair<int, StreamInfo> >::iterator it;
+	Glib::ustring text = "";
+	lock.lock();
+	for (it = loadedAudio.begin(); it != loadedAudio.end(); it++) {
+		if(it->first == number){
+			text = it->second.name;
+			break;
+		}
+	}
+	lock.unlock();
+	return text;
+}
+Glib::ustring MediaPackage::getSubtitleNameFromNumber(int number) {
+	std::list<std::pair<int, StreamInfo> >::iterator it;
+	Glib::ustring text = "";
+	lock.lock();
+	for (it = loadedSubtitles.begin(); it != loadedSubtitles.end(); it++) {
+		if (it->first == number) {
+			text = it->second.name;
+			break;
+		}
+	}
+	lock.unlock();
+	return text;
 }
 //===================================================================================
 void MediaPackage::clear() {

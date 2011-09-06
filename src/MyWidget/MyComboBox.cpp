@@ -49,7 +49,19 @@ void MyComboBox::pushBack(Glib::ustring text, double value, bool select) {
 		comboBox->set_active(*row);
 	}
 }
-
+void MyComboBox::selectText(Glib::ustring text) {
+	Gtk::TreeModel::Row row = *refTreeModel->children().begin();
+	bool find = false;
+	while (row) {
+		if (row[columnsModel.textValue] == text) {
+			find = true;
+			break;
+		}
+		row++;
+	}
+	if (find)
+		comboBox->set_active(*row);
+}
 void MyComboBox::clear() {
 	refTreeModel->clear();
 	number = 0;
@@ -85,12 +97,13 @@ void MyComboBox::addDefault(Glib::ustring text, int value) {
 	row[columnsModel.colId] = value;
 	comboBox->set_active(0);
 }
-Glib::ustring MyComboBox::convertText(Glib::ustring inputText){
+Glib::ustring MyComboBox::convertText(Glib::ustring inputText) {
 	int pos = inputText.find_last_of('/');
 	Glib::ustring text = inputText;
 	int max = 0;
-	if((pos >= 0) && (inputText.size() > (unsigned)pos)){
-		max = (inputText.size()-(pos+1)) > 50 ? 50 : (inputText.size()-(pos+1));
+	if ((pos >= 0) && (inputText.size() > (unsigned) pos)) {
+		max = (inputText.size() - (pos + 1)) > 50 ?
+				50 : (inputText.size() - (pos + 1));
 		text = Glib::ustring(inputText, ++pos, max);
 	}
 	return text;
