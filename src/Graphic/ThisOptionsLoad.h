@@ -41,6 +41,8 @@ private:
 	Gtk::ComboBox* audioStream;
 	Gtk::ComboBox* subtitleStream;
 
+	bool start;
+
 	MyComboBox* myVideoStream;
 	MyComboBox* myAudioStream;
 	MyComboBox* mySubtitleStream;

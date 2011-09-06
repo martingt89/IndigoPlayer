@@ -26,6 +26,8 @@ ThisOptionsLoad::ThisOptionsLoad(const Glib::RefPtr<Gtk::Builder>& refGlade) {
 	subtitleLoad->signal_clicked().connect(sigc::mem_fun(this, &ThisOptionsLoad::subButtonClicked));
 	audioLoad->signal_clicked().connect(sigc::mem_fun(this, &ThisOptionsLoad::audButtonClicked));
 	audioStream->signal_changed().connect(sigc::mem_fun(this, &ThisOptionsLoad::audStraemChanged));
+
+	start = false;
 }
 
 ThisOptionsLoad::~ThisOptionsLoad() {
@@ -63,7 +65,10 @@ void ThisOptionsLoad::setListener(PlayerSignals *sig){
 	playerSignal = sig;
 }
 void ThisOptionsLoad::runPlaying(){
-	mySubtitleStream->addDefault("None");
+	if(!start){
+		mySubtitleStream->addDefault("None");
+		start = true;
+	}
 	audioLoad->set_sensitive(true);
 	subtitleLoad->set_sensitive(true);
 }
@@ -72,6 +77,7 @@ void ThisOptionsLoad::stopPlaying(){
 	myAudioStream->clear();
 	audioLoad->set_sensitive(false);
 	subtitleLoad->set_sensitive(false);
+	start = false;
 }
 void ThisOptionsLoad::setAktualSubtitles(Glib::ustring name){
 	mySubtitleStream->selectText(name);
@@ -80,6 +86,7 @@ void ThisOptionsLoad::setAktualAudio(Glib::ustring name){
 	myAudioStream->selectText(name);
 }
 void ThisOptionsLoad::addSubtitleList(std::list<Glib::ustring> files, bool firstShow){
+	runPlaying();
 	if(files.size() == 0) return;
 	std::list<Glib::ustring>::iterator it = files.begin();
 	if(firstShow){

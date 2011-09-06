@@ -133,8 +133,14 @@ void OneFilePlayer::loadVideoSpecialThings(GraphicData &dat, bool firstStart){
 	}else if(info.getSubPath().size() == 0 && firstStart){
 		std::list<Glib::ustring> sub = mediaPackage->getListSubtitles();
 		if(sub.size() != 0){
-			mplayer->playSubtitles(mediaPackage->getSubtitleNumberFromName(*(sub.begin())));
-			dat.setAktualSubtitle(*(sub.begin()));
+			std::list<Glib::ustring>::iterator it;
+			for(it = sub.begin(); it != sub.end(); it++){
+				if(!mediaPackage->isOriginalSubtitleStream(mediaPackage->getSubtitleNumberFromName(*it))){
+					mplayer->playSubtitles(mediaPackage->getSubtitleNumberFromName(*it));
+					dat.setAktualSubtitle(*it);
+					std::cout<<"TUUUUU: "<<*it<<std::endl;
+				}
+			}
 		}
 	} else if(info.getSubPath().size() != 0){
 		dat.setAktualSubtitle(info.getSubPath());

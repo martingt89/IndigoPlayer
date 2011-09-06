@@ -12,7 +12,6 @@ ScriptGenerator::ScriptGenerator() {
 	controlPanel = NULL;
 	videoBoard = NULL;
 	mplayerPath = MPLAYER;
-	//mplayerPath = "/home/martin89/Plocha/mplayer2/mplayer";
 }
 
 void ScriptGenerator::setVideoBoard(VideoBoard* board) {
@@ -59,11 +58,8 @@ std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool loadTi
 		empty.push_back("-dvd-device");
 	}
 	empty.push_back(file->getFilePath());
-	std::list<Glib::ustring>::iterator it;
-	for (it = empty.begin(); it != empty.end(); it++) {
-		std::cout << *it << " ";
-	}
-	std::cout << std::endl;
+
+	this->printScript(empty);
 
 	return empty;
 }
@@ -166,5 +162,12 @@ void ScriptGenerator::getConfig(std::list<Glib::ustring> &parameters) {
 		parameters.push_back("-ass-color");
 		parameters.push_back(cp);
 	}
+}
+void ScriptGenerator::printScript(std::list<Glib::ustring> &parameters){
+	std::list<Glib::ustring>::iterator it;
+	for (it = parameters.begin(); it != parameters.end(); it++) {
+		std::cout << *it << " ";
+	}
+	std::cout << std::endl;
 }
 //-noautosub

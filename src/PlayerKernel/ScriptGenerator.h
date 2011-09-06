@@ -29,6 +29,7 @@ private:
 	void getFromControlPanel(std::list<Glib::ustring> &parameters);
 	void getVideoBoard(std::list<Glib::ustring> &parameters);
 	void getConfig(std::list<Glib::ustring> &parameters);
+	void printScript(std::list<Glib::ustring> &parameters);
 	ControlPanel* controlPanel;
 	VideoBoard* videoBoard;
 	ConfigFile config;
