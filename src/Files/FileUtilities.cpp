@@ -62,7 +62,6 @@ Glib::ustring FileUtilities::fileToPath(Glib::ustring file) {
 	return files;
 }
 std::list<IndigoFile*> FileUtilities::stringListToFiles(std::list<Glib::ustring> files, bool folders, int depth){
-	std::cout<<"FileUtilities::stringListToFiles "<<depth<<std::endl;
 	std::list<Glib::ustring>::iterator it;
 	Glib::ustring::size_type pos;
 	IndigoFileType::FileType ift;

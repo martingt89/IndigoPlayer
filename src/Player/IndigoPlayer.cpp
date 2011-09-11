@@ -13,7 +13,6 @@ IndigoPlayer::IndigoPlayer(PlayerWindow *playerWin, OneFilePlayer* player) {
 	playerWindow = playerWin;
 	playerWindow->setListener(this);
 	generator = new ScriptGenerator();
-//	filePlayer = new OneFilePlayer(generator);
 	filePlayer = player;
 	filePlayer->setGenerator(generator);
 	filePlayer->setGraphicPointer(this);

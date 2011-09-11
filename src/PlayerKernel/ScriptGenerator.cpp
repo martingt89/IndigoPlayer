@@ -62,8 +62,6 @@ std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool loadTi
 	}
 	empty.push_back(file->getFilePath());
 
-	this->printScript(empty);
-
 	return empty;
 }
 void ScriptGenerator::getCollors(std::list<Glib::ustring> &parameters, SavedFileInfo* info){
@@ -163,12 +161,5 @@ void ScriptGenerator::getConfig(std::list<Glib::ustring> &parameters) {
 		parameters.push_back("-ass-color");
 		parameters.push_back(config.getAsString(IndigoConfig::SUBCOLOR));
 	}
-}
-void ScriptGenerator::printScript(std::list<Glib::ustring> &parameters){
-	std::list<Glib::ustring>::iterator it;
-	for (it = parameters.begin(); it != parameters.end(); it++) {
-		std::cout << *it << " ";
-	}
-	std::cout << std::endl;
 }
 //-noautosub

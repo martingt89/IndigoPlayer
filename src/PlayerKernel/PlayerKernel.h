@@ -37,6 +37,7 @@ public:
 	void sendCommand(Glib::ustring command);
 	void pausePlayer();
 private:
+	bool playMe(IndigoFile* file, bool loadTime, SavedFileInfo* info);
 	void listener();
 	void mplayerError();
 	bool aktualTime();

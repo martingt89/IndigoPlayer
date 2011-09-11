@@ -25,38 +25,47 @@ void PlayerKernel::pausePlayer(){
 	pause = !pause;
 }
 bool PlayerKernel::play(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
-	logging.log(IndigoLogger::DEBUG, "PlayerKernel::play, play file");
 	onePlay.lock();
+	bool me = playMe(file, loadTime, info);
+	if(me == false)
+		onePlay.unlock();
+	return me;
+}
+bool PlayerKernel::playMe(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
+	logging.log(IndigoLogger::DEBUG, "PlayerKernel::play, play file");
 	if (file == NULL){
 		logging.log(IndigoLogger::ALERT, "PlayerKernel::play, IndigoFile* musn't be NULL");
-		onePlay.unlock();
 		return false;
 	}
 	if(childPid != -1){
 		logging.log(IndigoLogger::ALERT, "PlayerKernel::play, playback not end");
-		onePlay.unlock();
 		return false;
 	}
 	childPid = -1;
 	pause = false;
 	std::list<Glib::ustring> script = generator->generate(file, loadTime, info);
+	if(script.size() == 0){
+		logging.log(IndigoLogger::CRIT, "PlayerKernel::play, no script to run");
+		return false;
+	}
 	char *ll[script.size()];
 	std::list<Glib::ustring>::iterator it;
 	int i = 0;
+	Glib::ustring scr = "";
 	for (it = script.begin(); it != script.end(); it++) {
 		ll[i++] = (char*) it->c_str();
+		scr += *it;
 	}
+	mLogging.log(IndigoLogger::INFO, scr);
 	ll[i] = NULL;
 	if (pipe(fromPlayer) == -1) {
 		logging.log(IndigoLogger::CRIT, "PlayerKernel::play, pipe 'fromPlayer' not created");
-		onePlay.unlock();
 		return false;
 	}
 	if (pipe(toPlayer) == -1) {
 		close(fromPlayer[0]);
 		close(fromPlayer[1]);
 		logging.log(IndigoLogger::CRIT, "PlayerKernel::play, pipe 'toPlayer' not created");
-		onePlay.unlock();
 		return false;
 	}
 	if (pipe(fromPlayerErr) == -1) {
@@ -65,27 +74,30 @@ bool PlayerKernel::play(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
 		close(toPlayer[0]);
 		close(toPlayer[1]);
 		logging.log(IndigoLogger::CRIT, "PlayerKernel::play, pipe 'fromPlayerErr' not created");
-		onePlay.unlock();
 		return false;
 	}
-	int hh[2];
-	pipe(hh);
 	childPid = fork();
 	if(childPid == -1) {
 		logging.log(IndigoLogger::CRIT, "PlayerKernel::play, cannot fork");
-		onePlay.unlock();
+		return false;
 	}
 	if (childPid == 0) { //child
 		close(1);
-		dup(fromPlayer[1]);
+		if(dup(fromPlayer[1]) == -1){
+			std::cerr<<"Cannot dup mplayer input stream"<<std::endl;
+		}
 		close(0);
-		dup(toPlayer[0]);
+		if(dup(toPlayer[0]) == -1){
+			std::cerr<<"Cannot dup mplayer output stream"<<std::endl;
+		}
 		close(fromPlayer[0]);
 		close(fromPlayer[1]);
 		close(toPlayer[1]);
 		close(toPlayer[0]);
 		close(2);
-		dup(fromPlayerErr[1]);
+		if(dup(fromPlayerErr[1]) == -1){
+			std::cerr<<"Cannot dup mplayer error stream"<<std::endl;
+		}
 		close(fromPlayerErr[0]);
 		close(fromPlayerErr[1]);
 		execv(ll[0], ll);
