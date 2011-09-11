@@ -1,4 +1,4 @@
-SUBDIRS=src
+SUBDIRS=bin
 
 uidir = $(pkgdatadir)/ui
 dist_ui_DATA = ui/arrow.png ui/arrowc.png ui/controlpanel.glade \

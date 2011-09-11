@@ -11,5 +11,5 @@ AC_PROG_CXX
 
 PKG_CHECK_MODULES([DEPS], [gtkmm-2.4 >= 1.0.0 log4cpp >= 1.0])
 
-AC_CONFIG_FILES([Makefile src/Makefile])
+AC_CONFIG_FILES([Makefile bin/Makefile])
 AC_OUTPUT

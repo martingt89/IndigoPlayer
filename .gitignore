@@ -13,5 +13,7 @@ config.status
 config.sub
 configure
 src/Makefile
-rc/Makefile.in
-
+src/Makefile.in
+bin/Makefile
+bin/Makefile.in
+indigoplayer
