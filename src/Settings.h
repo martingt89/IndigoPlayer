@@ -9,9 +9,7 @@
 #define SETTIONGS_H_
 
 #define NAME "IndigoPlayer"
-#define VERSION 0.3
-
-#define MPLAYER "/usr/bin/mplayer"
+#define VERSION 0.4
 
 #define GLADECONTROLPANEL "ui/controlpanel.glade"
 #define GLADEOPENDIALOG "ui/popupwindow.glade"
@@ -20,6 +18,7 @@
 #define GLADEOPENWINDOW "ui/openwindow.glade"
 
 #define CONFIG "confFile"
+#define LOGFOLDER "log"
 
 #define BLANKARROW "ui/arrowc.png"
 #define BLACKARROW "ui/arrow.png"

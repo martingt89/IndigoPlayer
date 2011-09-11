@@ -8,7 +8,7 @@
 #include "PlayerKernel.h"
 #include <iostream>
 
-PlayerKernel::PlayerKernel(MediaPackage *analyze) {
+PlayerKernel::PlayerKernel(MediaPackage *analyze): mLogging("M") {
 	playing = false;
 	childPid = -1;
 	stringAnalyze = analyze;
@@ -25,12 +25,15 @@ void PlayerKernel::pausePlayer(){
 	pause = !pause;
 }
 bool PlayerKernel::play(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
+	logging.log(IndigoLogger::DEBUG, "PlayerKernel::play, play file");
 	onePlay.lock();
 	if (file == NULL){
+		logging.log(IndigoLogger::ALERT, "PlayerKernel::play, IndigoFile* musn't be NULL");
 		onePlay.unlock();
 		return false;
 	}
 	if(childPid != -1){
+		logging.log(IndigoLogger::ALERT, "PlayerKernel::play, playback not end");
 		onePlay.unlock();
 		return false;
 	}
@@ -45,16 +48,14 @@ bool PlayerKernel::play(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
 	}
 	ll[i] = NULL;
 	if (pipe(fromPlayer) == -1) {
-		//LOGGING TODO
-		std::cerr<<"SEVERE: Cannot creat Pipe!!!"<<std::endl;
+		logging.log(IndigoLogger::CRIT, "PlayerKernel::play, pipe 'fromPlayer' not created");
 		onePlay.unlock();
 		return false;
 	}
 	if (pipe(toPlayer) == -1) {
 		close(fromPlayer[0]);
 		close(fromPlayer[1]);
-		std::cerr<<"SEVERE: Cannot creat Pipe!!!"<<std::endl;
-		//LOGGING TODO
+		logging.log(IndigoLogger::CRIT, "PlayerKernel::play, pipe 'toPlayer' not created");
 		onePlay.unlock();
 		return false;
 	}
@@ -63,8 +64,7 @@ bool PlayerKernel::play(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
 		close(fromPlayer[1]);
 		close(toPlayer[0]);
 		close(toPlayer[1]);
-		std::cerr<<"SEVERE: Cannot creat Pipe!!!"<<std::endl;
-		//LOGGING TODO
+		logging.log(IndigoLogger::CRIT, "PlayerKernel::play, pipe 'fromPlayerErr' not created");
 		onePlay.unlock();
 		return false;
 	}
@@ -72,7 +72,7 @@ bool PlayerKernel::play(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
 	pipe(hh);
 	childPid = fork();
 	if(childPid == -1) {
-		std::cerr<<"SEVERE: Cannot fork process!!!"<<std::endl;
+		logging.log(IndigoLogger::CRIT, "PlayerKernel::play, cannot fork");
 		onePlay.unlock();
 	}
 	if (childPid == 0) { //child
@@ -90,20 +90,22 @@ bool PlayerKernel::play(IndigoFile* file, bool loadTime, SavedFileInfo* info) {
 		close(fromPlayerErr[1]);
 		execv(ll[0], ll);
 		std::cout<<"ID_EXIT"<<std::endl;
-		std::cerr<<"SEVERE: Cannot start MPlayer!!!"<<std::endl;
+		std::cerr<<"Cannot start mplayer"<<std::endl;
 		exit(0);
 	}
 	if (childPid > 0) {
-		std::cout<<"INFO: childPid > 0"<<std::endl;
 		close(fromPlayer[1]);
 		close(toPlayer[0]);
 		close(fromPlayerErr[1]);
 		thread = Glib::Thread::create(sigc::mem_fun(*this, &PlayerKernel::listener), false);
+		if(!thread)
+			logging.log(IndigoLogger::ALERT, "PlayerKernel::play, cannot create listener thred");
 		errThread = Glib::Thread::create(sigc::mem_fun(*this, &PlayerKernel::mplayerError), true);
-		if(!errThread)
+		if(!errThread){
+			logging.log(IndigoLogger::ALERT, "PlayerKernel::play, cannot create error thred, turn off sinc");
 			onePlay.unlock();
+		}
 		Glib::signal_timeout().connect(sigc::mem_fun(*this, &PlayerKernel::aktualTime), 300);
-		std::cout<<"INFO: Start playing!!!"<<std::endl;
 		playing = true;
 		return true;
 	}
@@ -124,7 +126,6 @@ bool PlayerKernel::aktualTime(){
 }
 
 void PlayerKernel::mplayerError() {
-	std::cout<<"INFO: Starting error read"<<std::endl;
 	char buf[1024];
 	int n = 0, odsad = 0, i = 0;
 	std::string ss = "";
@@ -135,7 +136,7 @@ void PlayerKernel::mplayerError() {
 			if (buf[i] == '\n') {
 				buf[i] = '\0';
 				ss += std::string((buf + odsad));
-				std::cerr << "MPlayer Error: '" << ss << "'" << std::endl;
+				mLogging.log(IndigoLogger::NOTICE, ss);
 				ss = "";
 				odsad = i + 1;
 			}
@@ -143,8 +144,8 @@ void PlayerKernel::mplayerError() {
 		ss += buf + odsad;
 	}
 	close(fromPlayerErr[0]);
+	logging.log(IndigoLogger::DEBUG, "PlayerKernel::mplayerError, ending error thread = mplayer turn off");
 	onePlay.unlock();
-	std::cout<<"INFO: Closing error read"<<std::endl;
 }
 void PlayerKernel::listener() {
 	char buf[1024];
@@ -173,6 +174,8 @@ void PlayerKernel::listener() {
 }
 
 void PlayerKernel::stop() {
+	if(childPid == -1) return;
+	logging.log(IndigoLogger::DEBUG, "PlayerKernel::stop, force stop mplayer");
 	int pid = childPid;
 	if (!playing && pid != -1) {
 		kill(pid, 9);

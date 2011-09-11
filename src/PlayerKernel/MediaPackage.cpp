@@ -222,7 +222,6 @@ bool MediaPackage::isOriginalAudioStream(int number) {
 	return false;
 }
 
-
 std::list<Glib::ustring> MediaPackage::getListSubtitles() {
 	std::list<Glib::ustring> list;
 	std::list<std::pair<int, StreamInfo> >::iterator it;

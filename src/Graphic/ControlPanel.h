@@ -28,7 +28,7 @@
 #include "../Interfaces/Bridge.h"
 #include "../Files/IndigoFile.h"
 #include "../Files/FileUtilities.h"
-#include "../../Settings.h"
+#include "../Settings.h"
 
 class ControlPanel : public Callable{
 public:

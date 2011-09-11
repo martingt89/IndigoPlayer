@@ -55,7 +55,7 @@ public:
 	int getNumberOfChapter();
 	int getAktualChapter();
 	//==================
-	void getCollors(int *brig, int *satur, int *cont, int *gamma, int *hue);
+	void getCollors(double *brig, double *satur, double *cont, double *gamma, double *hue);
 private:
 	bool pp;
 	int width;
@@ -81,11 +81,11 @@ private:
 	int numberChapters;
 	int aktualChapter;
 	//==================
-	int brightness;
-	int saturation;
-	int contrast;
-	int gamma;
-	int hue;
+	double brightness;
+	double saturation;
+	double contrast;
+	double gamma;
+	double hue;
 };
 
 #endif /* SAVEDFILEINFO_H_ */

@@ -13,9 +13,9 @@
 #include "../Files/IndigoFile.h"
 #include "../Graphic/VideoBoard.h"
 #include "../Graphic/ControlPanel.h"
-#include "../Files/ConfigFile.h"
+#include "../ConfigFile.h"
 #include "../Player/SavedFileInfo.h"
-#include "../../Settings.h"
+#include "../Settings.h"
 
 class ScriptGenerator {
 public:

@@ -118,7 +118,7 @@ int SavedFileInfo::getAktualChapter(){
 	return aktualChapter;
 }
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-void SavedFileInfo::getCollors(int *brig, int *satur, int *cont, int *gamma, int *hue){
+void SavedFileInfo::getCollors(double *brig, double *satur, double *cont, double *gamma, double *hue){
 	*brig = brightness;
 	*satur = saturation;
 	*cont = contrast;

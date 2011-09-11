@@ -21,7 +21,7 @@
 #include "../Graphic/ThisOptionsLoad.h"
 #include "../GraphicLogic/Playlist.h"
 #include "../Player/ShortKeys.h"
-#include "../../EnumTypes.h"
+#include "../EnumTypes.h"
 
 class WindowBridge : public Bridge{
 public:

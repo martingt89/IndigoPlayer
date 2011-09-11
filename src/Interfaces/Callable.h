@@ -8,7 +8,7 @@
 #ifndef CALLABLE_H_
 #define CALLABLE_H_
 
-#include "../../EnumTypes.h"
+#include "../EnumTypes.h"
 #include <list>
 
 class Callable {

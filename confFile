@@ -1,5 +1,0 @@
-oneInstance=true
-audioVolume=100;
-subCp=cp1250
-subColor=ffff0000
-mplayerPath=/usr/bin/mplayer

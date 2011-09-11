@@ -22,9 +22,9 @@
 #include <signal.h>
 #include <cstdlib>
 #include "../Files/IndigoFile.h"
-#include "../../Settings.h"
 #include "../Player/SavedFileInfo.h"
-
+#include "../Files/Logger.h"
+#include "../Settings.h"
 
 class PlayerKernel {
 public:
@@ -45,8 +45,9 @@ private:
 	Glib::Thread* thread;
 	Glib::Thread* errThread;
 	Glib::Mutex onePlay;
-//	IndigoFile* lastSetFile;
-//	SavedData savedData;
+
+	IndigoLogger::Logger logging;
+	IndigoLogger::Logger mLogging;
 
 	bool playing;
 	int fromPlayerErr[2];

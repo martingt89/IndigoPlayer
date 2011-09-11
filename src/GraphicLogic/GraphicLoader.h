@@ -18,7 +18,7 @@
 #include "../Graphic/PlayerWindow.h"
 #include "../Graphic/ThisOptions.h"
 #include "../Graphic/ThisOptionsLoad.h"
-#include "../../Settings.h"
+#include "../Settings.h"
 
 class GraphicLoader {
 public:

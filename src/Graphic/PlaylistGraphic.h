@@ -20,7 +20,7 @@
 #include <glibmm/ustring.h>
 #include <glibmm/random.h>
 #include "../Interfaces/PlayerSignals.h"
-#include "../../Settings.h"
+#include "../Settings.h"
 
 class PlaylistGraphic {
 private:

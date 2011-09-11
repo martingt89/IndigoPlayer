@@ -9,13 +9,16 @@
 #define CONFIGFILE_H_
 
 #include <map>
-#include "../../Settings.h"
 #include <fstream>
-#include <string>
 #include <sstream>
+#include <glibmm/ustring.h>
+#include <glibmm/miscutils.h>
+#include "Settings.h"
 
 namespace IndigoConfig{
 	enum Config{
+		LOGPATH,
+		LOGFILENAME,
 		SUBCP,
 		SUBCOLOR,
 		ONEINSTANCE,
@@ -27,11 +30,10 @@ namespace IndigoConfig{
 class ConfigFile {
 public:
 	ConfigFile();
-	ConfigFile(bool load);
 	virtual ~ConfigFile();
-//	bool isOneInstance();
-//	std::string getSubCp();
-//	std::string getSubColor();
+	bool get(IndigoConfig::Config name, Glib::ustring &strin);
+	bool get(IndigoConfig::Config name, bool &boole);
+	bool get(IndigoConfig::Config name, double &doubl);
 
 	bool isSet(IndigoConfig::Config name);
 	std::string getAsString(IndigoConfig::Config name);
@@ -39,6 +41,8 @@ public:
 	double getAsDouble(IndigoConfig::Config name);
 private:
 	void init();
+	void initDefaultValues();
+	std::string getMainFolder();
 	std::stringstream translate;
 	static std::map<IndigoConfig::Config, std::string> config;
 	static std::map<std::string, IndigoConfig::Config> stringToConfig;

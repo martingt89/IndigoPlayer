@@ -24,7 +24,7 @@ std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool loadTi
 	if(config.isSet(IndigoConfig::MPLAYERPATH)){
 		mplayerPath = config.getAsString(IndigoConfig::MPLAYERPATH);
 	}else{
-		mplayerPath = MPLAYER;
+		return empty;
 	}
 	empty.push_back(mplayerPath);
 
@@ -67,7 +67,7 @@ std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool loadTi
 	return empty;
 }
 void ScriptGenerator::getCollors(std::list<Glib::ustring> &parameters, SavedFileInfo* info){
-	int brig, cont, satur, hue, gamma;
+	double brig, cont, satur, hue, gamma;
 	info->getCollors(&brig, &satur, &cont, &gamma, &hue);
 	parameters.push_back("-brightness");
 	parameters.push_back(Glib::ustring::format(brig));

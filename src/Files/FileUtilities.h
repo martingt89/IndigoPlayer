@@ -11,16 +11,18 @@
 #include <list>
 #include <map>
 #include <glibmm/ustring.h>
+#include <sys/stat.h>
 #include "IndigoFile.h"
 
 class FileUtilities {
 public:
 	FileUtilities();
 	virtual ~FileUtilities();
-	void fileWalk(std::list<Glib::ustring> &list, int depth);
 	std::list<Glib::ustring> fileToPlaylist(Glib::ustring file);
 	std::list<IndigoFile*> stringListToFiles(std::list<Glib::ustring> files, bool folders, int depth=5);
 	Glib::ustring fileToPath(Glib::ustring file);
+	Glib::ustring getConfigFolder();
+	bool createFolderSkeleton(Glib::ustring name, Glib::ustring log);
 private:
 	static std::map<Glib::ustring, IndigoFileType::FileType> types;
 };

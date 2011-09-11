@@ -1,6 +1,9 @@
 Know isues
 -DVD not support
 
+Version 0.4
++Logging mplayer, logging player
+
 Version 0.3
 +Base shorkeys (f, m, space, Esc, 1,2,3,4, arrows, g, h)
 +Open dialog add more settings
@@ -28,7 +31,6 @@ Version 0.1
 Blueprints
 0.4
  - DVD support
- - loging
 0.5
  - one instance support
  - manual load subtitles
@@ -39,3 +41,4 @@ Blueprints
  - enca
 0.8
  - VDPAU
+

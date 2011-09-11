@@ -10,7 +10,7 @@
 
 #include "OneFilePlayer.h"
 #include "GraphicData.h"
-#include "../Files/ConfigFile.h"
+#include "../ConfigFile.h"
 #include "../Interfaces/PlayerSignals.h"
 #include "../Interfaces/Callable.h"
 #include "../Graphic/ControlPanel.h"

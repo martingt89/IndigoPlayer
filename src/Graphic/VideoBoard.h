@@ -16,7 +16,7 @@
 #include <giomm/file.h>
 #include "../Interfaces/Callable.h"
 #include "../Interfaces/Bridge.h"
-#include "../../Settings.h"
+#include "../Settings.h"
 
 class VideoBoard : public Callable{
 public:

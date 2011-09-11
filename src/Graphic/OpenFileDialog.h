@@ -22,7 +22,7 @@
 #include "../Interfaces/PlayerSignals.h"
 #include "../MyWidget/FileChoosers.h"
 #include "../ClassHelper/ClassHelper.h"
-#include "../../EnumTypes.h"
+#include "../EnumTypes.h"
 
 class OpenFileDialog: public Gtk::Window {
 public:

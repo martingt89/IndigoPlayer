@@ -8,7 +8,7 @@
 #include "FileUtilities.h"
 #include <iostream>
 
- std::map<Glib::ustring, IndigoFileType::FileType> FileUtilities::types;
+std::map<Glib::ustring, IndigoFileType::FileType> FileUtilities::types;
 
 FileUtilities::FileUtilities() {
 	if(types.size() == 0){
@@ -32,9 +32,6 @@ FileUtilities::~FileUtilities() {
 	// TODO Auto-generated destructor stub
 }
 
-void FileUtilities::fileWalk(std::list<Glib::ustring> &list, int depth) {
-
-}
 std::list<Glib::ustring> FileUtilities::fileToPlaylist(Glib::ustring filePath) {
 	//if(file.isPlaylist){
 	//	prekonvertuj playlist na subory
@@ -107,4 +104,27 @@ std::list<IndigoFile*> FileUtilities::stringListToFiles(std::list<Glib::ustring>
 		}
 	}
 	return fileList;
+}
+Glib::ustring FileUtilities::getConfigFolder(){
+	return Glib::get_user_config_dir () + "/";
+}
+bool FileUtilities::createFolderSkeleton(Glib::ustring name, Glib::ustring log){
+	if(!Glib::file_test(getConfigFolder()+name, Glib::FILE_TEST_EXISTS)){
+		if(mkdir ((getConfigFolder()+name).c_str(), 0700) < 0)
+			return false;
+	}else{
+		if(!Glib::file_test(getConfigFolder()+name, Glib::FILE_TEST_IS_DIR)){
+			return false;
+		}
+	}
+	if(!Glib::file_test(getConfigFolder()+name+"/"+log, Glib::FILE_TEST_EXISTS)){
+		if(mkdir ((getConfigFolder()+name+"/"+log).c_str(), 0700) < 0)
+			return false;
+	}else{
+		if(!Glib::file_test(getConfigFolder()+name+"/"+log, Glib::FILE_TEST_IS_DIR)){
+			return false;
+		}
+	}
+
+	return true;
 }

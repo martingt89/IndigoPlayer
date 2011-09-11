@@ -8,19 +8,17 @@
 #include "ConfigFile.h"
 #include <iostream>
 
-
 std::map<IndigoConfig::Config, std::string> ConfigFile::config;
 std::map<std::string, IndigoConfig::Config> ConfigFile::stringToConfig;
 
-ConfigFile::ConfigFile(){
+ConfigFile::ConfigFile() {
 	init();
-}
-ConfigFile::ConfigFile(bool load) {
-	init();
-	std::string value;
-	std::string key;
-	if (load) {
-		std::ifstream in(CONFIG);
+	if (config.size() == 0) {
+		initDefaultValues();
+		std::string value;
+		std::string key;
+		std::string file = getMainFolder() + CONFIG;
+		std::ifstream in(file.c_str());
 		if (in.is_open()) {
 			std::string line;
 			std::string::size_type i;
@@ -46,12 +44,44 @@ ConfigFile::~ConfigFile() {
 }
 void ConfigFile::init(){
 	if(stringToConfig.size() == 0){
+		stringToConfig["logPath"] = IndigoConfig::LOGPATH;
+		stringToConfig["logFileName"] = IndigoConfig::LOGFILENAME;
 		stringToConfig["subCp"] = IndigoConfig::SUBCP;
 		stringToConfig["subColor"] = IndigoConfig::SUBCOLOR;
 		stringToConfig["oneInstance"] = IndigoConfig::ONEINSTANCE;
 		stringToConfig["mplayerPath"] = IndigoConfig::MPLAYERPATH;
 		stringToConfig["audioVolume"] = IndigoConfig::AUDIOVOLUME;
 	}
+}
+void ConfigFile::initDefaultValues(){
+	config[IndigoConfig::LOGPATH] = getMainFolder()+LOGFOLDER+"/";
+	config[IndigoConfig::LOGFILENAME] = "player.log";
+	config[IndigoConfig::MPLAYERPATH] = "/usr/bin/mplayer";
+}
+bool ConfigFile::get(IndigoConfig::Config name, Glib::ustring &strin){
+	strin = "";
+	if(config.find(name) != config.end()){
+		strin = config[name];
+		return true;
+	}
+	return false;
+}
+bool ConfigFile::get(IndigoConfig::Config name, bool &boole){
+	boole = false;
+	if(config.find(name) != config.end()){
+		boole = config[name] == "true";
+		return true;
+	}
+	return false;
+}
+bool ConfigFile::get(IndigoConfig::Config name, double &doubl){
+	doubl = 0;
+	if(config.find(name) != config.end()){
+		translate << config[name];
+		translate >> doubl;
+		return true;
+	}
+	return false;
 }
 bool ConfigFile::isSet(IndigoConfig::Config name){
 	return config.find(name) != config.end();
@@ -67,4 +97,7 @@ double ConfigFile::getAsDouble(IndigoConfig::Config name){
 	translate << config[name];
 	translate >> value;
 	return value;
+}
+std::string ConfigFile::getMainFolder(){
+	return Glib::get_user_config_dir () + "/" + NAME+"/";
 }

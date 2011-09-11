@@ -7,19 +7,24 @@
 #include <glibmm/timer.h>
 #include <gtkmm/main.h>
 
-#include "Settings.h"
+#include "src/Settings.h"
 
 #include "src/Player/IndigoPlayer.h"
 #include "src/GraphicLogic/WindowBridge.h"
 #include "src/GraphicLogic/GraphicLoader.h"
+#include "src/Files/Logger.h"
 
 int main(int argc, char *argv[]){
 	Glib::thread_init();
 	Gtk::Main kit(argc, argv);
+	FileUtilities fu;
+	fu.createFolderSkeleton(NAME, LOGFOLDER);
+	IndigoLogger::Logger log;
+	log.log(IndigoLogger::DEBUG, "Starting main with "+Glib::ustring::format(argc)+" parameters");
 	std::list<Glib::ustring>::iterator listIter2;
 	std::list<Glib::ustring> files;
 	std::list<IndigoFile*> uris;
-	FileUtilities fu;
+
 	for (int i = 1; i < argc; i++) {
 		if(std::string(argv[i]).size()>0)
 			files.push_back(std::string(argv[i]));
@@ -27,7 +32,7 @@ int main(int argc, char *argv[]){
 	if(files.size() > 0){
 		uris = fu.stringListToFiles(files, true, 0);
 	}
-	ConfigFile file(true);
+	ConfigFile file();
 
 	GraphicLoader *gLoader = new GraphicLoader();
 	OneFilePlayer* filePlayer = new OneFilePlayer();
@@ -54,5 +59,6 @@ int main(int argc, char *argv[]){
 	Gtk::Main::run();
 	delete gLoader;
 	delete player;
+	log.log(IndigoLogger::DEBUG, "Ending main");
 	return 0;
 }
