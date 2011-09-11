@@ -8,8 +8,8 @@
 #ifndef SETTIONGS_H_
 #define SETTIONGS_H_
 
-#define NAME "IndigoPlayer"
-#define VERSION 0.4
+#define INDIGONAME "IndigoPlayer"
+#define INDIGOVERSION 0.4
 
 #define GLADECONTROLPANEL "ui/controlpanel.glade"
 #define GLADEOPENDIALOG "ui/popupwindow.glade"

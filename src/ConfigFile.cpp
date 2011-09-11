@@ -99,5 +99,5 @@ double ConfigFile::getAsDouble(IndigoConfig::Config name){
 	return value;
 }
 std::string ConfigFile::getMainFolder(){
-	return Glib::get_user_config_dir () + "/" + NAME+"/";
+	return Glib::get_user_config_dir () + "/" + INDIGONAME+"/";
 }

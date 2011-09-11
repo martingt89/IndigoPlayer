@@ -1,2 +1,17 @@
 *.[ao]
 Debug
+.deps
+.dirstamp
+Makefile
+Makefile.in
+config.guess
+config.h
+config.h.in
+config.h.in~
+config.log
+config.status
+config.sub
+configure
+src/Makefile
+rc/Makefile.in
+

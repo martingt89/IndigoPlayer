@@ -7,18 +7,20 @@
 #include <glibmm/timer.h>
 #include <gtkmm/main.h>
 
-#include "src/Settings.h"
+#include "Settings.h"
 
-#include "src/Player/IndigoPlayer.h"
-#include "src/GraphicLogic/WindowBridge.h"
-#include "src/GraphicLogic/GraphicLoader.h"
-#include "src/Files/Logger.h"
+#include "Player/IndigoPlayer.h"
+#include "GraphicLogic/WindowBridge.h"
+#include "GraphicLogic/GraphicLoader.h"
+#include "Files/Logger.h"
+#include "Files/FileUtilities.h"
+#include "ConfigFile.h"
 
 int main(int argc, char *argv[]){
 	Glib::thread_init();
 	Gtk::Main kit(argc, argv);
 	FileUtilities fu;
-	fu.createFolderSkeleton(NAME, LOGFOLDER);
+	fu.createFolderSkeleton(INDIGONAME, LOGFOLDER);
 	IndigoLogger::Logger log;
 	log.log(IndigoLogger::DEBUG, "Starting main with "+Glib::ustring::format(argc)+" parameters");
 	std::list<Glib::ustring>::iterator listIter2;

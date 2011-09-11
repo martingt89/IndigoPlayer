@@ -132,7 +132,7 @@ bool PlayerWindow::on_timeout() {
 	return true;
 }
 void PlayerWindow::setWindowTitle(Glib::ustring title) {
-	Glib::ustring name = Glib::ustring(NAME) + " " + Glib::ustring::format(VERSION) + " " + title;
+	Glib::ustring name = Glib::ustring(INDIGONAME) + " " + Glib::ustring::format(INDIGOVERSION) + " " + title;
 	this->set_title(name);
 }
 void PlayerWindow::setListener(PlayerSignals* sig) {
