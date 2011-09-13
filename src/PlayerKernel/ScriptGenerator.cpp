@@ -52,6 +52,8 @@ std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool loadTi
 		empty.push_back(device);
 	}
 
+	empty.push_back("-nokeepaspect");
+
 	empty.push_back("-af");
 	empty.push_back("scaletempo");
 

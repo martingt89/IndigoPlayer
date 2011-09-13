@@ -11,6 +11,7 @@
 #include <gtkmm/builder.h>
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/image.h>
+#include <gtkmm/box.h>
 #include <glibmm/ustring.h>
 #include <gdk/gdkx.h>
 #include <giomm/file.h>
@@ -41,6 +42,11 @@ private:
 
 	Bridge* windowBridge;
 	Gtk::DrawingArea* videoBoard;
+	Gtk::DrawingArea* upBoard;
+	Gtk::DrawingArea* downBoard;
+	Gtk::DrawingArea* leftBoard;
+	Gtk::DrawingArea* rightBoard;
+	Gtk::Box* filmBox;
 	Glib::RefPtr<Gdk::Pixbuf> image;
 	Glib::RefPtr< Gdk::Window > mojko;
 	bool on_expose_event(GdkEventExpose* ev);

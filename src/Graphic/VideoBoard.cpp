@@ -14,10 +14,21 @@ VideoBoard::VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder) {
 	videoHeight = 0;
 	showText = true;
 	builder->get_widget("videoBoardDrawindBase", videoBoard);
+	builder->get_widget("TopArea", upBoard);
+	builder->get_widget("DownArea", downBoard);
+	builder->get_widget("LeftArea", leftBoard);
+	builder->get_widget("RightArea", rightBoard);
+	builder->get_widget("FilmBox", filmBox);
+
 	Gdk::Color black;
 	Glib::RefPtr<Gdk::Window> win = videoBoard->get_window();
 	win->set_background(black);
 	win->clear();
+	upBoard->get_window()->set_background(black);
+	downBoard->get_window()->set_background(black);
+	leftBoard->get_window()->set_background(black);
+	rightBoard->get_window()->set_background(black);
+
 	videoBoard->signal_expose_event().connect(
 			sigc::mem_fun(this, &VideoBoard::on_expose_event));
 	image = Gdk::Pixbuf::create_from_file(pathLoader.getPath(IndigoPath::LOGOIMAGE));
@@ -32,6 +43,10 @@ VideoBoard::VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder) {
 
 VideoBoard::~VideoBoard() {
 	delete videoBoard;
+	delete upBoard;
+	delete downBoard;
+	delete leftBoard;
+	delete rightBoard;
 }
 bool VideoBoard::doubleClick(GdkEventButton *ev){
 	if(ev->type == GDK_2BUTTON_PRESS )
@@ -59,10 +74,47 @@ bool VideoBoard::on_expose_event(GdkEventExpose* ev) {
 		x = (x - imgX) / 2;
 		y = (y - imgY) / 2;
 
+		leftBoard->hide();
+		rightBoard->hide();
+		upBoard->hide();
+		downBoard->hide();
+
 		if (showText)
 			image->render_to_drawable(videoBoard->get_window(),
 					videoBoard->get_style()->get_black_gc(), 0, 0, x, y, imgX,
 					imgY, Gdk::RGB_DITHER_NONE, 0, 0);
+	}
+	if(videoWidth != 0 && videoHeight !=0){
+		double aspect = (double)videoWidth / videoHeight;
+		int boxWidth = filmBox->get_width();
+		int boxHeight = filmBox->get_height();
+
+		if((boxWidth / (double)boxHeight) > aspect){
+			upBoard->hide();
+			downBoard->hide();
+			leftBoard->show();
+			rightBoard->show();
+			//
+			int left = (boxHeight - (boxWidth/aspect)) / 2;
+			leftBoard->set_size_request((-1)*left, 0);
+			rightBoard->set_size_request((-1)*left, 0);
+		}
+		if((boxWidth / (double)boxHeight) < aspect){
+			leftBoard->hide();
+			rightBoard->hide();
+			upBoard->show();
+			downBoard->show();
+			//
+			int up = (boxWidth - (boxHeight*aspect)) / 2;
+			upBoard->set_size_request(0, (-1)*up);
+			downBoard->set_size_request(0, (-1)*up);
+		}
+		if((boxWidth / (double)boxHeight) == aspect){
+			leftBoard->hide();
+			rightBoard->hide();
+			upBoard->hide();
+			downBoard->hide();
+		}
 	}
 	return true;
 }
@@ -89,6 +141,7 @@ void VideoBoard::setFullscreenSize(){
 void VideoBoard::setVideoResolution(int width, int height, bool resize){
 	videoWidth = width;
 	videoHeight = height;
+	on_expose_event(NULL);
 	if(resize)
 		windowBridge->setResolution(width, height);
 }
