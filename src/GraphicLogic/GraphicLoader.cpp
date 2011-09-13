@@ -29,10 +29,9 @@ GraphicLoader::GraphicLoader()  throw (int){
 	refBuilder->get_widget_derived("OpenWindow", openWindow);
 	controlPanel = new ControlPanel(refBuilder);
 	videoBoard = new VideoBoard(refBuilder);
-	PlaylistGraphic* playlist = new PlaylistGraphic(refBuilder);
+	playlistLogic = new Playlist(new PlaylistGraphic(refBuilder));
 	thisOptions = new ThisOptions(refBuilder);
 	thisOptionsLoad = new ThisOptionsLoad(refBuilder);
-	playlistLogic = new Playlist(playlist);
 }
 
 GraphicLoader::~GraphicLoader() {

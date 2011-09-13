@@ -31,7 +31,13 @@ ThisOptionsLoad::ThisOptionsLoad(const Glib::RefPtr<Gtk::Builder>& refGlade) {
 }
 
 ThisOptionsLoad::~ThisOptionsLoad() {
-	// TODO delete gtk objects
+	delete audioLoad;
+	delete subtitleLoad;
+	delete audioDelay;
+	delete subtitleDelay;
+	delete videoStream;
+	delete audioStream;
+	delete subtitleStream;
 }
 void ThisOptionsLoad::audButtonClicked(){
 	FileChoosers fs;

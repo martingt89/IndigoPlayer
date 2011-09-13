@@ -190,6 +190,20 @@ void ThisOptions::videoSpeedChanged() {
 }
 
 ThisOptions::~ThisOptions() {
-	// TODO delete gtk objects
+	delete thisOptionsWindow;
+	delete videoSpeed;
+	delete rotate;
+	delete leftRight;
+	delete upDown;
+	delete upSpin;
+	delete downSpin;
+	delete leftSpin;
+	delete rightSpin;
+	delete useCropVideo;
+	delete brightness;
+	delete contrast;
+	delete gamma;
+	delete hue;
+	delete saturation;
 }
 
