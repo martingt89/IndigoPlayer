@@ -8,16 +8,16 @@
 #include <gtkmm/main.h>
 
 #include "Settings.h"
+#include "ConfigFile.h"
 
 #include "Player/IndigoPlayer.h"
 #include "GraphicLogic/WindowBridge.h"
 #include "GraphicLogic/GraphicLoader.h"
 #include "Files/Logger.h"
 #include "Files/FileUtilities.h"
-#include "ConfigFile.h"
+
 
 int main(int argc, char *argv[]){
-	std::cout<<" "<<GLADECONTROLPANEL<<std::endl;
 	Glib::thread_init();
 	Gtk::Main kit(argc, argv);
 	FileUtilities fu;
@@ -36,8 +36,13 @@ int main(int argc, char *argv[]){
 		uris = fu.stringListToFiles(files, true, 0);
 	}
 	ConfigFile file();
-
-	GraphicLoader *gLoader = new GraphicLoader();
+	GraphicLoader *gLoader = NULL;
+	try{
+		gLoader = new GraphicLoader();
+	}catch( int ie ) {
+		std::cout<<"Cannot load graphic files: see log files"<<std::endl;
+		return -1;
+	}
 	OneFilePlayer* filePlayer = new OneFilePlayer();
 	IndigoPlayer *player = new IndigoPlayer(gLoader->getPlayerWindow(), filePlayer);
 	player->setControlPanel(gLoader->getBasePlayerWindow());

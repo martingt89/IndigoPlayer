@@ -38,11 +38,16 @@ PlaylistGraphic::PlaylistGraphic(const Glib::RefPtr<Gtk::Builder>& refGlade) {
 
 	arrowImage = Gdk::Pixbuf::create_from_file(pathLoader.getPath(IndigoPath::BLACKARROWIMAGE));
 	clearImage = Gdk::Pixbuf::create_from_file(pathLoader.getPath(IndigoPath::BLANKARROWIMAGE));
-
 }
 
 PlaylistGraphic::~PlaylistGraphic() {
-	// TODO delete gtk objects
+	delete random;
+	delete repeat;
+	delete close;
+	delete removeAll;
+	delete removeSelected;
+	delete playlistBoard;
+	delete searchEntry;
 }
 bool PlaylistGraphic::isRandom() {
 	return random->get_active();

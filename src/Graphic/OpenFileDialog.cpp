@@ -202,6 +202,22 @@ IndigoPlayerEnum::OpenWindowNotebook OpenFileDialog::getOpenPage() {
 	return type;
 }
 OpenFileDialog::~OpenFileDialog() {
-	// TODO delete gtk objects
+	delete openFileChooser;
+	delete openFolderChooser;
+	delete playFile;
+	delete openFileNotebook;
+	delete openVideoFileAdvenced;
+	delete openAudioFileAdvenced;
+	delete openSubtitleFileAdvenced;
+	delete includeSubDirectory;
+	delete subDirectoriesDepth;
+	delete audioDelayAdvenced;
+	delete subtitleDelayAdvenced;
+	delete videoFilePathAdvenced;
+	delete audioFilePathAdvenced;
+	delete subtitleFilePathAdvenced;
+	delete urlPath;
+	delete subtitleFpsAdvenced;
+	delete openWarningLabel;
 }
 

@@ -7,7 +7,7 @@
 
 #include "GraphicLoader.h"
 
-GraphicLoader::GraphicLoader() {
+GraphicLoader::GraphicLoader()  throw (int){
 	Glib::RefPtr<Gtk::Builder> refBuilder = Gtk::Builder::create();
 	try {
 		refBuilder->add_from_file(pathLoader.getPath(IndigoPath::GPLAYERWINDOW));
@@ -16,9 +16,13 @@ GraphicLoader::GraphicLoader() {
 		refBuilder->add_from_file(pathLoader.getPath(IndigoPath::GCONTROLPANEL));
 		refBuilder->add_from_file(pathLoader.getPath(IndigoPath::GOPENWINDOW));
 	} catch (const Glib::FileError& ex) {
-		std::cerr << "FileError: " << ex.what() << std::endl;
+		log.log(IndigoLogger::FATAL, "Error load .glade files");
+		log.log(IndigoLogger::FATAL, ex.what());
+		throw -1;
 	} catch (const Gtk::BuilderError& ex) {
-		std::cerr << "BuilderError: " << ex.what() << std::endl;
+		log.log(IndigoLogger::FATAL, "Error load .glade files");
+		log.log(IndigoLogger::FATAL, ex.what());
+		throw -1;
 	}
 
 	refBuilder->get_widget_derived("BaseWindow", playerWindow);

@@ -174,7 +174,7 @@ void IndigoPlayer::clickPlay() {
 			this->playFile(file);
 		}
 	} else {
-		filePlayer->pausePlayFile(); //TODO resume
+		filePlayer->pausePlayFile();
 	}
 }
 void IndigoPlayer::clickPause() {

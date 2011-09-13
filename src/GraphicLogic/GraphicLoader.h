@@ -11,6 +11,7 @@
 #include <iostream>
 #include <gtkmm/builder.h>
 #include "../Files/PathLoader.h"
+#include "../Files/Logger.h"
 #include "../Graphic/ControlPanel.h"
 #include "../Graphic/VideoBoard.h"
 #include "../Graphic/OpenFileDialog.h"
@@ -23,7 +24,7 @@
 
 class GraphicLoader {
 public:
-	GraphicLoader();
+	GraphicLoader() throw (int);
 	virtual ~GraphicLoader();
 	PlayerWindow *getPlayerWindow();
 	ControlPanel* getBasePlayerWindow();
@@ -42,6 +43,7 @@ private:
 	Playlist* playlistLogic;
 
 	PathLoader pathLoader;
+	IndigoLogger::Logger log;
 };
 
 #endif /* GRAPHICLOADER_H_ */
