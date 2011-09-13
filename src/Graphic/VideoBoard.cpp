@@ -20,7 +20,7 @@ VideoBoard::VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder) {
 	win->clear();
 	videoBoard->signal_expose_event().connect(
 			sigc::mem_fun(this, &VideoBoard::on_expose_event));
-	image = Gdk::Pixbuf::create_from_file(ICONIMAGE);
+	image = Gdk::Pixbuf::create_from_file(pathLoader.getPath(IndigoPath::LOGOIMAGE));
 	imgX = image->get_width();
 	imgY = image->get_height();
 	videoBoard->add_events(Gdk::BUTTON_PRESS_MASK);

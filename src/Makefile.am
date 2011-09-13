@@ -7,7 +7,7 @@ Graphic/ThisOptions.cpp Graphic/ThisOptionsLoad.cpp Graphic/VideoBoard.cpp \
 GraphicLogic/GraphicLoader.cpp GraphicLogic/Playlist.cpp GraphicLogic/WindowBridge.cpp \
 Interfaces/Bridge.cpp Interfaces/Callable.cpp Interfaces/PlayerSignals.cpp Interfaces/VideoFilters.cpp \
 MyWidget/FileChoosers.cpp MyWidget/MyComboBox.cpp \
-Player/ColorSetings.cpp Player/GraphicData.cpp Player/IndigoPlayer.cpp Player/OneFilePlayer.cpp \
+Player/ColorSetings.cpp Player/IndigoPlayer.cpp Player/OneFilePlayer.cpp \
 Player/SavedFileInfo.cpp Player/ShortKeys.cpp \
 PlayerKernel/MediaPackage.cpp PlayerKernel/MplayerInterface.cpp PlayerKernel/PlayerKernel.cpp \
 PlayerKernel/ScriptGenerator.cpp

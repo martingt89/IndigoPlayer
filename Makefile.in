@@ -33,11 +33,10 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 subdir = .
-DIST_COMMON = README $(am__configure_deps) $(dist_ui_DATA) \
-	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(srcdir)/config.h.in $(top_srcdir)/configure AUTHORS COPYING \
-	ChangeLog INSTALL NEWS config.guess config.sub depcomp \
-	install-sh missing
+DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
+	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
+	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS \
+	config.guess config.sub depcomp install-sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -78,8 +77,9 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(uidir)"
-DATA = $(dist_ui_DATA)
+am__installdirs = "$(DESTDIR)$(playeraextradir)" \
+	"$(DESTDIR)$(playerextradir)"
+DATA = $(playeraextra_DATA) $(playerextra_DATA)
 RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
   distclean-recursive maintainer-clean-recursive
 AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
@@ -213,10 +213,30 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = bin
-uidir = $(pkgdatadir)/ui
-dist_ui_DATA = ui/arrow.png ui/arrowc.png ui/controlpanel.glade \
-ui/myimage.svg ui/openwindow.glade ui/playerwindow.glade \
-ui/popupwindow.glade ui/thisoptions.glade
+playerextradir = $(datadir)/@PACKAGE@
+playerextra_DATA = ui/arrowc.png \
+	ui/playerwindow.glade \
+	ui/arrow.png \
+	ui/myimage.svg \
+	ui/popupwindow.glade \
+	ui/openwindow.glade \
+	ui/thisoptions.glade
+
+playeraextradir = $(datadir)/@PACKAGE@/controlpanel
+playeraextra_DATA = ui/controlpanel/backwardC.png \
+	ui/controlpanel/displayB.png \
+	ui/controlpanel/forwardC.png \
+	ui/controlpanel/pause.png \
+	ui/controlpanel/reloadC.png \
+	ui/controlpanel/cancelC.png \
+	ui/controlpanel/filmA.png \
+	ui/controlpanel/gearC.png \
+	ui/controlpanel/playlistA.png \
+	ui/controlpanel/sound.png \
+	ui/controlpanel/controlpanel.glade \
+	ui/controlpanel/folderC.png \
+	ui/controlpanel/mute.png \
+	ui/controlpanel/play.png
 
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
@@ -273,26 +293,46 @@ $(srcdir)/config.h.in:  $(am__configure_deps)
 
 distclean-hdr:
 	-rm -f config.h stamp-h1
-install-dist_uiDATA: $(dist_ui_DATA)
+install-playeraextraDATA: $(playeraextra_DATA)
 	@$(NORMAL_INSTALL)
-	test -z "$(uidir)" || $(MKDIR_P) "$(DESTDIR)$(uidir)"
-	@list='$(dist_ui_DATA)'; test -n "$(uidir)" || list=; \
+	test -z "$(playeraextradir)" || $(MKDIR_P) "$(DESTDIR)$(playeraextradir)"
+	@list='$(playeraextra_DATA)'; test -n "$(playeraextradir)" || list=; \
 	for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  echo "$$d$$p"; \
 	done | $(am__base_list) | \
 	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(uidir)'"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(uidir)" || exit $$?; \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(playeraextradir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(playeraextradir)" || exit $$?; \
 	done
 
-uninstall-dist_uiDATA:
+uninstall-playeraextraDATA:
 	@$(NORMAL_UNINSTALL)
-	@list='$(dist_ui_DATA)'; test -n "$(uidir)" || list=; \
+	@list='$(playeraextra_DATA)'; test -n "$(playeraextradir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	test -n "$$files" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(uidir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(uidir)" && rm -f $$files
+	echo " ( cd '$(DESTDIR)$(playeraextradir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(playeraextradir)" && rm -f $$files
+install-playerextraDATA: $(playerextra_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(playerextradir)" || $(MKDIR_P) "$(DESTDIR)$(playerextradir)"
+	@list='$(playerextra_DATA)'; test -n "$(playerextradir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(playerextradir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(playerextradir)" || exit $$?; \
+	done
+
+uninstall-playerextraDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(playerextra_DATA)'; test -n "$(playerextradir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(playerextradir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(playerextradir)" && rm -f $$files
 
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run `make' without going through this Makefile.
@@ -609,7 +649,7 @@ check: check-recursive
 all-am: Makefile $(DATA) config.h
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(uidir)"; do \
+	for dir in "$(DESTDIR)$(playeraextradir)" "$(DESTDIR)$(playerextradir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-recursive
@@ -658,7 +698,7 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-dist_uiDATA
+install-data-am: install-playeraextraDATA install-playerextraDATA
 
 install-dvi: install-dvi-recursive
 
@@ -704,7 +744,7 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-dist_uiDATA
+uninstall-am: uninstall-playeraextraDATA uninstall-playerextraDATA
 
 .MAKE: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) all \
 	ctags-recursive install-am install-strip tags-recursive
@@ -716,14 +756,15 @@ uninstall-am: uninstall-dist_uiDATA
 	distclean distclean-generic distclean-hdr distclean-tags \
 	distcleancheck distdir distuninstallcheck dvi dvi-am html \
 	html-am info info-am install install-am install-data \
-	install-data-am install-dist_uiDATA install-dvi install-dvi-am \
-	install-exec install-exec-am install-html install-html-am \
-	install-info install-info-am install-man install-pdf \
-	install-pdf-am install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs installdirs-am \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-generic pdf pdf-am ps ps-am tags tags-recursive \
-	uninstall uninstall-am uninstall-dist_uiDATA
+	install-data-am install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-man install-pdf install-pdf-am \
+	install-playeraextraDATA install-playerextraDATA install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs installdirs-am maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
+	pdf-am ps ps-am tags tags-recursive uninstall uninstall-am \
+	uninstall-playeraextraDATA uninstall-playerextraDATA
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

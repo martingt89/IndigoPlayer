@@ -31,7 +31,7 @@ ThisOptionsLoad::ThisOptionsLoad(const Glib::RefPtr<Gtk::Builder>& refGlade) {
 }
 
 ThisOptionsLoad::~ThisOptionsLoad() {
-	// TODO Auto-generated destructor stub
+	// TODO delete gtk objects
 }
 void ThisOptionsLoad::audButtonClicked(){
 	FileChoosers fs;
@@ -40,7 +40,6 @@ void ThisOptionsLoad::audButtonClicked(){
 	myAudioStream->pushBack(path, true);
 }
 void ThisOptionsLoad::audStraemChanged(){
-//	std::cout<<"void ThisOptionsLoad::audStraemChanged()"<<std::endl;
 	playerSignal->playAudio(myAudioStream->getStringValue());
 }
 void ThisOptionsLoad::subButtonClicked(){

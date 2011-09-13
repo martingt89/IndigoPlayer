@@ -190,6 +190,6 @@ void ThisOptions::videoSpeedChanged() {
 }
 
 ThisOptions::~ThisOptions() {
-	// TODO Auto-generated destructor stub
+	// TODO delete gtk objects
 }
 

@@ -12,7 +12,6 @@ WindowBridge::WindowBridge() {
 }
 
 WindowBridge::~WindowBridge() {
-	// TODO Auto-generated destructor stub
 }
 void WindowBridge::addCallable(Callable* callable){
 	shortKeys.addList(callable, callable->getCommandList());

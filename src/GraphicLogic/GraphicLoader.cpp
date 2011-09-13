@@ -10,11 +10,11 @@
 GraphicLoader::GraphicLoader() {
 	Glib::RefPtr<Gtk::Builder> refBuilder = Gtk::Builder::create();
 	try {
-		refBuilder->add_from_file(GLADEPLAYERWINDOW);
-		refBuilder->add_from_file(GLADETHISOPTIONS);
-		refBuilder->add_from_file(GLADEOPENDIALOG);
-		refBuilder->add_from_file(GLADECONTROLPANEL);
-		refBuilder->add_from_file(GLADEOPENWINDOW);
+		refBuilder->add_from_file(pathLoader.getPath(IndigoPath::GPLAYERWINDOW));
+		refBuilder->add_from_file(pathLoader.getPath(IndigoPath::GTHISOPTIONS));
+		refBuilder->add_from_file(pathLoader.getPath(IndigoPath::GOPENDIALOG));
+		refBuilder->add_from_file(pathLoader.getPath(IndigoPath::GCONTROLPANEL));
+		refBuilder->add_from_file(pathLoader.getPath(IndigoPath::GOPENWINDOW));
 	} catch (const Glib::FileError& ex) {
 		std::cerr << "FileError: " << ex.what() << std::endl;
 	} catch (const Gtk::BuilderError& ex) {

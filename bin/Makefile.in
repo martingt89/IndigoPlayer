@@ -46,8 +46,10 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_indigoplayer_OBJECTS = Capital.$(OBJEXT) ConfigFile.$(OBJEXT) \
-	ClassHelper.$(OBJEXT) FileUtilities.$(OBJEXT) \
-	IndigoFile.$(OBJEXT) Logger.$(OBJEXT) ControlPanel.$(OBJEXT) \
+	ClassHelper.$(OBJEXT) GraphicData.$(OBJEXT) \
+	LoadedStreams.$(OBJEXT) PlayParameters.$(OBJEXT) \
+	FileUtilities.$(OBJEXT) IndigoFile.$(OBJEXT) Logger.$(OBJEXT) \
+	PathLoader.$(OBJEXT) ControlPanel.$(OBJEXT) \
 	OpenFileDialog.$(OBJEXT) PlayerWindow.$(OBJEXT) \
 	PlaylistGraphic.$(OBJEXT) ThisOptions.$(OBJEXT) \
 	ThisOptionsLoad.$(OBJEXT) VideoBoard.$(OBJEXT) \
@@ -55,11 +57,11 @@ am_indigoplayer_OBJECTS = Capital.$(OBJEXT) ConfigFile.$(OBJEXT) \
 	WindowBridge.$(OBJEXT) Bridge.$(OBJEXT) Callable.$(OBJEXT) \
 	PlayerSignals.$(OBJEXT) VideoFilters.$(OBJEXT) \
 	FileChoosers.$(OBJEXT) MyComboBox.$(OBJEXT) \
-	ColorSetings.$(OBJEXT) GraphicData.$(OBJEXT) \
-	IndigoPlayer.$(OBJEXT) OneFilePlayer.$(OBJEXT) \
-	SavedFileInfo.$(OBJEXT) ShortKeys.$(OBJEXT) \
-	MediaPackage.$(OBJEXT) MplayerInterface.$(OBJEXT) \
-	PlayerKernel.$(OBJEXT) ScriptGenerator.$(OBJEXT)
+	ColorSetings.$(OBJEXT) IndigoPlayer.$(OBJEXT) \
+	OneFilePlayer.$(OBJEXT) SavedFileInfo.$(OBJEXT) \
+	ShortKeys.$(OBJEXT) MediaPackage.$(OBJEXT) \
+	MplayerInterface.$(OBJEXT) PlayerKernel.$(OBJEXT) \
+	ScriptGenerator.$(OBJEXT)
 indigoplayer_OBJECTS = $(am_indigoplayer_OBJECTS)
 am__DEPENDENCIES_1 =
 indigoplayer_DEPENDENCIES = $(am__DEPENDENCIES_1)
@@ -166,18 +168,20 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 indigoplayer_SOURCES = ../src/Capital.cpp ../src/ConfigFile.cpp ../src/ClassHelper/ClassHelper.cpp \
-../src/Files/FileUtilities.cpp ../src/Files/IndigoFile.cpp ../src/Files/Logger.cpp \
+../src/DataStructures/GraphicData.cpp ../src/DataStructures/LoadedStreams.cpp \
+../src/DataStructures/PlayParameters.cpp \
+../src/Files/FileUtilities.cpp ../src/Files/IndigoFile.cpp ../src/Files/Logger.cpp ../src/Files/PathLoader.cpp \
 ../src/Graphic/ControlPanel.cpp ../src/Graphic/OpenFileDialog.cpp ../src/Graphic/PlayerWindow.cpp ../src/Graphic/PlaylistGraphic.cpp \
 ../src/Graphic/ThisOptions.cpp ../src/Graphic/ThisOptionsLoad.cpp ../src/Graphic/VideoBoard.cpp \
 ../src/GraphicLogic/GraphicLoader.cpp ../src/GraphicLogic/Playlist.cpp ../src/GraphicLogic/WindowBridge.cpp \
 ../src/Interfaces/Bridge.cpp ../src/Interfaces/Callable.cpp ../src/Interfaces/PlayerSignals.cpp ../src/Interfaces/VideoFilters.cpp \
 ../src/MyWidget/FileChoosers.cpp ../src/MyWidget/MyComboBox.cpp \
-../src/Player/ColorSetings.cpp ../src/Player/GraphicData.cpp ../src/Player/IndigoPlayer.cpp ../src/Player/OneFilePlayer.cpp \
+../src/Player/ColorSetings.cpp ../src/Player/IndigoPlayer.cpp ../src/Player/OneFilePlayer.cpp \
 ../src/Player/SavedFileInfo.cpp ../src/Player/ShortKeys.cpp \
 ../src/PlayerKernel/MediaPackage.cpp ../src/PlayerKernel/MplayerInterface.cpp ../src/PlayerKernel/PlayerKernel.cpp \
 ../src/PlayerKernel/ScriptGenerator.cpp
 
-AM_CXXFLAGS = $(DEPS_CFLAGS)
+AM_CXXFLAGS = $(DEPS_CFLAGS) -DDATADIR=\"$(datadir)\"
 indigoplayer_LDADD = $(DEPS_LIBS)
 all: all-am
 
@@ -273,12 +277,15 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GraphicLoader.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IndigoFile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IndigoPlayer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LoadedStreams.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Logger.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MediaPackage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MplayerInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MyComboBox.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/OneFilePlayer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/OpenFileDialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PathLoader.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PlayParameters.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PlayerKernel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PlayerSignals.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PlayerWindow.Po@am__quote@
@@ -349,6 +356,48 @@ ClassHelper.obj: ../src/ClassHelper/ClassHelper.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ClassHelper.obj `if test -f '../src/ClassHelper/ClassHelper.cpp'; then $(CYGPATH_W) '../src/ClassHelper/ClassHelper.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/ClassHelper/ClassHelper.cpp'; fi`
 
+GraphicData.o: ../src/DataStructures/GraphicData.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT GraphicData.o -MD -MP -MF $(DEPDIR)/GraphicData.Tpo -c -o GraphicData.o `test -f '../src/DataStructures/GraphicData.cpp' || echo '$(srcdir)/'`../src/DataStructures/GraphicData.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/GraphicData.Tpo $(DEPDIR)/GraphicData.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../src/DataStructures/GraphicData.cpp' object='GraphicData.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o GraphicData.o `test -f '../src/DataStructures/GraphicData.cpp' || echo '$(srcdir)/'`../src/DataStructures/GraphicData.cpp
+
+GraphicData.obj: ../src/DataStructures/GraphicData.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT GraphicData.obj -MD -MP -MF $(DEPDIR)/GraphicData.Tpo -c -o GraphicData.obj `if test -f '../src/DataStructures/GraphicData.cpp'; then $(CYGPATH_W) '../src/DataStructures/GraphicData.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/DataStructures/GraphicData.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/GraphicData.Tpo $(DEPDIR)/GraphicData.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../src/DataStructures/GraphicData.cpp' object='GraphicData.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o GraphicData.obj `if test -f '../src/DataStructures/GraphicData.cpp'; then $(CYGPATH_W) '../src/DataStructures/GraphicData.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/DataStructures/GraphicData.cpp'; fi`
+
+LoadedStreams.o: ../src/DataStructures/LoadedStreams.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LoadedStreams.o -MD -MP -MF $(DEPDIR)/LoadedStreams.Tpo -c -o LoadedStreams.o `test -f '../src/DataStructures/LoadedStreams.cpp' || echo '$(srcdir)/'`../src/DataStructures/LoadedStreams.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LoadedStreams.Tpo $(DEPDIR)/LoadedStreams.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../src/DataStructures/LoadedStreams.cpp' object='LoadedStreams.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LoadedStreams.o `test -f '../src/DataStructures/LoadedStreams.cpp' || echo '$(srcdir)/'`../src/DataStructures/LoadedStreams.cpp
+
+LoadedStreams.obj: ../src/DataStructures/LoadedStreams.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT LoadedStreams.obj -MD -MP -MF $(DEPDIR)/LoadedStreams.Tpo -c -o LoadedStreams.obj `if test -f '../src/DataStructures/LoadedStreams.cpp'; then $(CYGPATH_W) '../src/DataStructures/LoadedStreams.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/DataStructures/LoadedStreams.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/LoadedStreams.Tpo $(DEPDIR)/LoadedStreams.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../src/DataStructures/LoadedStreams.cpp' object='LoadedStreams.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o LoadedStreams.obj `if test -f '../src/DataStructures/LoadedStreams.cpp'; then $(CYGPATH_W) '../src/DataStructures/LoadedStreams.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/DataStructures/LoadedStreams.cpp'; fi`
+
+PlayParameters.o: ../src/DataStructures/PlayParameters.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PlayParameters.o -MD -MP -MF $(DEPDIR)/PlayParameters.Tpo -c -o PlayParameters.o `test -f '../src/DataStructures/PlayParameters.cpp' || echo '$(srcdir)/'`../src/DataStructures/PlayParameters.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/PlayParameters.Tpo $(DEPDIR)/PlayParameters.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../src/DataStructures/PlayParameters.cpp' object='PlayParameters.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PlayParameters.o `test -f '../src/DataStructures/PlayParameters.cpp' || echo '$(srcdir)/'`../src/DataStructures/PlayParameters.cpp
+
+PlayParameters.obj: ../src/DataStructures/PlayParameters.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PlayParameters.obj -MD -MP -MF $(DEPDIR)/PlayParameters.Tpo -c -o PlayParameters.obj `if test -f '../src/DataStructures/PlayParameters.cpp'; then $(CYGPATH_W) '../src/DataStructures/PlayParameters.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/DataStructures/PlayParameters.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/PlayParameters.Tpo $(DEPDIR)/PlayParameters.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../src/DataStructures/PlayParameters.cpp' object='PlayParameters.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PlayParameters.obj `if test -f '../src/DataStructures/PlayParameters.cpp'; then $(CYGPATH_W) '../src/DataStructures/PlayParameters.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/DataStructures/PlayParameters.cpp'; fi`
+
 FileUtilities.o: ../src/Files/FileUtilities.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT FileUtilities.o -MD -MP -MF $(DEPDIR)/FileUtilities.Tpo -c -o FileUtilities.o `test -f '../src/Files/FileUtilities.cpp' || echo '$(srcdir)/'`../src/Files/FileUtilities.cpp
 @am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/FileUtilities.Tpo $(DEPDIR)/FileUtilities.Po
@@ -390,6 +439,20 @@ Logger.obj: ../src/Files/Logger.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../src/Files/Logger.cpp' object='Logger.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Logger.obj `if test -f '../src/Files/Logger.cpp'; then $(CYGPATH_W) '../src/Files/Logger.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/Files/Logger.cpp'; fi`
+
+PathLoader.o: ../src/Files/PathLoader.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PathLoader.o -MD -MP -MF $(DEPDIR)/PathLoader.Tpo -c -o PathLoader.o `test -f '../src/Files/PathLoader.cpp' || echo '$(srcdir)/'`../src/Files/PathLoader.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/PathLoader.Tpo $(DEPDIR)/PathLoader.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../src/Files/PathLoader.cpp' object='PathLoader.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PathLoader.o `test -f '../src/Files/PathLoader.cpp' || echo '$(srcdir)/'`../src/Files/PathLoader.cpp
+
+PathLoader.obj: ../src/Files/PathLoader.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PathLoader.obj -MD -MP -MF $(DEPDIR)/PathLoader.Tpo -c -o PathLoader.obj `if test -f '../src/Files/PathLoader.cpp'; then $(CYGPATH_W) '../src/Files/PathLoader.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/Files/PathLoader.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/PathLoader.Tpo $(DEPDIR)/PathLoader.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../src/Files/PathLoader.cpp' object='PathLoader.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PathLoader.obj `if test -f '../src/Files/PathLoader.cpp'; then $(CYGPATH_W) '../src/Files/PathLoader.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/Files/PathLoader.cpp'; fi`
 
 ControlPanel.o: ../src/Graphic/ControlPanel.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ControlPanel.o -MD -MP -MF $(DEPDIR)/ControlPanel.Tpo -c -o ControlPanel.o `test -f '../src/Graphic/ControlPanel.cpp' || echo '$(srcdir)/'`../src/Graphic/ControlPanel.cpp
@@ -628,20 +691,6 @@ ColorSetings.obj: ../src/Player/ColorSetings.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../src/Player/ColorSetings.cpp' object='ColorSetings.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ColorSetings.obj `if test -f '../src/Player/ColorSetings.cpp'; then $(CYGPATH_W) '../src/Player/ColorSetings.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/Player/ColorSetings.cpp'; fi`
-
-GraphicData.o: ../src/Player/GraphicData.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT GraphicData.o -MD -MP -MF $(DEPDIR)/GraphicData.Tpo -c -o GraphicData.o `test -f '../src/Player/GraphicData.cpp' || echo '$(srcdir)/'`../src/Player/GraphicData.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/GraphicData.Tpo $(DEPDIR)/GraphicData.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../src/Player/GraphicData.cpp' object='GraphicData.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o GraphicData.o `test -f '../src/Player/GraphicData.cpp' || echo '$(srcdir)/'`../src/Player/GraphicData.cpp
-
-GraphicData.obj: ../src/Player/GraphicData.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT GraphicData.obj -MD -MP -MF $(DEPDIR)/GraphicData.Tpo -c -o GraphicData.obj `if test -f '../src/Player/GraphicData.cpp'; then $(CYGPATH_W) '../src/Player/GraphicData.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/Player/GraphicData.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/GraphicData.Tpo $(DEPDIR)/GraphicData.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../src/Player/GraphicData.cpp' object='GraphicData.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o GraphicData.obj `if test -f '../src/Player/GraphicData.cpp'; then $(CYGPATH_W) '../src/Player/GraphicData.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/Player/GraphicData.cpp'; fi`
 
 IndigoPlayer.o: ../src/Player/IndigoPlayer.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT IndigoPlayer.o -MD -MP -MF $(DEPDIR)/IndigoPlayer.Tpo -c -o IndigoPlayer.o `test -f '../src/Player/IndigoPlayer.cpp' || echo '$(srcdir)/'`../src/Player/IndigoPlayer.cpp

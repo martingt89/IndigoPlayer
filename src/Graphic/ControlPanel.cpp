@@ -37,7 +37,13 @@ ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 	m_refGlade->get_widget("OpenButtonBase", open);
 	m_refGlade->get_widget("SoundHScaleBase", sound);
 
+	playImage.set(pathLoader.getPath(IndigoPath::PLAYIMAGE));
+	pauseImage.set(pathLoader.getPath(IndigoPath::PAUSEIMAG));
+	soundImage.set(pathLoader.getPath(IndigoPath::SOUNDIMAG));
+	muteImage.set(pathLoader.getPath(IndigoPath::MUTEIMAGE));
+
 	soundAdj = new Gtk::Adjustment(100, 0, 100);
+	soundMute->set_image(soundImage);
 
 	this->clearTime();
 	sound->set_adjustment(*soundAdj);
@@ -49,7 +55,7 @@ ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 	toolTipWindow.set_default_size(50, 25);
 	toolTipWindow.add(*toolTipLabel);
 
-	playStop->set_label("Pl");
+	playStop->set_image(playImage);
 
 	playStop->signal_toggled().connect(sigc::mem_fun(this, &ControlPanel::playToggleClicked));
 	soundMute->signal_toggled().connect(sigc::mem_fun(this, &ControlPanel::soundToggleClicked));
@@ -103,14 +109,14 @@ void ControlPanel::clearTime() {
 void ControlPanel::setDuration(int seconds) {
 	duration = seconds;
 	position = 0;
-	time->set_text(getTimeText(position, duration)); //TODO //prepisat na multi threading
+	time->set_text(getTimeText(position, duration));
 	timeline_changed_signal = false;
 	timeline_changed_signal = true;
 }
 void ControlPanel::setPosition(int seconds) {
 	position = seconds;
 	if (duration >= 0) {
-		time->set_text(getTimeText(position, duration)); //TODO //prepisat na multi threading
+		time->set_text(getTimeText(position, duration));
 		if (aktualizeTextSignal) {
 			timeline_changed_signal = false;
 			timeProgress->set_fraction(position / (double) duration);
@@ -124,11 +130,11 @@ void ControlPanel::setAudioLevel(double level) {
 	if(level < 0)
 		level = 0;
 	sound_changed_signal = false;
-	soundAdj->set_value(level); //TODO //prepisat na multi threading
+	soundAdj->set_value(level);
 	sound_changed_signal = true;
 }
 double ControlPanel::getAudioLevel() {
-	return soundAdj->get_value(); //TODO //prepisat na multi threading
+	return soundAdj->get_value();
 }
 int ControlPanel::getTime() {
 	return timeProgress->get_fraction() * duration;
@@ -216,9 +222,9 @@ void ControlPanel::rewindButtonClicked() {
 }
 void ControlPanel::playToggleClicked() {
 	if (playStop->get_active() == true)
-		playStop->set_label("Pa");
+		playStop->set_image(pauseImage);
 	else
-		playStop->set_label("Pl");
+		playStop->set_image(playImage);
 
 	if (playerSignals != 0 && playStopSignal) {
 		if (playStop->get_active() == true)
@@ -236,11 +242,13 @@ void ControlPanel::muteUnmuteSoftPressed(){
 void ControlPanel::soundToggleClicked() {
 	if (playerSignals != 0) {
 		if (soundMute->get_active() == true) {
+			sound->set_sensitive(false);
+			soundMute->set_image(muteImage);
 			playerSignals->clickMute();
-			sound->set_sensitive(false); //TODO //prepisat na multi threading
 		} else {
+			sound->set_sensitive(true);
+			soundMute->set_image(soundImage);
 			playerSignals->clickSound();
-			sound->set_sensitive(true); //TODO //prepisat na multi threading
 		}
 	}
 }

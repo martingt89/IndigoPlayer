@@ -20,6 +20,7 @@
 #include <glibmm/ustring.h>
 #include <glibmm/random.h>
 #include "../Interfaces/PlayerSignals.h"
+#include "../Files/PathLoader.h"
 #include "../Settings.h"
 
 class PlaylistGraphic {
@@ -81,6 +82,8 @@ private:
 	PixbufPtr clearImage;
 	int numberOfRows;
 	bool deleteAktualB;
+
+	PathLoader pathLoader;
 };
 
 #endif /* PLAYLISTGRAPHIC_H_ */

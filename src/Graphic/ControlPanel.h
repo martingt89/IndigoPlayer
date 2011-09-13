@@ -22,12 +22,14 @@
 #include <gtkmm/frame.h>
 #include <gtkmm/progressbar.h>
 #include <gtkmm/spinner.h>
+#include <gtkmm/image.h>
 
 #include "../Interfaces/PlayerSignals.h"
 #include "../Interfaces/Callable.h"
 #include "../Interfaces/Bridge.h"
 #include "../Files/IndigoFile.h"
 #include "../Files/FileUtilities.h"
+#include "../Files/PathLoader.h"
 #include "../Settings.h"
 
 class ControlPanel : public Callable{
@@ -71,6 +73,13 @@ private:
 
 	Gtk::Window toolTipWindow;
 	Gtk::Label* toolTipLabel;
+
+	Gtk::Image playImage;
+	Gtk::Image pauseImage;
+	Gtk::Image soundImage;
+	Gtk::Image muteImage;
+
+	PathLoader pathLoader;
 
 	PlayerSignals *playerSignals;
 	Bridge* windowBridge;

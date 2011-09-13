@@ -45,8 +45,12 @@ std::list<Glib::ustring> ScriptGenerator::generate(IndigoFile* file, bool loadTi
 
 	empty.push_back("-vo");
 	empty.push_back("gl");
-	empty.push_back("-ao");
-	empty.push_back("pulse");
+
+	Glib::ustring device;
+	if(config.get(IndigoConfig::AUDIOOUTPUT, device)){
+		empty.push_back("-ao");
+		empty.push_back(device);
+	}
 
 	empty.push_back("-af");
 	empty.push_back("scaletempo");

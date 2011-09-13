@@ -11,18 +11,26 @@
 #define INDIGONAME "IndigoPlayer"
 #define INDIGOVERSION 0.4
 
-#define GLADECONTROLPANEL "ui/controlpanel.glade"
-#define GLADEOPENDIALOG "ui/popupwindow.glade"
-#define GLADEPLAYERWINDOW "ui/playerwindow.glade"
-#define GLADETHISOPTIONS "ui/thisoptions.glade"
-#define GLADEOPENWINDOW "ui/openwindow.glade"
+#define GLADECONTROLPANEL "/controlpanel/controlpanel.glade"
+#define PLAYIMAGEGLADE "/controlpanel/play.png"
+#define PAUSEIMAGEGLADE "/controlpanel/pause.png"
+#define SOUNDIMAGEGLADE "/controlpanel/sound.png"
+#define MUTEIMAGEGLADE "/controlpanel/mute.png"
+
+#define GLADEOPENDIALOG "/popupwindow.glade"
+#define GLADEPLAYERWINDOW "/playerwindow.glade"
+#define GLADETHISOPTIONS "/thisoptions.glade"
+#define GLADEOPENWINDOW "/openwindow.glade"
 
 #define CONFIG "confFile"
 #define LOGFOLDER "log"
 
-#define BLANKARROW "ui/arrowc.png"
-#define BLACKARROW "ui/arrow.png"
+#define BLANKARROW "/arrowc.png"
+#define BLACKARROW "/arrow.png"
 
-#define ICONIMAGE "ui/myimage.svg"
+#define ICONIMAGE "/myimage.svg"
+
+#define DEFAULTIMAGESFOLDER "ui"
+#define DEFAULTINDIGOFOLDER "indigoplayer"
 
 #endif /* SETTIONGS_H_ */

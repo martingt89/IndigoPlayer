@@ -17,6 +17,7 @@
 #include "ConfigFile.h"
 
 int main(int argc, char *argv[]){
+	std::cout<<" "<<GLADECONTROLPANEL<<std::endl;
 	Glib::thread_init();
 	Gtk::Main kit(argc, argv);
 	FileUtilities fu;

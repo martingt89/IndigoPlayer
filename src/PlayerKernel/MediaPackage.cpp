@@ -9,6 +9,8 @@
 
 #include <iostream>
 
+//Could not open/initialize audio device -> no sound.
+
 MediaPackage::MediaPackage() {
 	hashTable["ID_LENGTH"] = 4;
 	hashTable["ID_VIDEO_WIDTH"] = 4;
@@ -21,6 +23,8 @@ MediaPackage::MediaPackage() {
 	hashTable["ID_FILE_SUB_FILENAME"] = 6;
 	hashTable["ID_AUDIO_ID"] = 7;
 	hashTable["ID_SUBTITLE_ID"] = 5;
+	// Errors
+	hashTable["Could not open/initialize audio device -> no sound."] = 10;
 	changeVideoParam = false;
 	subChanged = false;
 	audChanged = false;
@@ -31,6 +35,7 @@ MediaPackage::MediaPackage() {
 
 	start = false;
 	end = false;
+	firstEnd = false;
 }
 
 MediaPackage::~MediaPackage() {
@@ -50,6 +55,7 @@ int MediaPackage::analyze(std::string text) {
 		}
 		if(vauleI == 2){
 			end = true;
+			firstEnd = true;
 			mess = true;
 		}
 		if (vauleI == 3)
@@ -119,7 +125,16 @@ int MediaPackage::analyze(std::string text) {
 	}
 	return 0;
 }
+void MediaPackage::analyzeErrors(Glib::ustring text){
+	if(hashTable.find(text) != hashTable.end()){
 
+	}
+}
+void MediaPackage::sendExit(){
+	if(firstEnd != true){
+		analyze("ID_EXIT");
+	}
+}
 std::string MediaPackage::getVariable(std::string variable) {
 	std::string var = "";
 	lock.lock();
@@ -279,4 +294,5 @@ void MediaPackage::clear() {
 	changeVideoParam = false;
 	subChanged = false;
 	audChanged = false;
+	firstEnd = false;
 }

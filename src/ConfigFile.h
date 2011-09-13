@@ -23,7 +23,8 @@ namespace IndigoConfig{
 		SUBCOLOR,
 		ONEINSTANCE,
 		MPLAYERPATH,
-		AUDIOVOLUME
+		AUDIOVOLUME,
+		AUDIOOUTPUT
 	};
 }
 

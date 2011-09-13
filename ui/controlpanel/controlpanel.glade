@@ -2,6 +2,31 @@
 <interface>
   <requires lib="gtk+" version="2.24"/>
   <!-- interface-naming-policy project-wide -->
+  <object class="GtkImage" id="BackImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">backwardC.png</property>
+  </object>
+  <object class="GtkImage" id="CancelImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">cancelC.png</property>
+  </object>
+  <object class="GtkImage" id="ForwardImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">forwardC.png</property>
+  </object>
+  <object class="GtkImage" id="FullscrImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">displayB.png</property>
+  </object>
+  <object class="GtkImage" id="OpenImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">folderC.png</property>
+  </object>
   <object class="GtkVBox" id="PanelVBoxBase">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -11,11 +36,13 @@
         <property name="can_focus">False</property>
         <child>
           <object class="GtkButton" id="BackwardButtonBase">
-            <property name="label" translatable="yes">P</property>
+            <property name="width_request">28</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="use_action_appearance">False</property>
+            <property name="image">BackImage</property>
+            <property name="relief">none</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -94,11 +121,13 @@
         </child>
         <child>
           <object class="GtkButton" id="ForwardButtonBase">
-            <property name="label" translatable="yes">N</property>
+            <property name="width_request">28</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="use_action_appearance">False</property>
+            <property name="image">ForwardImage</property>
+            <property name="relief">none</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -173,13 +202,12 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="BackInFileButtonBase">
-                    <property name="label" translatable="yes">r</property>
-                    <property name="width_request">25</property>
-                    <property name="height_request">25</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="use_action_appearance">False</property>
+                    <property name="image">RewindImage</property>
+                    <property name="relief">none</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -207,12 +235,11 @@
             </child>
             <child>
               <object class="GtkToggleButton" id="PlayStopTButtonBase">
-                <property name="width_request">35</property>
-                <property name="height_request">35</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
+                <property name="relief">none</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -237,13 +264,12 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="CanceButtonBase">
-                    <property name="label" translatable="yes">c</property>
-                    <property name="width_request">25</property>
-                    <property name="height_request">25</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="use_action_appearance">False</property>
+                    <property name="image">CancelImage</property>
+                    <property name="relief">none</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -286,13 +312,12 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="OpenButtonBase">
-                    <property name="label" translatable="yes">o</property>
-                    <property name="width_request">25</property>
-                    <property name="height_request">25</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="use_action_appearance">False</property>
+                    <property name="image">OpenImage</property>
+                    <property name="relief">none</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -357,13 +382,13 @@
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="VideoToggleBase">
-                    <property name="label" translatable="yes">Vi</property>
-                    <property name="width_request">35</property>
-                    <property name="height_request">25</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="use_action_appearance">False</property>
+                    <property name="image">image1</property>
+                    <property name="relief">none</property>
+                    <property name="image_position">bottom</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -406,13 +431,12 @@
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="PlaylistToggleBase">
-                    <property name="label" translatable="yes">Pl</property>
-                    <property name="width_request">35</property>
-                    <property name="height_request">25</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="use_action_appearance">False</property>
+                    <property name="image">image2</property>
+                    <property name="relief">none</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -462,12 +486,12 @@
             <property name="can_focus">False</property>
             <child>
               <object class="GtkToggleButton" id="FullscreenToggleBase">
-                <property name="label" translatable="yes">F</property>
-                <property name="width_request">35</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
+                <property name="image">FullscrImage</property>
+                <property name="relief">none</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -477,12 +501,12 @@
             </child>
             <child>
               <object class="GtkButton" id="ThisOptionsButtonBase">
-                <property name="label" translatable="yes">O</property>
-                <property name="width_request">35</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
+                <property name="image">ThisOptImage</property>
+                <property name="relief">none</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -529,9 +553,6 @@
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="MuteTButtonBase">
-                    <property name="label" translatable="yes">m</property>
-                    <property name="width_request">25</property>
-                    <property name="height_request">25</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -591,5 +612,25 @@
         <property name="position">1</property>
       </packing>
     </child>
+  </object>
+  <object class="GtkImage" id="RewindImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">reloadC.png</property>
+  </object>
+  <object class="GtkImage" id="ThisOptImage">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">gearC.png</property>
+  </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">filmA.png</property>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">playlistA.png</property>
   </object>
 </interface>

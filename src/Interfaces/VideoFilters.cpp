@@ -8,11 +8,10 @@
 #include "VideoFilters.h"
 
 VideoFilters::VideoFilters() {
-	// TODO Auto-generated constructor stub
 
 }
 
 VideoFilters::~VideoFilters() {
-	// TODO Auto-generated destructor stub
+
 }
 

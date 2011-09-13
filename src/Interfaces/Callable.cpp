@@ -8,11 +8,10 @@
 #include "Callable.h"
 
 Callable::Callable() {
-	// TODO Auto-generated constructor stub
 
 }
 
 Callable::~Callable() {
-	// TODO Auto-generated destructor stub
+
 }
 

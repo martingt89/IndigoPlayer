@@ -202,6 +202,6 @@ IndigoPlayerEnum::OpenWindowNotebook OpenFileDialog::getOpenPage() {
 	return type;
 }
 OpenFileDialog::~OpenFileDialog() {
-	//delete
+	// TODO delete gtk objects
 }
 

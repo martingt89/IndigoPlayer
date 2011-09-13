@@ -30,7 +30,6 @@ ShortKeys::ShortKeys() {
 }
 
 ShortKeys::~ShortKeys() {
-	// TODO Auto-generated destructor stub
 }
 
 void ShortKeys::keyPressed(IndigoPlayerEnum::ControlKey controlKey, int keyValue, unsigned short hardValue){

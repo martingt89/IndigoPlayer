@@ -16,6 +16,7 @@
 #include <giomm/file.h>
 #include "../Interfaces/Callable.h"
 #include "../Interfaces/Bridge.h"
+#include "../Files/PathLoader.h"
 #include "../Settings.h"
 
 class VideoBoard : public Callable{
@@ -51,6 +52,8 @@ private:
 	int videoWidth;
 	int videoHeight;
 	bool showText;
+
+	PathLoader pathLoader;
 };
 
 #endif /* VIDEOBOARD_H_ */

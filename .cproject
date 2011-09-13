@@ -16,7 +16,11 @@
 					<folderInfo id="org.eclipse.linuxtools.cdt.autotools.core.configuration.build.337678900." name="/" resourcePath="">
 						<toolChain errorParsers="" id="org.eclipse.linuxtools.cdt.autotools.core.toolChain.1718933484" name="GNU Autotools Toolchain" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolChain">
 							<targetPlatform id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.targetPlatform.1813236249" isAbstract="false" name="GNU Autotools Target Platform" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.targetPlatform"/>
-							<builder errorParsers="" id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.builder.1299947684" keepEnvironmentInBuildfile="false" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.builder"/>
+							<builder errorParsers="" id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.builder.1299947684" keepEnvironmentInBuildfile="false" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.builder">
+								<outputEntries>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name=""/>
+								</outputEntries>
+							</builder>
 							<tool errorParsers="" id="org.eclipse.linuxtools.cdt.autotools.core.gnu.toolchain.tool.configure.1515416625" name="configure" superClass="org.eclipse.linuxtools.cdt.autotools.core.gnu.toolchain.tool.configure">
 								<option id="org.eclipse.linuxtools.cdt.autotools.core.option.configure.name.1567879005" name="Name" superClass="org.eclipse.linuxtools.cdt.autotools.core.option.configure.name" value="org.eclipse.linuxtools.cdt.autotools.core.configuration.build.337678900" valueType="string"/>
 							</tool>
@@ -29,6 +33,9 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<sourceEntries>
+						<entry excluding="DataStructures" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+					</sourceEntries>
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>

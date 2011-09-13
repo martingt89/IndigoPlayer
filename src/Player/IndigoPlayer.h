@@ -9,7 +9,7 @@
 #define PLAYER_H_
 
 #include "OneFilePlayer.h"
-#include "GraphicData.h"
+#include "../DataStructures/GraphicData.h"
 #include "../ConfigFile.h"
 #include "../Interfaces/PlayerSignals.h"
 #include "../Interfaces/Callable.h"

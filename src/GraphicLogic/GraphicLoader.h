@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <gtkmm/builder.h>
+#include "../Files/PathLoader.h"
 #include "../Graphic/ControlPanel.h"
 #include "../Graphic/VideoBoard.h"
 #include "../Graphic/OpenFileDialog.h"
@@ -39,6 +40,8 @@ private:
 	ThisOptions* thisOptions;
 	ThisOptionsLoad* thisOptionsLoad;
 	Playlist* playlistLogic;
+
+	PathLoader pathLoader;
 };
 
 #endif /* GRAPHICLOADER_H_ */

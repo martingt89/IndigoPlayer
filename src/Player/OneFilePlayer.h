@@ -11,6 +11,7 @@
 #include <glibmm/ustring.h>
 #include "ColorSetings.h"
 #include "SavedFileInfo.h"
+#include "../DataStructures/GraphicData.h"
 #include "../Files/IndigoFile.h"
 #include "../PlayerKernel/MplayerInterface.h"
 #include "../PlayerKernel/ScriptGenerator.h"

@@ -54,7 +54,7 @@ bool PlayerKernel::playMe(IndigoFile* file, bool loadTime, SavedFileInfo* info) 
 	Glib::ustring scr = "";
 	for (it = script.begin(); it != script.end(); it++) {
 		ll[i++] = (char*) it->c_str();
-		scr += *it;
+		scr += *it+" ";
 	}
 	mLogging.log(IndigoLogger::INFO, scr);
 	ll[i] = NULL;
@@ -101,7 +101,6 @@ bool PlayerKernel::playMe(IndigoFile* file, bool loadTime, SavedFileInfo* info) 
 		close(fromPlayerErr[0]);
 		close(fromPlayerErr[1]);
 		execv(ll[0], ll);
-		std::cout<<"ID_EXIT"<<std::endl;
 		std::cerr<<"Cannot start mplayer"<<std::endl;
 		exit(0);
 	}
@@ -180,6 +179,7 @@ void PlayerKernel::listener() {
 		ss += buf + odsad;
 	}
 	close(fromPlayer[0]);
+	stringAnalyze->sendExit();
 	playing = false;
 	childPid = -1;
 	errThread->join();

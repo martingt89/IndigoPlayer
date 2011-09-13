@@ -30,7 +30,6 @@ IndigoLogger::Logger::Logger(Glib::ustring prefix)
 }
 
 IndigoLogger::Logger::~Logger() {
-	// TODO Auto-generated destructor stub
 }
 
 void IndigoLogger::Logger::log(IndigoLogger::Level level, Glib::ustring logText){

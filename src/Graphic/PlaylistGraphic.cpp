@@ -36,13 +36,13 @@ PlaylistGraphic::PlaylistGraphic(const Glib::RefPtr<Gtk::Builder>& refGlade) {
 	playlistBoard->signal_key_press_event().connect(sigc::mem_fun(this, &PlaylistGraphic::on_button_clicked));
 	playlistBoard->set_search_entry(*searchEntry);
 
-	arrowImage = Gdk::Pixbuf::create_from_file(BLACKARROW);
-	clearImage = Gdk::Pixbuf::create_from_file(BLANKARROW);
+	arrowImage = Gdk::Pixbuf::create_from_file(pathLoader.getPath(IndigoPath::BLACKARROWIMAGE));
+	clearImage = Gdk::Pixbuf::create_from_file(pathLoader.getPath(IndigoPath::BLANKARROWIMAGE));
 
 }
 
 PlaylistGraphic::~PlaylistGraphic() {
-
+	// TODO delete gtk objects
 }
 bool PlaylistGraphic::isRandom() {
 	return random->get_active();

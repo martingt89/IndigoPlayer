@@ -10,7 +10,7 @@
 
 #include <list>
 #include "../Files/IndigoFile.h"
-#include "../Player/GraphicData.h"
+#include "../DataStructures/GraphicData.h"
 class PlayerSignals {
 public:
 	PlayerSignals();

@@ -8,11 +8,10 @@
 #include "PlayerSignals.h"
 
 PlayerSignals::PlayerSignals() {
-	// TODO Auto-generated constructor stub
 
 }
 
 PlayerSignals::~PlayerSignals() {
-	// TODO Auto-generated destructor stub
+
 }
 

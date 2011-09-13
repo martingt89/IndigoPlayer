@@ -30,17 +30,15 @@ ConfigFile::ConfigFile() {
 				j = line.find('=', 0);
 				key = line.substr(i, j - i);
 				value = line.substr(j + 1, line.length() - (j + 1));
-
-				if(stringToConfig.find(key) != stringToConfig.end()){
-					config[stringToConfig[key]] = value;
-				}
+				if(value.size()!=0)
+					if(stringToConfig.find(key) != stringToConfig.end())
+						config[stringToConfig[key]] = value;
 			}
 		}
 	}
 }
 
 ConfigFile::~ConfigFile() {
-	// TODO Auto-generated destructor stub
 }
 void ConfigFile::init(){
 	if(stringToConfig.size() == 0){
@@ -51,6 +49,7 @@ void ConfigFile::init(){
 		stringToConfig["oneInstance"] = IndigoConfig::ONEINSTANCE;
 		stringToConfig["mplayerPath"] = IndigoConfig::MPLAYERPATH;
 		stringToConfig["audioVolume"] = IndigoConfig::AUDIOVOLUME;
+		stringToConfig["audioOutput"] = IndigoConfig::AUDIOOUTPUT;
 	}
 }
 void ConfigFile::initDefaultValues(){

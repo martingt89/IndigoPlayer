@@ -33,6 +33,8 @@ public:
 	MediaPackage();
 	virtual ~MediaPackage();
 	int analyze(std::string);
+	void analyzeErrors(Glib::ustring text);
+	void sendExit();
 	std::string getVariable(std::string variable);
 	int getVariableAsInteger(std::string variable);
 	Glib::Dispatcher message;
@@ -75,6 +77,7 @@ private:
 
 	bool start;
 	bool end;
+	bool firstEnd;
 };
 
 #endif /* STRINGANALYZE_H_ */

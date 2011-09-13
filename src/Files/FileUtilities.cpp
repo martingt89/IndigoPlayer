@@ -29,7 +29,6 @@ FileUtilities::FileUtilities() {
 }
 
 FileUtilities::~FileUtilities() {
-	// TODO Auto-generated destructor stub
 }
 
 std::list<Glib::ustring> FileUtilities::fileToPlaylist(Glib::ustring filePath) {

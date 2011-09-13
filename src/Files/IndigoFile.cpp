@@ -17,7 +17,6 @@ IndigoFile::IndigoFile() {
 	init();
 }
 IndigoFile::~IndigoFile() {
-	// TODO Auto-generated destructor stub
 }
 void IndigoFile::init(){
 	filePath = "";

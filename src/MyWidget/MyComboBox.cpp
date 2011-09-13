@@ -16,7 +16,7 @@ MyComboBox::MyComboBox(Gtk::ComboBox* myBox) {
 }
 
 MyComboBox::~MyComboBox() {
-	// TODO Auto-generated destructor stub
+
 }
 void MyComboBox::pushBack(Glib::ustring text, bool select) {
 	pushBack(text, 0.0, select);
