@@ -78,9 +78,11 @@ void ThisOptions::runPlaying() {
 	myRotate->pushBack("180", 180);
 	myRotate->pushBack("270", 270);
 	upSpin->set_sensitive(true);
-	downSpin->set_sensitive(true);
+	if(!upDown->get_active())
+		downSpin->set_sensitive(true);
 	leftSpin->set_sensitive(true);
-	rightSpin->set_sensitive(true);
+	if(!leftRight->get_active())
+		rightSpin->set_sensitive(true);
 	videoSpeed->set_sensitive(true);
 	useCropVideo->set_sensitive(true);
 	brightness->set_sensitive(true);
@@ -90,6 +92,10 @@ void ThisOptions::runPlaying() {
 	leftRight->set_sensitive(true);
 	upDown->set_sensitive(true);
 	saturation->set_sensitive(true);
+	upSpin->set_text("0");
+	downSpin->set_text("0");
+	rightSpin->set_text("0");
+	leftSpin->set_text("0");
 }
 void ThisOptions::setColorsPointer(ColorSetings* colors) {
 	this->colors = colors;

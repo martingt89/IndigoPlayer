@@ -7,6 +7,10 @@
 
 #include "VideoBoard.h"
 #include <iostream>
+
+//TODO add set aspect
+//TODO set main aspect
+//TODO add size mode
 VideoBoard::VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder) {
 	boardSizeX = 0;
 	boardSizeY = 0;
@@ -35,7 +39,15 @@ VideoBoard::VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder) {
 	imgX = image->get_width();
 	imgY = image->get_height();
 	videoBoard->add_events(Gdk::BUTTON_PRESS_MASK);
+	upBoard->add_events(Gdk::BUTTON_PRESS_MASK);
+	leftBoard->add_events(Gdk::BUTTON_PRESS_MASK);
+	downBoard->add_events(Gdk::BUTTON_PRESS_MASK);
+	rightBoard->add_events(Gdk::BUTTON_PRESS_MASK);
 	videoBoard->signal_button_press_event().connect(sigc::mem_fun(this, &VideoBoard::doubleClick));
+	upBoard->signal_button_press_event().connect(sigc::mem_fun(this, &VideoBoard::doubleClick));
+	downBoard->signal_button_press_event().connect(sigc::mem_fun(this, &VideoBoard::doubleClick));
+	leftBoard->signal_button_press_event().connect(sigc::mem_fun(this, &VideoBoard::doubleClick));
+	rightBoard->signal_button_press_event().connect(sigc::mem_fun(this, &VideoBoard::doubleClick));
 	videoBoard->set_app_paintable(false);
 	videoBoard->set_double_buffered(false);
 	initHashTable(hashTableOfFunction);
@@ -53,7 +65,7 @@ bool VideoBoard::doubleClick(GdkEventButton *ev){
 		windowBridge->changeFullscreen();
 	return true;
 }
-void VideoBoard::showLogo(bool show) {
+void VideoBoard::showLogo(bool show) {	//TODO rewrite to start playing and stop playing
 	showText = show;
 	if (showText)
 		on_expose_event(NULL);
@@ -84,30 +96,30 @@ bool VideoBoard::on_expose_event(GdkEventExpose* ev) {
 					videoBoard->get_style()->get_black_gc(), 0, 0, x, y, imgX,
 					imgY, Gdk::RGB_DITHER_NONE, 0, 0);
 	}
-	if(videoWidth != 0 && videoHeight !=0){
+	if(!showText && videoWidth != 0 && videoHeight !=0){
 		double aspect = (double)videoWidth / videoHeight;
 		int boxWidth = filmBox->get_width();
 		int boxHeight = filmBox->get_height();
 
-		if((boxWidth / (double)boxHeight) > aspect){
-			upBoard->hide();
-			downBoard->hide();
-			leftBoard->show();
-			rightBoard->show();
-			//
-			int left = (boxHeight - (boxWidth/aspect)) / 2;
-			leftBoard->set_size_request((-1)*left, 0);
-			rightBoard->set_size_request((-1)*left, 0);
-		}
 		if((boxWidth / (double)boxHeight) < aspect){
-			leftBoard->hide();
-			rightBoard->hide();
 			upBoard->show();
 			downBoard->show();
+			leftBoard->hide();
+			rightBoard->hide();
 			//
-			int up = (boxWidth - (boxHeight*aspect)) / 2;
-			upBoard->set_size_request(0, (-1)*up);
-			downBoard->set_size_request(0, (-1)*up);
+			int up = (boxHeight - (boxWidth/aspect)) / 2;
+			upBoard->set_size_request(0, up);
+			downBoard->set_size_request(0, up);
+		}
+		if((boxWidth / (double)boxHeight) > aspect){
+			leftBoard->show();
+			rightBoard->show();
+			upBoard->hide();
+			downBoard->hide();
+			//
+			int left = (boxWidth - (boxHeight*aspect)) / 2;
+			leftBoard->set_size_request(left, 0);
+			rightBoard->set_size_request(left, 0);
 		}
 		if((boxWidth / (double)boxHeight) == aspect){
 			leftBoard->hide();
@@ -139,6 +151,7 @@ void VideoBoard::setFullscreenSize(){
 	}
 }
 void VideoBoard::setVideoResolution(int width, int height, bool resize){
+	//std::cout<<"VideoBoard::setVideoResolution "<<width<<" "<<height<<std::endl;
 	videoWidth = width;
 	videoHeight = height;
 	on_expose_event(NULL);

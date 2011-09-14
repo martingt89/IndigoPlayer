@@ -114,11 +114,13 @@ void ScriptGenerator::getFromSavedInfo(std::list<Glib::ustring> &parameters, Sav
 			parameters.push_back(info->getAudioPath());
 		}
 	}
+	int rot = 0;
 	{
 		switch (info->getRotate()) {
 		case 90:
 			parameters.push_back("-vf-add");
 			parameters.push_back("rotate=1");
+			rot = 1;
 			break;
 		case 180:
 			parameters.push_back("-flip");
@@ -126,6 +128,7 @@ void ScriptGenerator::getFromSavedInfo(std::list<Glib::ustring> &parameters, Sav
 		case 270:
 			parameters.push_back("-vf-add");
 			parameters.push_back("rotate=2");
+			rot = 1;
 			break;
 		default:
 			break;
@@ -140,9 +143,16 @@ void ScriptGenerator::getFromSavedInfo(std::list<Glib::ustring> &parameters, Sav
 			int ud = up + down;
 			int lr = left + right;
 			parameters.push_back("-vf-add");
-			parameters.push_back( "crop=" + Glib::ustring::format(w - lr) + ":" +
+			if(rot == 0){
+				parameters.push_back( "crop=" + Glib::ustring::format(w - lr) + ":" +
 					Glib::ustring::format(h - ud) + ":" + Glib::ustring::format(left) +
 					":" + Glib::ustring::format(up));
+			}
+			if(rot == 1){
+				parameters.push_back( "crop=" + Glib::ustring::format(h - ud) + ":" +
+						Glib::ustring::format(w - lr) + ":" + Glib::ustring::format(up) +
+					":" + Glib::ustring::format(left));
+			}
 		}
 	}
 }

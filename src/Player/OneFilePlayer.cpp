@@ -72,8 +72,17 @@ void OneFilePlayer::incommingMessage(){
 		int h = mediaPackage->getVariableAsInteger("ID_VIDEO_HEIGHT");
 		int w = mediaPackage->getVariableAsInteger("ID_VIDEO_WIDTH");
 		if (h > 0 && w > 0){
-			dat.setResolution(w,h);
 			info.setResolution(w, h);
+			int u, d, l, r;
+			info.getCrop(&u, &d, &l, &r);
+			h = h - u - d;
+			w = w - l - r;
+			if(info.getRotate() == 90 || info.getRotate() == 270){
+				dat.setResolution(h,w);
+			}else{
+				dat.setResolution(w,h);
+			}
+
 			sendPackage = true;
 		}
 	}
