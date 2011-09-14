@@ -1,6 +1,8 @@
 Version 0.4
 +Logging mplayer, logging player
 +Icons
++Total size shortkey
++Some bugs
 
 Version 0.3
 +Base shorkeys (f, m, space, Esc, 1,2,3,4, arrows, g, h)
@@ -31,12 +33,11 @@ Blueprints
  - DVD support
 0.5
  - one instance support
- - manual load subtitles
-0.6
  - config menu
  - context menu
-0.7
+0.6
+ - manual load subtitles
  - enca
-0.8
+0.7
  - VDPAU
 
