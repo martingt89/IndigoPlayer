@@ -10,12 +10,13 @@
 
 //TODO add set aspect
 //TODO set main aspect
-//TODO add size mode
+
 VideoBoard::VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder) {
 	boardSizeX = 0;
 	boardSizeY = 0;
 	videoWidth = 0;
 	videoHeight = 0;
+	aspect = 0;
 	showText = true;
 	builder->get_widget("videoBoardDrawindBase", videoBoard);
 	builder->get_widget("TopArea", upBoard);
@@ -65,10 +66,17 @@ bool VideoBoard::doubleClick(GdkEventButton *ev){
 		windowBridge->changeFullscreen();
 	return true;
 }
-void VideoBoard::showLogo(bool show) {	//TODO rewrite to start playing and stop playing
-	showText = show;
-	if (showText)
-		on_expose_event(NULL);
+void VideoBoard::startPlay(){
+	aspect = 0;
+	videoWidth = 0;
+	videoHeight = 0;
+	showText = false;
+	aspectTotal = false;
+}
+void VideoBoard::stopPlay(){
+	aspect = 0;
+	showText = true;
+	on_expose_event(NULL);
 }
 
 int VideoBoard::getXID() {
@@ -96,11 +104,10 @@ bool VideoBoard::on_expose_event(GdkEventExpose* ev) {
 					videoBoard->get_style()->get_black_gc(), 0, 0, x, y, imgX,
 					imgY, Gdk::RGB_DITHER_NONE, 0, 0);
 	}
-	if(!showText && videoWidth != 0 && videoHeight !=0){
-		double aspect = (double)videoWidth / videoHeight;
+	if(videoWidth != 0 && videoHeight !=0 && aspect != 0){
 		int boxWidth = filmBox->get_width();
 		int boxHeight = filmBox->get_height();
-
+		if(!aspectTotal){
 		if((boxWidth / (double)boxHeight) < aspect){
 			upBoard->show();
 			downBoard->show();
@@ -121,7 +128,8 @@ bool VideoBoard::on_expose_event(GdkEventExpose* ev) {
 			leftBoard->set_size_request(left, 0);
 			rightBoard->set_size_request(left, 0);
 		}
-		if((boxWidth / (double)boxHeight) == aspect){
+		}
+		if((boxWidth / (double)boxHeight) == aspect || aspectTotal){
 			leftBoard->hide();
 			rightBoard->hide();
 			upBoard->hide();
@@ -134,26 +142,42 @@ void VideoBoard::setHalfSize(){
 	if(videoWidth > 0 && videoHeight > 0){
 		windowBridge->setResolution(videoWidth/2, videoHeight/2);
 	}
+	aspectTotal = false;
+	on_expose_event(NULL);
 }
 void VideoBoard::setOriginalSize(){
 	if(videoWidth > 0 && videoHeight > 0){
 		windowBridge->setResolution(videoWidth,videoHeight);
 	}
+	aspectTotal = false;
+	on_expose_event(NULL);
 }
 void VideoBoard::setMaximalizeSize(){
 	if(videoWidth > 0 && videoHeight > 0){
 		windowBridge->setMaximalize(true);
 	}
+	aspectTotal = false;
+	on_expose_event(NULL);
+}
+void VideoBoard::setTotalSize(){
+	if(videoWidth > 0 && videoHeight > 0){
+		setFullscreenSize();
+		aspectTotal = true;
+	}
+	on_expose_event(NULL);
 }
 void VideoBoard::setFullscreenSize(){
 	if(videoWidth > 0 && videoHeight > 0){
 		windowBridge->setFullscreen(true);
 	}
+	aspectTotal = false;
+	on_expose_event(NULL);
 }
 void VideoBoard::setVideoResolution(int width, int height, bool resize){
 	//std::cout<<"VideoBoard::setVideoResolution "<<width<<" "<<height<<std::endl;
 	videoWidth = width;
 	videoHeight = height;
+	aspect = (double)videoWidth / videoHeight;
 	on_expose_event(NULL);
 	if(resize)
 		windowBridge->setResolution(width, height);
@@ -171,6 +195,7 @@ void VideoBoard::initHashTable(std::map <IndigoPlayerEnum::Command, OFP> &table)
 	table[IndigoPlayerEnum::HALFSIZE] = &VideoBoard::setHalfSize;
 	table[IndigoPlayerEnum::ORIGINALSIZE] = &VideoBoard::setOriginalSize;
 	table[IndigoPlayerEnum::MAXIMALIZESIZE] = &VideoBoard::setMaximalizeSize;
+	table[IndigoPlayerEnum::TOTALSIZE] = &VideoBoard::setTotalSize;
 	table[IndigoPlayerEnum::FULLSCR] = &VideoBoard::setFullscreenSize;
 }
 std::list<IndigoPlayerEnum::Command> VideoBoard::getCommandList(){

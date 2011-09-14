@@ -38,7 +38,6 @@ void MplayerInterface::playAudio(int number){
 	kernel->sendCommand("switch_audio "+Glib::ustring::format(number)+"\n");
 }
 void MplayerInterface::relativeSeek(int time){
-	std::cout<<"void MplayerInterface::relativeSeek(int time) "<<time<<std::endl;
 	kernel->sendCommand("seek " + Glib::ustring::format(time) + " 0\n");
 }
 void MplayerInterface::setSubtitleDelay(double delay, bool paint){

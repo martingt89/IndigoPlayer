@@ -96,7 +96,7 @@ void IndigoPlayer::playNextFile(){
 		playing = false;
 	if(nextFile != NULL){
 		filePlayer->playFile(nextFile);
-		videoBoard->showLogo(false);
+		videoBoard->startPlay();
 		playerWindow->setWindowTitle(nextFile->getName());
 		controlPanel->showLoading();
 		nextFile = NULL;
@@ -199,7 +199,7 @@ void IndigoPlayer::clickCancel() {
 	this->stopPlayer();
 }
 void IndigoPlayer::clearPlaying() {
-	videoBoard->showLogo(true);
+	videoBoard->stopPlay();
 	controlPanel->popPlayButton();
 	controlPanel->clearTime();
 	controlPanel->hideLoading();

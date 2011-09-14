@@ -115,6 +115,8 @@ void ControlPanel::setDuration(int seconds) {
 }
 void ControlPanel::setPosition(int seconds) {
 	position = seconds;
+	if(position > duration)
+		position = duration;
 	if (duration >= 0) {
 		time->set_text(getTimeText(position, duration));
 		if (aktualizeTextSignal) {

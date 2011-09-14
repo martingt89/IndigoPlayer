@@ -20,6 +20,7 @@ ShortKeys::ShortKeys() {
 	hTable[11] = IndigoPlayerEnum::ORIGINALSIZE;
 	hTable[12] = IndigoPlayerEnum::MAXIMALIZESIZE;
 	hTable[13] = IndigoPlayerEnum::FULLSCR;
+	hTable[14] = IndigoPlayerEnum::TOTALSIZE;
 	hTable[65] = IndigoPlayerEnum::PLAYSTOPBUT;
 
 	hTable[114] = IndigoPlayerEnum::SHORFORWARD;

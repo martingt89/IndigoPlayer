@@ -24,7 +24,8 @@ class VideoBoard : public Callable{
 public:
 	VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder);
 	virtual ~VideoBoard();
-	void showLogo(bool);
+	void startPlay();
+	void stopPlay();
 	int getXID();
 	void setVideoResolution(int width, int height, bool resize);
 	void setBridgePointer(Bridge* windowBridge);
@@ -38,6 +39,7 @@ private:
 	void setHalfSize();
 	void setOriginalSize();
 	void setMaximalizeSize();
+	void setTotalSize();
 	void setFullscreenSize();
 
 	Bridge* windowBridge;
@@ -58,7 +60,8 @@ private:
 	int videoWidth;
 	int videoHeight;
 	bool showText;
-
+	bool aspectTotal;
+	double aspect;
 	PathLoader pathLoader;
 };
 
