@@ -1,4 +1,4 @@
-SUBDIRS=bin
+SUBDIRS=bin po
 
 playerextradir = $(datadir)/@PACKAGE@
 playerextra_DATA = ui/arrowc.png \
