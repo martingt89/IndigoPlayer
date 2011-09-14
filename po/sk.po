@@ -3,27 +3,27 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
+
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: indigoplayer 0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-14 22:51+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2011-09-14 22:38+0200\n"
+"PO-Revision-Date: 2011-09-14 22:38+0200\n"
+"Last-Translator: Martingt89 martingt89@centrum.sk\n"
+"Language-Team: sk\n"
+"Language: sk\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../ui/controlpanel/controlpanel.glade.h:1
 msgid "backward"
-msgstr ""
+msgstr "predchádzajúca"
 
 #: ../ui/controlpanel/controlpanel.glade.h:2
 msgid "forward"
-msgstr ""
+msgstr "nasledujúca"
 
 #: ../ui/controlpanel/controlpanel.glade.h:3
 msgid "fullscreen"
@@ -31,15 +31,15 @@ msgstr ""
 
 #: ../ui/controlpanel/controlpanel.glade.h:4
 msgid "open"
-msgstr ""
+msgstr "otvoriť"
 
 #: ../ui/controlpanel/controlpanel.glade.h:5
 msgid "options"
-msgstr ""
+msgstr "nastavenia"
 
 #: ../ui/controlpanel/controlpanel.glade.h:6
 msgid "play"
-msgstr ""
+msgstr "hraj"
 
 #: ../ui/controlpanel/controlpanel.glade.h:7
 msgid "playlist"
@@ -47,7 +47,7 @@ msgstr ""
 
 #: ../ui/controlpanel/controlpanel.glade.h:8
 msgid "rewind"
-msgstr ""
+msgstr "pretočiť"
 
 #: ../ui/controlpanel/controlpanel.glade.h:9
 msgid "sound/mute"
@@ -55,7 +55,7 @@ msgstr ""
 
 #: ../ui/controlpanel/controlpanel.glade.h:10
 msgid "stop"
-msgstr ""
+msgstr "zastaviť"
 
 #: ../ui/controlpanel/controlpanel.glade.h:11
 msgid "video"
