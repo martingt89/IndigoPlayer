@@ -16,6 +16,8 @@ VideoBoard::VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder) {
 	boardSizeY = 0;
 	videoWidth = 0;
 	videoHeight = 0;
+	filmBoxH = 0;
+	filmBoxW = 0;
 	aspect = 0;
 	showText = true;
 	builder->get_widget("videoBoardDrawindBase", videoBoard);
@@ -26,16 +28,15 @@ VideoBoard::VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder) {
 	builder->get_widget("FilmBox", filmBox);
 
 	Gdk::Color black;
-	Glib::RefPtr<Gdk::Window> win = videoBoard->get_window();
-	win->set_background(black);
-	win->clear();
-	upBoard->get_window()->set_background(black);
-	downBoard->get_window()->set_background(black);
-	leftBoard->get_window()->set_background(black);
-	rightBoard->get_window()->set_background(black);
+	black.set_rgb(0,0,0);
 
-	videoBoard->signal_expose_event().connect(
-			sigc::mem_fun(this, &VideoBoard::on_expose_event));
+	videoBoard->modify_bg(Gtk::STATE_NORMAL, black);
+	upBoard->modify_bg(Gtk::STATE_NORMAL, black);
+	downBoard->modify_bg(Gtk::STATE_NORMAL, black);
+	leftBoard->modify_bg(Gtk::STATE_NORMAL, black);
+	rightBoard->modify_bg(Gtk::STATE_NORMAL, black);
+
+	videoBoard->signal_expose_event().connect(sigc::mem_fun(this, &VideoBoard::on_expose_event));
 	image = Gdk::Pixbuf::create_from_file(pathLoader.getPath(IndigoPath::LOGOIMAGE));
 	imgX = image->get_width();
 	imgY = image->get_height();
@@ -49,6 +50,7 @@ VideoBoard::VideoBoard(const Glib::RefPtr<Gtk::Builder>& builder) {
 	downBoard->signal_button_press_event().connect(sigc::mem_fun(this, &VideoBoard::doubleClick));
 	leftBoard->signal_button_press_event().connect(sigc::mem_fun(this, &VideoBoard::doubleClick));
 	rightBoard->signal_button_press_event().connect(sigc::mem_fun(this, &VideoBoard::doubleClick));
+	filmBox->signal_size_allocate().connect(	sigc::mem_fun(this, &VideoBoard::filmBoxSizeChanged));
 	videoBoard->set_app_paintable(false);
 	videoBoard->set_double_buffered(false);
 	initHashTable(hashTableOfFunction);
@@ -84,6 +86,15 @@ int VideoBoard::getXID() {
 	return 0;
 }
 
+void VideoBoard::filmBoxSizeChanged(Gtk::Allocation& allocation){
+	int h = filmBox->get_height();
+	int w = filmBox->get_width();
+	if(filmBoxH != h || filmBoxW != w){
+		filmBoxH = h;
+		filmBoxW = w;
+		aspectTotal = false;
+	}
+}
 bool VideoBoard::on_expose_event(GdkEventExpose* ev) {
 	int x = videoBoard->get_window()->get_width();
 	int y = videoBoard->get_window()->get_height();

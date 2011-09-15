@@ -1,8 +1,9 @@
 Version 0.4
 +Logging mplayer, logging player
 +Icons
-+Total size shortkey
++Total size shortkey - 5
 +Some bugs
++i18n
 
 Version 0.3
 +Base shorkeys (f, m, space, Esc, 1,2,3,4, arrows, g, h)

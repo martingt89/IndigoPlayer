@@ -52,11 +52,14 @@ private:
 	Glib::RefPtr<Gdk::Pixbuf> image;
 	Glib::RefPtr< Gdk::Window > mojko;
 	bool on_expose_event(GdkEventExpose* ev);
+	void filmBoxSizeChanged(Gtk::Allocation& allocation);
 	bool doubleClick(GdkEventButton *ev);
 	int imgX;
 	int imgY;
 	int boardSizeX;
 	int boardSizeY;
+	int filmBoxH;
+	int filmBoxW;
 	int videoWidth;
 	int videoHeight;
 	bool showText;

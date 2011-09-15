@@ -9,7 +9,7 @@
 #include <iostream>
 
 #define OPACITYLEVEL 0.7
-
+//TODO opacity not woking anywhere, rewrite to hide control panel - done
 PlayerWindow::PlayerWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder) :
 		Gtk::Window(cobject), m_refGlade(builder), m_Cursor(Gdk::BLANK_CURSOR) {
 	stopVPO = false;
@@ -41,6 +41,8 @@ PlayerWindow::PlayerWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Buil
 	gdkCapitalWindow = this->get_window();
 	playlistPanel->set_visible(false);
 	this->setWindowTitle("");
+
+	popupWindow->set_opacity(OPACITYLEVEL);
 
 	this->add_events(Gdk::POINTER_MOTION_MASK);
 	this->signal_check_resize().connect(sigc::mem_fun(this, &PlayerWindow::checkResize));
@@ -101,7 +103,7 @@ bool PlayerWindow::leavePopup(GdkEventCrossing* event) {
 }
 bool PlayerWindow::enterPopup(GdkEventCrossing* event) {
 	noHide = true;
-	popupWindow->set_opacity(OPACITYLEVEL);
+	popupWindow->show();
 	return true;
 }
 bool PlayerWindow::on_my_motion_notify_event(GdkEventMotion* event) {
@@ -111,7 +113,8 @@ bool PlayerWindow::on_my_motion_notify_event(GdkEventMotion* event) {
 			once = true;
 			myconnection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &PlayerWindow::on_timeout),
 					500);
-			popupWindow->set_opacity(OPACITYLEVEL);
+			//popupWindow->set_opacity(OPACITYLEVEL);
+			popupWindow->show();
 			gdkCapitalWindow->set_cursor();
 		}
 	}
@@ -125,7 +128,8 @@ bool PlayerWindow::on_timeout() {
 		if (isHideElements) {
 			gdkCapitalWindow->set_cursor(m_Cursor);
 			if (!noHide)
-				popupWindow->set_opacity(0);
+				//popupWindow->set_opacity(0);
+				popupWindow->hide();
 		}
 		return false;
 	}
@@ -177,11 +181,13 @@ void PlayerWindow::removPopupWindow() {
 }
 void PlayerWindow::hideElements() {
 	gdkCapitalWindow->set_cursor(m_Cursor);
-	popupWindow->set_opacity(0);
+	//popupWindow->set_opacity(0);
+	popupWindow->hide();
 }
 void PlayerWindow::showElements() {
 	gdkCapitalWindow->set_cursor();
-	popupWindow->set_opacity(OPACITYLEVEL);
+	//popupWindow->set_opacity(OPACITYLEVEL);
+	popupWindow->show();
 }
 void PlayerWindow::setFullscreen(bool full){
 	if(fullScreen->get_active() != full)
