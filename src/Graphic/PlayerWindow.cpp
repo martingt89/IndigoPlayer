@@ -9,7 +9,7 @@
 #include <iostream>
 
 #define OPACITYLEVEL 0.7
-//TODO opacity not woking anywhere, rewrite to hide control panel - done
+
 PlayerWindow::PlayerWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder) :
 		Gtk::Window(cobject), m_refGlade(builder), m_Cursor(Gdk::BLANK_CURSOR) {
 	stopVPO = false;
@@ -52,6 +52,7 @@ PlayerWindow::PlayerWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Buil
 	this->signal_drag_data_received().connect(sigc::mem_fun(*this, &PlayerWindow::dropFiles));
 	this->signal_key_press_event().connect(sigc::mem_fun(this, &PlayerWindow::keyPress), false);
 	this->signal_motion_notify_event().connect(sigc::mem_fun(this, &PlayerWindow::on_my_motion_notify_event));
+	//popupWindow->signal_motion_notify_event().connect(sigc::mem_fun(this, &PlayerWindow::on_my_motion_notify_event));
 	popupWindow->signal_leave_notify_event().connect(sigc::mem_fun(this, &PlayerWindow::leavePopup));
 	popupWindow->signal_enter_notify_event().connect(sigc::mem_fun(this, &PlayerWindow::enterPopup));
 	vidListNotebook->signal_switch_page().connect(sigc::mem_fun(this, &PlayerWindow::switchPage));
@@ -86,12 +87,13 @@ void PlayerWindow::switchPage(GtkNotebookPage* page, guint page_num) {
 			isHideElements = true;
 			this->removePanel();
 			this->showPopupWindow();
-			this->hideElements();
+			//this->hideElements();
 		} else {
 			isHideElements = false;
 			this->removPopupWindow();
 			this->addPanel();
-			this->showElements();
+			//this->showElements();
+			gdkCapitalWindow->set_cursor();
 		}
 	}
 }
