@@ -7,6 +7,8 @@
 
 #include "IndigoFile.h"
 
+//#include <iostream>
+
 IndigoFile::IndigoFile(Glib::ustring path, IndigoFileType::FileType type) {
 	init();
 	filePath = path;
@@ -14,7 +16,8 @@ IndigoFile::IndigoFile(Glib::ustring path, IndigoFileType::FileType type) {
 	this->type = type;
 	int last = path.find_last_of("/");
 	if(last > 0 && last < path.size()){
-		fileName = Glib::ustring(path.c_str()+last+1);
+//		std::cout<<"path "<<path.erase(0, last+1)<<" find: "<<last<<std::endl;
+		fileName = path.erase(0, last+1);
 	}
 }
 IndigoFile::IndigoFile() {
