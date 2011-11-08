@@ -38,7 +38,10 @@ public:
 	void call(IndigoPlayerEnum::Command command);
 	std::list<IndigoPlayerEnum::Command> getCommandList();
 	void setFullscreen(bool full);
+	void setMaximalize(bool max);
 private:
+	bool windowStateEvent(GdkEventWindowState* state);
+	void windowSizeEvent(Gtk::Allocation& allocation);
 	void checkResize();
     typedef void (PlayerWindow::*OFP)(void);
     std::map <IndigoPlayerEnum::Command, OFP> hashTableOfFunction;
@@ -90,6 +93,11 @@ private:
 	Glib::RefPtr<Gdk::Window> gdkCapitalWindow;
 	sigc::connection myconnection;
 	Gdk::Cursor m_Cursor;
+	//===============================
+	int windowWidthI;
+	int windowHeightI;
+	bool maximalizeB;
+	bool fullscreenB;
 };
 
 #endif /* PLAYERWINDOW_H_ */

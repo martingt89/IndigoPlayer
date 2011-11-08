@@ -14,6 +14,7 @@ public:
 	virtual ~Bridge();
 	virtual void clickOpenButton() = 0;
 	virtual void clickThisOptionsButton() = 0;
+	virtual void clickOptionsButton() = 0;
 	virtual void setResolution(int width, int height) = 0;
 	virtual void changeFullscreen() = 0;
 	virtual void setFullscreen(bool full) = 0;

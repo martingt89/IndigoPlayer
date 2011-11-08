@@ -70,6 +70,7 @@ private:
 	int endCounter;
 	Glib::ustring startloadedSubtitle;
 	bool startingLoading;
+	int oldTime;
 };
 
 #endif /* ONEFILEPLAYER_H_ */

@@ -36,7 +36,7 @@ public:
 	void playAudioPath(Glib::ustring path);
 	void playSubtitles(int number, bool orig);
 	void loadSubtitles(Glib::ustring file);
-	void relativeSeek(int time);
+	void relativeSeek(double time);
 	void setSubtitleDelay(double delay, bool paint);
 private:
 	MediaPackage* mediaPackage;

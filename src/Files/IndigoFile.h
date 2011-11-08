@@ -40,6 +40,7 @@ public:
 	void setSoundDelayms(int delay);
 private:
 	Glib::ustring filePath;
+	Glib::ustring fileName;
 	bool menu;
 	Glib::ustring soundFile;
 	Glib::ustring subtitleFile;

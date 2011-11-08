@@ -7,6 +7,9 @@
 #include <glibmm/timer.h>
 #include <gtkmm/main.h>
 
+#include <libintl.h>
+#include <config.h>
+
 #include "Settings.h"
 #include "ConfigFile.h"
 
@@ -15,16 +18,14 @@
 #include "GraphicLogic/GraphicLoader.h"
 #include "Files/Logger.h"
 #include "Files/FileUtilities.h"
-
-#include <libintl.h>
-#include <config.h>
+#include "OneInstance.h"
 
 int main(int argc, char *argv[]){
 
 	bindtextdomain(GETTEXT_PACKAGE, DATADIR"/locale");
 	bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
 	textdomain(GETTEXT_PACKAGE);
-  
+
 	Glib::thread_init();
 	Gtk::Main kit(argc, argv);
 	FileUtilities fu;
@@ -42,7 +43,7 @@ int main(int argc, char *argv[]){
 	if(files.size() > 0){
 		uris = fu.stringListToFiles(files, true, 0);
 	}
-	ConfigFile file();
+	ConfigFile file;
 	GraphicLoader *gLoader = NULL;
 	try{
 		gLoader = new GraphicLoader();
@@ -61,6 +62,7 @@ int main(int argc, char *argv[]){
 
 	WindowBridge bridge;
 	bridge.addCallable(filePlayer);
+	bridge.setOptions(gLoader->getOptionsWindow());
 	bridge.setPlayerWindow(gLoader->getPlayerWindow());
 	bridge.setControlPanel(gLoader->getBasePlayerWindow());
 	bridge.setVideoBoard(gLoader->getVideoBoard());
@@ -68,10 +70,20 @@ int main(int argc, char *argv[]){
 	bridge.setOpenDialog(gLoader->getOpenDialog());
 	bridge.setThisOptions(gLoader->getThisOptions());
 	bridge.setThisOptionsLoad(gLoader->getThisOptionsLoad());
-
-	if(uris.size()> 0)
-		player->addFiles(uris, true);
-	Gtk::Main::run();
+	
+	bool instance = file.getAsBool(IndigoConfig::ONEINSTANCE);
+	bool runGraphic = true;
+	OneInstance one(player);
+	if(instance){
+		runGraphic = one.start(uris);
+	}else{
+		if(uris.size() > 0)
+			player->addFiles(uris, true);
+	}
+	if(runGraphic){
+		Gtk::Main::run();
+	}
+	one.join();
 	delete gLoader;
 	delete player;
 	log.log(IndigoLogger::DEBUG, "Ending main");

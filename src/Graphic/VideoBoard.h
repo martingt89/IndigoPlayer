@@ -17,7 +17,7 @@
 #include <giomm/file.h>
 #include "../Interfaces/Callable.h"
 #include "../Interfaces/Bridge.h"
-#include "../Files/PathLoader.h"
+#include "../GraphicLogic/GraphicPathLoader.h"
 #include "../Settings.h"
 
 class VideoBoard : public Callable{
@@ -65,7 +65,7 @@ private:
 	bool showText;
 	bool aspectTotal;
 	double aspect;
-	PathLoader pathLoader;
+	GraphicPathLoader pathLoader;
 };
 
 #endif /* VIDEOBOARD_H_ */

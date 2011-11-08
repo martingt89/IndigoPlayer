@@ -40,6 +40,9 @@ void WindowBridge::setControlPanel(ControlPanel* control) {
 void WindowBridge::setThisOptions(ThisOptions* opt) {
 	this->opt = opt;
 }
+void WindowBridge::setOptions(Options* optinsWin){
+	this->optinsWin = optinsWin;
+}
 void WindowBridge::setThisOptionsLoad(ThisOptionsLoad* optLoad) {
 	this->optLoad = optLoad;
 }
@@ -49,6 +52,9 @@ void WindowBridge::clickOpenButton() {
 }
 void WindowBridge::clickThisOptionsButton() {
 	opt->show();
+}
+void WindowBridge::clickOptionsButton(){
+	optinsWin->show();
 }
 void WindowBridge::setResolution(int width, int height) {
 	playerWin->setVideoBoardSize(width, height);
@@ -61,11 +67,11 @@ void WindowBridge::setFullscreen(bool full) {
 }
 void WindowBridge::setMaximalize(bool max) {
 	if (max) {
+		playerWin->setMaximalize(true);
 		playerWin->setFullscreen(false);
-		playerWin->maximize();
 	} else {
+		playerWin->setMaximalize(false);
 		playerWin->setFullscreen(false);
-		playerWin->unmaximize();
 	}
 }
 void WindowBridge::keyPressed(int control, int keyVal, unsigned short hardwareKey) {

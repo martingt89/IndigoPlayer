@@ -18,6 +18,7 @@
 #include "../Graphic/OpenFileDialog.h"
 #include "../Graphic/ControlPanel.h"
 #include "../Graphic/ThisOptions.h"
+#include "../Graphic/Options.h"
 #include "../Graphic/ThisOptionsLoad.h"
 #include "../GraphicLogic/Playlist.h"
 #include "../Player/ShortKeys.h"
@@ -35,10 +36,12 @@ public:
 	void setOpenDialog(OpenFileDialog* dialog);
 	void setControlPanel(ControlPanel* control);
 	void setThisOptions(ThisOptions* opt);
+	void setOptions(Options* optinsWin);
 	void setThisOptionsLoad(ThisOptionsLoad* optLoad);
 	//================================================
 	void clickOpenButton();
 	void clickThisOptionsButton();
+	void clickOptionsButton();
 	void setResolution(int width, int height);
 	void changeFullscreen();
 	void setFullscreen(bool);
@@ -51,6 +54,7 @@ private:
 	OpenFileDialog* dialog;
 	ControlPanel* control;
 	ThisOptions* opt;
+	Options* optinsWin;
 	ThisOptionsLoad* optLoad;
 	//================================================
 	ShortKeys shortKeys;

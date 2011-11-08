@@ -13,6 +13,8 @@
 #include <log4cpp/FileAppender.hh>
 #include <log4cpp/SimpleLayout.hh>
 #include "../ConfigFile.h"
+#include <sys/time.h>
+
 
 namespace IndigoLogger {
 enum Level {

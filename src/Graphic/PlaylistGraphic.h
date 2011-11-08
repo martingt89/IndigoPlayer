@@ -20,7 +20,7 @@
 #include <glibmm/ustring.h>
 #include <glibmm/random.h>
 #include "../Interfaces/PlayerSignals.h"
-#include "../Files/PathLoader.h"
+#include "../GraphicLogic/GraphicPathLoader.h"
 #include "../Settings.h"
 
 class PlaylistGraphic {
@@ -83,7 +83,7 @@ private:
 	int numberOfRows;
 	bool deleteAktualB;
 
-	PathLoader pathLoader;
+	GraphicPathLoader pathLoader;
 };
 
 #endif /* PLAYLISTGRAPHIC_H_ */

@@ -1,6 +1,6 @@
 bin_PROGRAMS=indigoplayer
 
-indigoplayer_SOURCES=Capital.cpp ConfigFile.cpp ClassHelper/ClassHelper.cpp \
+indigoplayer_SOURCES=Capital.cpp ConfigFile.cpp ClassHelper/ClassHelper.cpp Files/OneInstance.cpp\
 Files/FileUtilities.cpp Files/IndigoFile.cpp Files/Logger.cpp \
 Graphic/ControlPanel.cpp Graphic/OpenFileDialog.cpp Graphic/PlayerWindow.cpp Graphic/PlaylistGraphic.cpp \
 Graphic/ThisOptions.cpp Graphic/ThisOptionsLoad.cpp Graphic/VideoBoard.cpp \

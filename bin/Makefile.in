@@ -49,19 +49,20 @@ am_indigoplayer_OBJECTS = Capital.$(OBJEXT) ConfigFile.$(OBJEXT) \
 	ClassHelper.$(OBJEXT) GraphicData.$(OBJEXT) \
 	LoadedStreams.$(OBJEXT) PlayParameters.$(OBJEXT) \
 	FileUtilities.$(OBJEXT) IndigoFile.$(OBJEXT) Logger.$(OBJEXT) \
-	PathLoader.$(OBJEXT) ControlPanel.$(OBJEXT) \
-	OpenFileDialog.$(OBJEXT) PlayerWindow.$(OBJEXT) \
+	PathLoader.$(OBJEXT) OneInstance.$(OBJEXT) \
+	ControlPanel.$(OBJEXT) OpenFileDialog.$(OBJEXT) \
+	Options.$(OBJEXT) PlayerWindow.$(OBJEXT) \
 	PlaylistGraphic.$(OBJEXT) ThisOptions.$(OBJEXT) \
 	ThisOptionsLoad.$(OBJEXT) VideoBoard.$(OBJEXT) \
 	GraphicLoader.$(OBJEXT) Playlist.$(OBJEXT) \
-	WindowBridge.$(OBJEXT) Bridge.$(OBJEXT) Callable.$(OBJEXT) \
-	PlayerSignals.$(OBJEXT) VideoFilters.$(OBJEXT) \
-	FileChoosers.$(OBJEXT) MyComboBox.$(OBJEXT) \
-	ColorSetings.$(OBJEXT) IndigoPlayer.$(OBJEXT) \
-	OneFilePlayer.$(OBJEXT) SavedFileInfo.$(OBJEXT) \
-	ShortKeys.$(OBJEXT) MediaPackage.$(OBJEXT) \
-	MplayerInterface.$(OBJEXT) PlayerKernel.$(OBJEXT) \
-	ScriptGenerator.$(OBJEXT)
+	WindowBridge.$(OBJEXT) GraphicPathLoader.$(OBJEXT) \
+	Bridge.$(OBJEXT) Callable.$(OBJEXT) PlayerSignals.$(OBJEXT) \
+	VideoFilters.$(OBJEXT) FileChoosers.$(OBJEXT) \
+	MyComboBox.$(OBJEXT) ColorSetings.$(OBJEXT) \
+	IndigoPlayer.$(OBJEXT) OneFilePlayer.$(OBJEXT) \
+	SavedFileInfo.$(OBJEXT) ShortKeys.$(OBJEXT) \
+	MediaPackage.$(OBJEXT) MplayerInterface.$(OBJEXT) \
+	PlayerKernel.$(OBJEXT) ScriptGenerator.$(OBJEXT)
 indigoplayer_OBJECTS = $(am_indigoplayer_OBJECTS)
 am__DEPENDENCIES_1 =
 indigoplayer_DEPENDENCIES = $(am__DEPENDENCIES_1)
@@ -191,13 +192,17 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-indigoplayer_SOURCES = ../src/Capital.cpp ../src/ConfigFile.cpp ../src/ClassHelper/ClassHelper.cpp \
+indigoplayer_SOURCES = ../src/Capital.cpp ../src/ConfigFile.cpp  \
+../src/ClassHelper/ClassHelper.cpp \
 ../src/DataStructures/GraphicData.cpp ../src/DataStructures/LoadedStreams.cpp \
 ../src/DataStructures/PlayParameters.cpp \
-../src/Files/FileUtilities.cpp ../src/Files/IndigoFile.cpp ../src/Files/Logger.cpp ../src/Files/PathLoader.cpp \
-../src/Graphic/ControlPanel.cpp ../src/Graphic/OpenFileDialog.cpp ../src/Graphic/PlayerWindow.cpp ../src/Graphic/PlaylistGraphic.cpp \
+../src/Files/FileUtilities.cpp ../src/Files/IndigoFile.cpp ../src/Files/Logger.cpp \
+../src/Files/PathLoader.cpp ../src/OneInstance.cpp \
+../src/Graphic/ControlPanel.cpp ../src/Graphic/OpenFileDialog.cpp ../src/Graphic/Options.cpp \
+../src/Graphic/PlayerWindow.cpp ../src/Graphic/PlaylistGraphic.cpp \
 ../src/Graphic/ThisOptions.cpp ../src/Graphic/ThisOptionsLoad.cpp ../src/Graphic/VideoBoard.cpp \
 ../src/GraphicLogic/GraphicLoader.cpp ../src/GraphicLogic/Playlist.cpp ../src/GraphicLogic/WindowBridge.cpp \
+../src/GraphicLogic/GraphicPathLoader.cpp \
 ../src/Interfaces/Bridge.cpp ../src/Interfaces/Callable.cpp ../src/Interfaces/PlayerSignals.cpp ../src/Interfaces/VideoFilters.cpp \
 ../src/MyWidget/FileChoosers.cpp ../src/MyWidget/MyComboBox.cpp \
 ../src/Player/ColorSetings.cpp ../src/Player/IndigoPlayer.cpp ../src/Player/OneFilePlayer.cpp \
@@ -205,7 +210,7 @@ indigoplayer_SOURCES = ../src/Capital.cpp ../src/ConfigFile.cpp ../src/ClassHelp
 ../src/PlayerKernel/MediaPackage.cpp ../src/PlayerKernel/MplayerInterface.cpp ../src/PlayerKernel/PlayerKernel.cpp \
 ../src/PlayerKernel/ScriptGenerator.cpp
 
-AM_CXXFLAGS = $(DEPS_CFLAGS) -DDATADIR=\"$(datadir)\"
+AM_CXXFLAGS = $(DEPS_CFLAGS) -DDATADIR=\"$(datadir)\" -lrt
 indigoplayer_LDADD = $(DEPS_LIBS)
 all: all-am
 
@@ -299,6 +304,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FileUtilities.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GraphicData.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GraphicLoader.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GraphicPathLoader.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IndigoFile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/IndigoPlayer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/LoadedStreams.Po@am__quote@
@@ -307,7 +313,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MplayerInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/MyComboBox.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/OneFilePlayer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/OneInstance.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/OpenFileDialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Options.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PathLoader.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PlayParameters.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/PlayerKernel.Po@am__quote@
@@ -478,6 +486,20 @@ PathLoader.obj: ../src/Files/PathLoader.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o PathLoader.obj `if test -f '../src/Files/PathLoader.cpp'; then $(CYGPATH_W) '../src/Files/PathLoader.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/Files/PathLoader.cpp'; fi`
 
+OneInstance.o: ../src/OneInstance.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT OneInstance.o -MD -MP -MF $(DEPDIR)/OneInstance.Tpo -c -o OneInstance.o `test -f '../src/OneInstance.cpp' || echo '$(srcdir)/'`../src/OneInstance.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/OneInstance.Tpo $(DEPDIR)/OneInstance.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../src/OneInstance.cpp' object='OneInstance.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o OneInstance.o `test -f '../src/OneInstance.cpp' || echo '$(srcdir)/'`../src/OneInstance.cpp
+
+OneInstance.obj: ../src/OneInstance.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT OneInstance.obj -MD -MP -MF $(DEPDIR)/OneInstance.Tpo -c -o OneInstance.obj `if test -f '../src/OneInstance.cpp'; then $(CYGPATH_W) '../src/OneInstance.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/OneInstance.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/OneInstance.Tpo $(DEPDIR)/OneInstance.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../src/OneInstance.cpp' object='OneInstance.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o OneInstance.obj `if test -f '../src/OneInstance.cpp'; then $(CYGPATH_W) '../src/OneInstance.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/OneInstance.cpp'; fi`
+
 ControlPanel.o: ../src/Graphic/ControlPanel.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ControlPanel.o -MD -MP -MF $(DEPDIR)/ControlPanel.Tpo -c -o ControlPanel.o `test -f '../src/Graphic/ControlPanel.cpp' || echo '$(srcdir)/'`../src/Graphic/ControlPanel.cpp
 @am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/ControlPanel.Tpo $(DEPDIR)/ControlPanel.Po
@@ -505,6 +527,20 @@ OpenFileDialog.obj: ../src/Graphic/OpenFileDialog.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../src/Graphic/OpenFileDialog.cpp' object='OpenFileDialog.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o OpenFileDialog.obj `if test -f '../src/Graphic/OpenFileDialog.cpp'; then $(CYGPATH_W) '../src/Graphic/OpenFileDialog.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/Graphic/OpenFileDialog.cpp'; fi`
+
+Options.o: ../src/Graphic/Options.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Options.o -MD -MP -MF $(DEPDIR)/Options.Tpo -c -o Options.o `test -f '../src/Graphic/Options.cpp' || echo '$(srcdir)/'`../src/Graphic/Options.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/Options.Tpo $(DEPDIR)/Options.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../src/Graphic/Options.cpp' object='Options.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Options.o `test -f '../src/Graphic/Options.cpp' || echo '$(srcdir)/'`../src/Graphic/Options.cpp
+
+Options.obj: ../src/Graphic/Options.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Options.obj -MD -MP -MF $(DEPDIR)/Options.Tpo -c -o Options.obj `if test -f '../src/Graphic/Options.cpp'; then $(CYGPATH_W) '../src/Graphic/Options.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/Graphic/Options.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/Options.Tpo $(DEPDIR)/Options.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../src/Graphic/Options.cpp' object='Options.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o Options.obj `if test -f '../src/Graphic/Options.cpp'; then $(CYGPATH_W) '../src/Graphic/Options.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/Graphic/Options.cpp'; fi`
 
 PlayerWindow.o: ../src/Graphic/PlayerWindow.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT PlayerWindow.o -MD -MP -MF $(DEPDIR)/PlayerWindow.Tpo -c -o PlayerWindow.o `test -f '../src/Graphic/PlayerWindow.cpp' || echo '$(srcdir)/'`../src/Graphic/PlayerWindow.cpp
@@ -617,6 +653,20 @@ WindowBridge.obj: ../src/GraphicLogic/WindowBridge.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../src/GraphicLogic/WindowBridge.cpp' object='WindowBridge.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o WindowBridge.obj `if test -f '../src/GraphicLogic/WindowBridge.cpp'; then $(CYGPATH_W) '../src/GraphicLogic/WindowBridge.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/GraphicLogic/WindowBridge.cpp'; fi`
+
+GraphicPathLoader.o: ../src/GraphicLogic/GraphicPathLoader.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT GraphicPathLoader.o -MD -MP -MF $(DEPDIR)/GraphicPathLoader.Tpo -c -o GraphicPathLoader.o `test -f '../src/GraphicLogic/GraphicPathLoader.cpp' || echo '$(srcdir)/'`../src/GraphicLogic/GraphicPathLoader.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/GraphicPathLoader.Tpo $(DEPDIR)/GraphicPathLoader.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../src/GraphicLogic/GraphicPathLoader.cpp' object='GraphicPathLoader.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o GraphicPathLoader.o `test -f '../src/GraphicLogic/GraphicPathLoader.cpp' || echo '$(srcdir)/'`../src/GraphicLogic/GraphicPathLoader.cpp
+
+GraphicPathLoader.obj: ../src/GraphicLogic/GraphicPathLoader.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT GraphicPathLoader.obj -MD -MP -MF $(DEPDIR)/GraphicPathLoader.Tpo -c -o GraphicPathLoader.obj `if test -f '../src/GraphicLogic/GraphicPathLoader.cpp'; then $(CYGPATH_W) '../src/GraphicLogic/GraphicPathLoader.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/GraphicLogic/GraphicPathLoader.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/GraphicPathLoader.Tpo $(DEPDIR)/GraphicPathLoader.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='../src/GraphicLogic/GraphicPathLoader.cpp' object='GraphicPathLoader.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o GraphicPathLoader.obj `if test -f '../src/GraphicLogic/GraphicPathLoader.cpp'; then $(CYGPATH_W) '../src/GraphicLogic/GraphicPathLoader.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/GraphicLogic/GraphicPathLoader.cpp'; fi`
 
 Bridge.o: ../src/Interfaces/Bridge.cpp
 @am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT Bridge.o -MD -MP -MF $(DEPDIR)/Bridge.Tpo -c -o Bridge.o `test -f '../src/Interfaces/Bridge.cpp' || echo '$(srcdir)/'`../src/Interfaces/Bridge.cpp

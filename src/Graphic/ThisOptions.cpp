@@ -12,6 +12,8 @@ ThisOptions::ThisOptions(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 	lastSpeed = 1;
 	colors = NULL;
 	videoFilter = NULL;
+	refGlade->get_widget("ThisOptCloseBut", thisOptCloseBut);
+
 	refGlade->get_widget("ThisOptionsWindow", thisOptionsWindow);
 	refGlade->get_widget("VideoSpeed", videoSpeed);
 
@@ -35,6 +37,7 @@ ThisOptions::ThisOptions(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 	makrInit();
 
 	videoSpeed->set_adjustment(videoSpeedAdj);
+	thisOptCloseBut->signal_clicked().connect(sigc::mem_fun(this, &ThisOptions::closeThisOpt));
 	videoSpeedAdj.signal_value_changed().connect(sigc::mem_fun(this, &ThisOptions::videoSpeedChanged));
 	leftRight->signal_toggled().connect(sigc::mem_fun(this, &ThisOptions::leftRightClicked));
 	upDown->signal_toggled().connect(sigc::mem_fun(this, &ThisOptions::upDownClicked));
@@ -194,9 +197,12 @@ void ThisOptions::videoSpeedChanged() {
 	if (videoFilter)
 		videoFilter->setPlaySpeed(0.25 * num);
 }
-
+void ThisOptions::closeThisOpt(){
+	thisOptionsWindow->hide();
+}
 ThisOptions::~ThisOptions() {
 	delete thisOptionsWindow;
+	delete thisOptCloseBut;
 	delete videoSpeed;
 	delete rotate;
 	delete leftRight;

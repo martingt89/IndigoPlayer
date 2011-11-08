@@ -10,8 +10,12 @@
 IndigoFile::IndigoFile(Glib::ustring path, IndigoFileType::FileType type) {
 	init();
 	filePath = path;
+	fileName = filePath;
 	this->type = type;
-
+	int last = path.find_last_of("/");
+	if(last > 0 && last < path.size()){
+		fileName = Glib::ustring(path.c_str()+last+1);
+	}
 }
 IndigoFile::IndigoFile() {
 	init();
@@ -29,7 +33,7 @@ void IndigoFile::init(){
 }
 
 Glib::ustring IndigoFile::getName(){
-	return filePath;
+	return fileName;
 }
 Glib::ustring IndigoFile::getFilePath(){
 	return filePath;

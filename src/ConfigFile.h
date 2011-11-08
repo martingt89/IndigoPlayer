@@ -13,7 +13,7 @@
 #include <sstream>
 #include <glibmm/ustring.h>
 #include <glibmm/miscutils.h>
-#include "Settings.h"
+#include "Files/PathLoader.h"
 
 namespace IndigoConfig{
 	enum Config{
@@ -36,15 +36,20 @@ public:
 	bool get(IndigoConfig::Config name, bool &boole);
 	bool get(IndigoConfig::Config name, double &doubl);
 
+	void set(IndigoConfig::Config name, Glib::ustring value);
+	void set(IndigoConfig::Config name, double value);
+	void set(IndigoConfig::Config name, bool value);
+
 	bool isSet(IndigoConfig::Config name);
 	std::string getAsString(IndigoConfig::Config name);
 	bool getAsBool(IndigoConfig::Config name);
 	double getAsDouble(IndigoConfig::Config name);
+	void saveToFile();
 private:
 	void init();
 	void initDefaultValues();
-	std::string getMainFolder();
 	std::stringstream translate;
+	PathLoader pathLoader;
 	static std::map<IndigoConfig::Config, std::string> config;
 	static std::map<std::string, IndigoConfig::Config> stringToConfig;
 };

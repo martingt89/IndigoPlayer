@@ -29,6 +29,7 @@ public:
 	void stopPlaying();
 	void runPlaying();
 private:
+	void closeThisOpt();
 	void rotateChanged();
 	void leftRightClicked();
 	void upDownClicked();
@@ -46,6 +47,8 @@ private:
 	void makrInit();
 	Gtk::Window* thisOptionsWindow;
 	Gtk::HScale* videoSpeed;
+
+	Gtk::Button* thisOptCloseBut;
 
 	Gtk::ComboBox* rotate;
 	MyComboBox* myRotate;

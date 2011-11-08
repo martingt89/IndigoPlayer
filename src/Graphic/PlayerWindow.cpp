@@ -19,6 +19,10 @@ PlayerWindow::PlayerWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Buil
 	popupHasPanel = false;
 	playerSignals = NULL;
 	windowBridge = NULL;
+	maximalizeB = false;
+	fullscreenB = false;
+	windowWidthI = 0;
+	windowHeightI = 0;
 	m_refGlade->get_widget("FullscreenToggleBase", fullScreen);
 	m_refGlade->get_widget("PanelVBoxBase", panel);
 	m_refGlade->get_widget("CapitalPanelVBoxBase", capitalPanel);
@@ -52,11 +56,12 @@ PlayerWindow::PlayerWindow(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Buil
 	this->signal_drag_data_received().connect(sigc::mem_fun(*this, &PlayerWindow::dropFiles));
 	this->signal_key_press_event().connect(sigc::mem_fun(this, &PlayerWindow::keyPress), false);
 	this->signal_motion_notify_event().connect(sigc::mem_fun(this, &PlayerWindow::on_my_motion_notify_event));
-	//popupWindow->signal_motion_notify_event().connect(sigc::mem_fun(this, &PlayerWindow::on_my_motion_notify_event));
 	popupWindow->signal_leave_notify_event().connect(sigc::mem_fun(this, &PlayerWindow::leavePopup));
 	popupWindow->signal_enter_notify_event().connect(sigc::mem_fun(this, &PlayerWindow::enterPopup));
 	vidListNotebook->signal_switch_page().connect(sigc::mem_fun(this, &PlayerWindow::switchPage));
 	this->signal_hide().connect(sigc::mem_fun(this, &PlayerWindow::quitWindow));
+	this->signal_window_state_event ().connect(sigc::mem_fun(this, &PlayerWindow::windowStateEvent));
+	this->signal_size_allocate().connect(sigc::mem_fun(this, &PlayerWindow::windowSizeEvent));
 
     initHashTable(hashTableOfFunction);
 }
@@ -69,6 +74,23 @@ PlayerWindow::~PlayerWindow() {
 	delete vidListNotebook;
 	delete popupWindow;
 	delete capitalPopupVBox;
+}
+bool PlayerWindow::windowStateEvent(GdkEventWindowState* state){
+	if((state->new_window_state & GDK_WINDOW_STATE_MAXIMIZED) != 0){
+		maximalizeB = true;
+	}else{
+		maximalizeB = false;
+	}
+	if((state->new_window_state & GDK_WINDOW_STATE_FULLSCREEN) != 0){
+		fullscreenB = true;
+	}else{
+		fullscreenB = false;
+	}
+	return true;
+}
+void PlayerWindow::windowSizeEvent(Gtk::Allocation& allocation){
+	windowWidthI = this->get_width();
+	windowHeightI = this->get_height();
 }
 void PlayerWindow::quitWindow() {
 	if (playerSignals) {
@@ -183,17 +205,26 @@ void PlayerWindow::removPopupWindow() {
 }
 void PlayerWindow::hideElements() {
 	gdkCapitalWindow->set_cursor(m_Cursor);
-	//popupWindow->set_opacity(0);
 	popupWindow->hide();
 }
 void PlayerWindow::showElements() {
 	gdkCapitalWindow->set_cursor();
-	//popupWindow->set_opacity(OPACITYLEVEL);
 	popupWindow->show();
 }
 void PlayerWindow::setFullscreen(bool full){
 	if(fullScreen->get_active() != full)
 		changeFullscreen();
+}
+void PlayerWindow::setMaximalize(bool max){
+	if(max){
+		if(!maximalizeB){
+			this->maximize();
+		}
+	}else{
+		if(maximalizeB){
+			this->unmaximize();
+		}
+	}
 }
 void PlayerWindow::fullScreenClicked() {
 	if (fullScreen->get_active()) {
@@ -263,6 +294,7 @@ void PlayerWindow::dropFiles(const Glib::RefPtr<Gdk::DragContext>& context, int,
 }
 bool PlayerWindow::keyPress(GdkEventKey* evt) {
 	if (vidListNotebook->get_current_page() == 0) {
+//		std::cout<<"keyval: "<<evt->keyval<<" state "<<evt->state<<" hw "<<evt->hardware_keycode<<std::endl;
 		if (windowBridge)
 			windowBridge->keyPressed(evt->state, evt->keyval, evt->hardware_keycode);
 		return true;
@@ -270,9 +302,12 @@ bool PlayerWindow::keyPress(GdkEventKey* evt) {
 	return false;
 }
 void PlayerWindow::setVideoBoardSize(int width, int height) {
-	this->setFullscreen(false);
-	this->unmaximize();
-	this->resize(width, height + panelHeight);
+	if(fullscreenB)
+		this->setFullscreen(false);
+	if(width != windowWidthI || (height + panelHeight) != windowHeightI)
+		this->resize(width, height + panelHeight);
+	if(maximalizeB)
+		this->unmaximize();
 }
 void PlayerWindow::call(IndigoPlayerEnum::Command command){
 	if(hashTableOfFunction.find(command) != hashTableOfFunction.end()){

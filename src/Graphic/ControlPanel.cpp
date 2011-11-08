@@ -30,6 +30,7 @@ ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 	m_refGlade->get_widget("BackInFileButtonBase", backInFile);
 	m_refGlade->get_widget("TimeProgressBase", timeProgress);
 	m_refGlade->get_widget("ThisOptionsButtonBase", thisOptionsButton);
+	m_refGlade->get_widget("OptionsButtonBase", optionsButton);
 
 	m_refGlade->get_widget("TimeLabelBase", time);
 	m_refGlade->get_widget("LoadProgress", loadProgress);
@@ -69,6 +70,7 @@ ControlPanel::ControlPanel(const Glib::RefPtr<Gtk::Builder>& refGlade) :
 			sigc::mem_fun(this, &ControlPanel::timeProgressClicked));
 	timeProgress->signal_query_tooltip().connect(sigc::mem_fun(this, &ControlPanel::toolTipShow));
 	thisOptionsButton->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::thisOptionsClicked));
+	optionsButton->signal_clicked().connect(sigc::mem_fun(this, &ControlPanel::optionsClicked));
 	initHashTable(hashTableOfFunction);
 }
 
@@ -217,6 +219,10 @@ void ControlPanel::cancelClicked() {
 void ControlPanel::thisOptionsClicked() {
 	if (windowBridge != 0)
 		windowBridge->clickThisOptionsButton();
+}
+void ControlPanel::optionsClicked(){
+	if (windowBridge != 0)
+		windowBridge->clickOptionsButton();
 }
 void ControlPanel::rewindButtonClicked() {
 	if (playerSignals != 0)

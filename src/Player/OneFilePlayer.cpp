@@ -62,6 +62,11 @@ void OneFilePlayer::incommingMessage(){
 		info.setAktulaTime(aktual);
 		dat.setAktualTime(aktual);
 		sendPackage = true;
+		//if(!info.getPause() && oldTime == aktual){
+		//	mplayer->relativeSeek(0.01);
+		//	std::cout<<"OneFilePlayer::incommingMessage() relative seek"<<std::endl;
+		//}
+		//oldTime = aktual;
 	}
 
 	if (mediaPackage->isVideoParamChange()) {
@@ -160,6 +165,7 @@ void OneFilePlayer::playFile(IndigoFile* file){
 	stopPlayFile();
 	if(file == NULL) return;
 	endCounter = 0;
+	oldTime = 0;
 	startloadedSubtitle = "";
 	startingLoading = false;
 	aktualFile = *file;

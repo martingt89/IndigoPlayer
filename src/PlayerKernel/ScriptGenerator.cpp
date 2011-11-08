@@ -178,4 +178,6 @@ void ScriptGenerator::getConfig(std::list<Glib::ustring> &parameters) {
 		parameters.push_back(config.getAsString(IndigoConfig::SUBCOLOR));
 	}
 }
+//-ass-border-color
+//-ass-bottom-margin
 //-noautosub

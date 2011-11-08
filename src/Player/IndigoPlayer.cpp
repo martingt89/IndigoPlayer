@@ -126,6 +126,7 @@ void IndigoPlayer::playAudio(Glib::ustring name) {
 }
 
 void IndigoPlayer::addFiles(std::list<IndigoFile*> files, bool play) {
+	//TODO rewrite to thread safe!!!
 	playlist->addFiles(files);
 	if (play) {
 		this->stopPlayer();

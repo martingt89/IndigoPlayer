@@ -29,7 +29,7 @@
 #include "../Interfaces/Bridge.h"
 #include "../Files/IndigoFile.h"
 #include "../Files/FileUtilities.h"
-#include "../Files/PathLoader.h"
+#include "../GraphicLogic/GraphicPathLoader.h"
 #include "../Settings.h"
 
 class ControlPanel : public Callable{
@@ -63,6 +63,8 @@ private:
 	Gtk::Button* backInFile;
 	Gtk::Button* open;
 	Gtk::Button* thisOptionsButton;
+	Gtk::Button* optionsButton;
+
 	Gtk::ToggleButton* playStop;
 	Gtk::ToggleButton* soundMute;
 	Gtk::Label* time;
@@ -79,7 +81,7 @@ private:
 	Gtk::Image soundImage;
 	Gtk::Image muteImage;
 
-	PathLoader pathLoader;
+	GraphicPathLoader pathLoader;
 
 	PlayerSignals *playerSignals;
 	Bridge* windowBridge;
@@ -104,6 +106,7 @@ private:
 	void backwardClicked();
 	void cancelClicked();
 	void thisOptionsClicked();
+	void optionsClicked();
 	void openButtonClicked();
 	void rewindButtonClicked();
 	void soundLevelChanged();

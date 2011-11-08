@@ -21,9 +21,7 @@
 #define GLADEPLAYERWINDOW "/playerwindow.glade"
 #define GLADETHISOPTIONS "/thisoptions.glade"
 #define GLADEOPENWINDOW "/openwindow.glade"
-
-#define CONFIG "confFile"
-#define LOGFOLDER "log"
+#define GLADEOPTIONSWINDOW "/options.glade"
 
 #define BLANKARROW "/arrowc.png"
 #define BLACKARROW "/arrow.png"
@@ -32,5 +30,12 @@
 
 #define DEFAULTIMAGESFOLDER "ui"
 #define DEFAULTINDIGOFOLDER "indigoplayer"
+
+#define ONEINSTANCELOCK "lockinstance"
+#define ONEINSTANCEPIPE "lockpipe"
+
+#define CONFIG "confFile"
+#define LOGFOLDER "log"
+
 
 #endif /* SETTIONGS_H_ */

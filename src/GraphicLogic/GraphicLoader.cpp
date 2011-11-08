@@ -15,6 +15,7 @@ GraphicLoader::GraphicLoader()  throw (int){
 		refBuilder->add_from_file(pathLoader.getPath(IndigoPath::GOPENDIALOG));
 		refBuilder->add_from_file(pathLoader.getPath(IndigoPath::GCONTROLPANEL));
 		refBuilder->add_from_file(pathLoader.getPath(IndigoPath::GOPENWINDOW));
+		refBuilder->add_from_file(pathLoader.getPath(IndigoPath::GOPTIONSWIN));
 	} catch (const Glib::FileError& ex) {
 		log.log(IndigoLogger::FATAL, "Error load .glade files");
 		log.log(IndigoLogger::FATAL, ex.what());
@@ -24,9 +25,10 @@ GraphicLoader::GraphicLoader()  throw (int){
 		log.log(IndigoLogger::FATAL, ex.what());
 		throw -1;
 	}
-
 	refBuilder->get_widget_derived("BaseWindow", playerWindow);
 	refBuilder->get_widget_derived("OpenWindow", openWindow);
+	refBuilder->get_widget_derived("OptionsWindow", optionsWindow);
+
 	controlPanel = new ControlPanel(refBuilder);
 	videoBoard = new VideoBoard(refBuilder);
 	playlistLogic = new Playlist(new PlaylistGraphic(refBuilder));
@@ -42,6 +44,7 @@ GraphicLoader::~GraphicLoader() {
 	delete playlistLogic;
 	delete thisOptions;
 	delete thisOptionsLoad;
+	delete optionsWindow;
 }
 
 ControlPanel* GraphicLoader::getBasePlayerWindow(){
@@ -52,6 +55,9 @@ VideoBoard* GraphicLoader::getVideoBoard(){
 }
 OpenFileDialog* GraphicLoader::getOpenDialog(){
 	return openWindow;
+}
+Options* GraphicLoader::getOptionsWindow(){
+	return optionsWindow;
 }
 Playlist* GraphicLoader::getPlaylist(){
 	return playlistLogic;

@@ -10,16 +10,17 @@
 
 #include <iostream>
 #include <gtkmm/builder.h>
-#include "../Files/PathLoader.h"
+#include "GraphicPathLoader.h"
 #include "../Files/Logger.h"
 #include "../Graphic/ControlPanel.h"
 #include "../Graphic/VideoBoard.h"
 #include "../Graphic/OpenFileDialog.h"
+#include "../Graphic/Options.h"
 #include "../Graphic/PlaylistGraphic.h"
-#include "../GraphicLogic/Playlist.h"
 #include "../Graphic/PlayerWindow.h"
 #include "../Graphic/ThisOptions.h"
 #include "../Graphic/ThisOptionsLoad.h"
+#include "../GraphicLogic/Playlist.h"
 #include "../Settings.h"
 
 class GraphicLoader {
@@ -30,6 +31,7 @@ public:
 	ControlPanel* getBasePlayerWindow();
 	VideoBoard* getVideoBoard();
 	OpenFileDialog* getOpenDialog();
+	Options* getOptionsWindow();
 	Playlist* getPlaylist();
 	ThisOptions *getThisOptions();
 	ThisOptionsLoad *getThisOptionsLoad();
@@ -37,12 +39,13 @@ private:
 	PlayerWindow *playerWindow;
 	ControlPanel *controlPanel;
 	OpenFileDialog* openWindow;
+	Options* optionsWindow;
 	VideoBoard *videoBoard;
 	ThisOptions* thisOptions;
 	ThisOptionsLoad* thisOptionsLoad;
 	Playlist* playlistLogic;
 
-	PathLoader pathLoader;
+	GraphicPathLoader pathLoader;
 	IndigoLogger::Logger log;
 };
 
